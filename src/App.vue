@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import NoItem from './components/NoItem/index.vue'
-</script>
+<script setup lang="ts"></script>
 
-<template>
-  <NoItem />
-</template>
+<template>welcome to shared components</template>
