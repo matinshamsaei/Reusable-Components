@@ -21,6 +21,7 @@ const plugin: Plugin = {
 
 export * from './components'
 export * as Components from './components'
+export * Translations from './translations'
 
 export { plugin as RoutaaUiKit }
 export default plugin
