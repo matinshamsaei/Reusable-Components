@@ -1,3 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import NoItem from './components/NoItem/index.vue'
+</script>
 
-<template>Routaa Shared components</template>
+<template>
+  <NoItem />
+</template>
