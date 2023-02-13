@@ -1,0 +1,16 @@
+{
+    "name": "@routaa/shared-components",
+    "description": "Routaa Shared Components",
+    "authors": "Routaa Team",
+    "version": "0.0.1",
+    "main": "./routaa-shared-components.es.js",
+    "type": "module",
+    "types": "./main.d.ts",
+    "dependencies": {
+        "bootstrap": "^5.2.3",
+        "vue-router": "^4.1.6"
+    },
+    "publishConfig": {
+        "registry": "http://192.168.7.215:8081/repository/npm-br"
+    }
+}
