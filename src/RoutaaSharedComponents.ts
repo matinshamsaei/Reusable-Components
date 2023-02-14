@@ -3,10 +3,15 @@ import type { App, Plugin } from 'vue'
 import './assets/scss/style.scss'
 
 import * as Components from './components'
+import * as Translations from './translations'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     NoItem: typeof Components.NoItem
+  }
+
+  export interface GlobalTranslation {
+    Translations: typeof Translations
   }
 }
 
@@ -21,7 +26,7 @@ const plugin: Plugin = {
 
 export * from './components'
 export * as Components from './components'
-export * Translations from './translations'
+export * as Translations from './translations'
 
 export { plugin as RoutaaUiKit }
 export default plugin
