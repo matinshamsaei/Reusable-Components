@@ -4,12 +4,11 @@ import { createI18n } from 'vue-i18n'
 
 import './assets/scss/style.scss'
 import messages from './translations'
-import { setLocaleFromStorageOrCookie } from './lib/utils'
 
 const app = createApp(App)
 
 const i18n = createI18n({
-  locale: setLocaleFromStorageOrCookie(),
+  locale: 'fa',
   legacy: false,
   fallbackLocale: 'en',
   messages
