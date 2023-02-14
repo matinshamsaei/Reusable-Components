@@ -2,7 +2,7 @@
     "name": "@routaa/shared-components",
     "description": "Routaa Shared Components",
     "authors": "Routaa Team",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "main": "./routaa-shared-components.es.js",
     "type": "module",
     "types": "./main.d.ts",
