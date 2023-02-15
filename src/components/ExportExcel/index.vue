@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RButton } from '@routaa/ui-kit'
-import BExcel from '../BExcel/index.vue'
+import CExcel from '../CExcel/index.vue'
 import Download from '../Icons/Download.vue'
 
 type Props = {
@@ -57,7 +57,7 @@ function getItems() {
 </script>
 
 <template>
-  <BExcel
+  <CExcel
     v-if="show"
     type="xls"
     :name="fileName"
@@ -71,5 +71,5 @@ function getItems() {
 
       {{ $t('shared.excelExport') }}
     </RButton>
-  </BExcel>
+  </CExcel>
 </template>
