@@ -1,3 +1,5 @@
 export default {
-  noRecords: 'There are no records to show'
+  excelExport: 'Excel Export',
+  noRecords: 'There are no records to show',
+  reportDate: 'report Date'
 }
