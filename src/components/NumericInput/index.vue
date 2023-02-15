@@ -15,7 +15,7 @@ type Props = {
   size?: 'sm' | 'md' | 'lg'
   state?: Function | boolean | null
   disabled?: boolean
-  inputClass: HTMLAttributes['class']
+  inputClass?: HTMLAttributes['class']
   id?: string
   debounce?: number | string
 }
