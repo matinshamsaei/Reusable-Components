@@ -10,12 +10,12 @@ type Props = {
   placeholder?: string
   decimal?: boolean
   decimalPlaces?: number
-  noSeprator?: boolean
+  noSeparator?: boolean
   negative?: boolean
   size?: 'sm' | 'md' | 'lg'
   state?: Function | boolean | null
   disabled?: boolean
-  inputClass: HTMLAttributes['class']
+  inputClass?: HTMLAttributes['class']
   id?: string
   debounce?: number | string
 }
@@ -33,7 +33,7 @@ const emit = defineEmits<Emit>()
 const props = withDefaults(defineProps<Props>(), {
   decimal: true,
   decimalPlaces: 8,
-  noSeprator: false,
+  noSeparator: false,
   size: 'md',
   state: null,
   debounce: 0
@@ -107,7 +107,7 @@ function symbolEntered(val: string | null, oldVal: string | null) {
 function convertLocalString(val: number | string) {
   if (!val || val === null) return null
   val = +val
-  if (props.noSeprator) return val.toString()
+  if (props.noSeparator) return val.toString()
   return val.toLocaleString('en-GB', { maximumFractionDigits: props.decimalPlaces })
 }
 
