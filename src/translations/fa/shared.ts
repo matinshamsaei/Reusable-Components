@@ -1,3 +1,5 @@
 export default {
-  noRecords: 'رکوردی برای نمایش وجود ندارد'
+  excelExport: 'خروجی اکسل',
+  noRecords: 'رکوردی برای نمایش وجود ندارد',
+  reportDate: 'تاریخ گزارش'
 }
