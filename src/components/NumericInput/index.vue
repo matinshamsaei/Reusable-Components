@@ -10,7 +10,7 @@ type Props = {
   placeholder?: string
   decimal?: boolean
   decimalPlaces?: number
-  noSeprator?: boolean
+  noSeparator?: boolean
   negative?: boolean
   size?: 'sm' | 'md' | 'lg'
   state?: Function | boolean | null
@@ -33,7 +33,7 @@ const emit = defineEmits<Emit>()
 const props = withDefaults(defineProps<Props>(), {
   decimal: true,
   decimalPlaces: 8,
-  noSeprator: false,
+  noSeparator: false,
   size: 'md',
   state: null,
   debounce: 0
@@ -69,12 +69,12 @@ watch(
 
 function regex() {
   const full = new RegExp(`[-]?[0-9]+([.][0-9]{0,${props.decimalPlaces}})?`)
-  const negativeable = /[-]?[0-9]+/
+  const negatively = /[-]?[0-9]+/
   const floatable = new RegExp(`[0-9]+([.][0-9]{0,${props.decimalPlaces}})?`)
   const simple = /[0-9]+/
   const decimal = props.decimal && props.decimalPlaces > 0
   if (props.negative && decimal) return full
-  if (props.negative) return negativeable
+  if (props.negative) return negatively
   if (decimal) return floatable
   return simple
 }
@@ -107,7 +107,7 @@ function symbolEntered(val: string | null, oldVal: string | null) {
 function convertLocalString(val: number | string) {
   if (!val || val === null) return null
   val = +val
-  if (props.noSeprator) return val.toString()
+  if (props.noSeparator) return val.toString()
   return val.toLocaleString('en-GB', { maximumFractionDigits: props.decimalPlaces })
 }
 
