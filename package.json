@@ -13,7 +13,7 @@
   "dependencies": {
     "@babel/types": "^7.20.7",
     "@popperjs/core": "^2.11.6",
-    "@routaa/ui-kit": "0.0.2",
+    "@routaa/ui-kit": "0.0.5",
     "@vueuse/core": "^9.12.0",
     "bootstrap": "^5.2.3",
     "cookies-next": "^2.1.1",
