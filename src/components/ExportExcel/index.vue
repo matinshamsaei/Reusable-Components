@@ -7,12 +7,12 @@ import BExcel from '../BExcel/index.vue'
 import Download from '../Icons/Download.vue'
 
 type Props = {
+  data: object[]
+  count: string | number
+  fields: object // the keys of field would be keys of final excel which their values founded from data array
   header?: string
   getExcel?: Function
-  fields?: object | object[]
   stringifyLongNum?: boolean
-  data?: object[]
-  count?: string | number
   progressing?: boolean
   name?: string
   variant?: string

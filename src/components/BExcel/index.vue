@@ -4,11 +4,11 @@ import type { IObject } from '../../utils/object'
 import download from 'downloadjs'
 
 type Props = {
+  fields: object
+  data?: object[]
   name?: string
   type?: 'xls' | 'csv' | 'html'
-  data?: object[] | null
-  fields?: object | null
-  exportFields?: object | null
+  exportFields?: object
   defaultValue?: string
   header?: string
   footer?: string
@@ -27,9 +27,6 @@ type Key = {
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'xls',
-  data: null,
-  fields: () => null,
-  exportFields: () => null,
   defaultValue: '',
   name: 'data.xls',
   worksheet: 'Sheet1',
