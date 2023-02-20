@@ -1,4 +1,5 @@
 import { AppConfig } from '../App'
+import BaseConfig from '../Base'
 
 const protocol = AppConfig.ssl ? 'https://' : 'http://'
 
@@ -25,8 +26,8 @@ export const extendConfig: ExtendConfig = {
     staticServerUrl: protocol + AppConfig.files.staticServer,
     thumbServerUrl: protocol + AppConfig.files.thumbServer,
     createStaticUrl(supersedePrefix, src) {
-      if (supersedePrefix) return `${AppConfig.files.thumbServerUrl}/${supersedePrefix}/${src}`
-      return `${AppConfig.files.thumbServerUrl}/${AppConfig.files.prefixUrl}/${src}`
+      if (!!supersedePrefix) return `${AppConfig.files.thumbServerUrl}/${supersedePrefix}/${src}`
+      return `${AppConfig.files.thumbServerUrl}/${BaseConfig.prefixUrl}/${src}`
     }
   }
 }

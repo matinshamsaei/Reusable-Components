@@ -19,7 +19,6 @@ type Props = {
   imgClass?: HTMLAttributes['class']
   imgStyle?: StyleValue
   target?: Target
-  lazy?: boolean
   placeholder?: string
   effects?: object
   gif?: boolean
@@ -44,7 +43,6 @@ const props = withDefaults(defineProps<Props>(), {
   fitIn: false,
   link: false,
   target: '_self',
-  lazy: false,
   gif: false,
   fluidGrow: false,
   fluid: false,
@@ -57,8 +55,8 @@ const isGifMode = computed(() => {
   return props.gif
 })
 
-const tag = computed<string>(() => {
-  return props.link || props.to ? 'RLink' : 'span'
+const tag = computed(() => {
+  return props.link || props.to ? RLink : 'span'
 })
 
 const tagAttrs = computed<LinkAttrs>(() => {
@@ -95,7 +93,7 @@ const imgAttrs = computed<ImgAttrs>(() => {
 })
 
 const staticUrl = computed(() => {
-  return globalProps.$config.files.createStaticUrl(props.prefixUrl, props.src)
+  return globalProps.$config.thumbor.files.createStaticUrl(props.prefixUrl, props.src)
 })
 
 const mediaSrc = (format: string = ''): string => {
