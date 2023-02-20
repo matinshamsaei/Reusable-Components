@@ -31,7 +31,7 @@ const showModal = () => {
   show.value = true
 }
 
-const normalizerFullName = (fullName: string) => {
+const normalizeFullName = (fullName: string) => {
   if (fullName.startsWith('+98')) return mobileNormalizer(fullName)
 
   return fullName
@@ -43,7 +43,7 @@ const normalizerFullName = (fullName: string) => {
 
   <RLink :class="props.nameClass" @click="showModal">
     <span v-if="props.user.fullName">
-      {{ normalizerFullName(props.user.fullName) }}
+      {{ normalizeFullName(props.user.fullName) }}
     </span>
 
     <span v-else>
@@ -55,7 +55,7 @@ const normalizerFullName = (fullName: string) => {
 
   <RModal v-model="show" centered no-fade hide-footer body-class="pb-2" title="ee">
     <template #modal-title>
-      <span v-if="props.user.fullName"> {{ normalizerFullName(props.user.fullName) }} ({{ props.user.id }}) </span>
+      <span v-if="props.user.fullName"> {{ normalizeFullName(props.user.fullName) }} ({{ props.user.id }}) </span>
 
       <span v-else> {{ props.user.firstName }} {{ props.user.lastName }} ({{ props.user.id }}) </span>
     </template>
