@@ -24,6 +24,20 @@ const plugin: Plugin = {
   }
 }
 
+interface Options {
+  config: object
+}
+
+export const createSharedComponents = (options: Options) => {
+  const install = (app: App) => {
+    app.config.globalProperties.$config = options.config
+  }
+
+  return {
+    install
+  }
+}
+
 export * from './components'
 export * as Components from './components'
 export * as Translations from './translations'
