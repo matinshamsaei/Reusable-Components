@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, type HTMLAttributes, computed } from 'vue'
 import { RLink, RModal } from '@routaa/ui-kit'
-import { mobileDeNormalizer } from '@/utils/shared'
+import { mobileNormalizer } from '@/utils/shared'
 
 type User = {
   id: number
@@ -24,16 +24,17 @@ const props = defineProps<Props>()
 const show = ref(false)
 
 const mobile = computed(() => {
-  return mobileDeNormalizer(props.user.mobile)
+  return mobileNormalizer(props.user.mobile)
 })
 
 const showModal = () => {
   show.value = true
 }
 
-const checkFullName = (fullName: string) => {
-  if (fullName.startsWith('+98')) return mobileDeNormalizer(fullName)
-  else return fullName
+const normalizerFullName = (fullName: string) => {
+  if (fullName.startsWith('+98')) return mobileNormalizer(fullName)
+
+  return fullName
 }
 </script>
 
@@ -42,7 +43,7 @@ const checkFullName = (fullName: string) => {
 
   <RLink :class="props.nameClass" @click="showModal">
     <span v-if="props.user.fullName">
-      {{ checkFullName(props.user.fullName) }}
+      {{ normalizerFullName(props.user.fullName) }}
     </span>
 
     <span v-else>
@@ -54,7 +55,7 @@ const checkFullName = (fullName: string) => {
 
   <RModal v-model="show" centered no-fade hide-footer body-class="pb-2" title="ee">
     <template #modal-title>
-      <span v-if="props.user.fullName"> {{ checkFullName(props.user.fullName) }} ({{ props.user.id }}) </span>
+      <span v-if="props.user.fullName"> {{ normalizerFullName(props.user.fullName) }} ({{ props.user.id }}) </span>
 
       <span v-else> {{ props.user.firstName }} {{ props.user.lastName }} ({{ props.user.id }}) </span>
     </template>
