@@ -18,6 +18,7 @@
     "bootstrap": "^5.2.3",
     "cookies-next": "^2.1.1",
     "downloadjs": "^1.4.7",
+    "moment-jalaali": "^0.9.6",
     "vue": "^3.2.45",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.1.6"
