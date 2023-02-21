@@ -1,7 +1,9 @@
 export default {
+  backToHome: 'بازگشت به صفحه اصلی',
   email: 'ایمیل',
   excelExport: 'خروجی اکسل',
   mobile: 'موبایل',
   noRecords: 'رکوردی برای نمایش وجود ندارد',
-  reportDate: 'تاریخ گزارش',
+  pageNotFound: 'صفحه مورد نظر یافت نشد!',
+  reportDate: 'تاریخ گزارش'
 }
