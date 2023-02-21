@@ -2,9 +2,9 @@
   <div class="w-100 mb-4 pt-1 d-flex justify-content-between align-items-center flex-wrap">
     <c-page-title :title="title" :icon="icon" :simple="false" />
 
-    <b-btn
+    <RButton
       v-if="props.btnData?.text || props.btnData?.icon"
-      :disabled="disableBtn"
+      :disabled="props.disableBtn"
       :variant="props.btnData.color || 'success'"
       :to="props.btnData.link"
       @click="btnClick"
@@ -12,7 +12,7 @@
       <font-awesome-icon v-if="props.btnData?.icon" :icon="props.btnData?.icon" class="me-2" />
 
       <span v-if="props.btnData?.text">{{ props.btnData.text }}</span>
-    </b-btn>
+    </RButton>
   </div>
 
   <div
@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import CTabs from './CTabs/index.vue'
 import CPageTitle from '@/components/shared/CPageTitle/index.vue'
+import RButton from '@/components/RButton/index.vue'
 
 type BtnData = {
   text: string
