@@ -1,11 +1,18 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import { createI18n } from 'vue-i18n'
 
 import './assets/scss/style.scss'
+import FontAwesomeIcon from './plugins/font-awesome'
 import messages from './translations'
 
 const app = createApp(App)
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: []
+})
 
 const i18n = createI18n({
   locale: 'fa',
@@ -15,5 +22,8 @@ const i18n = createI18n({
 })
 
 app.use(i18n)
+app.use(router)
+
+app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.mount('#app')
