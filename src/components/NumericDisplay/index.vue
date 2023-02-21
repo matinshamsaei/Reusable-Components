@@ -2,33 +2,32 @@
 import { computed } from 'vue'
 
 type Props = {
-    value?: number
-    direction?:string
-    showAppend?:boolean
-    showSeperated?: boolean
-    append?: string
-    label?:string
-    labelClass?: object | string
-    amountClass?: object | string
-    appendClass?:object | string
+  value?: number
+  direction?: string
+  showAppend?: boolean
+  showSeparated?: boolean
+  append?: string
+  label?: string
+  labelClass?: object | string
+  amountClass?: object | string
+  appendClass?: object | string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    direction: 'ltr',
-    showAppend: true,
-    showSeperated: true
+  direction: 'ltr',
+  showAppend: true,
+  showSeparated: true
 })
 
-const amount = computed(()=> {
-    if (!props.showSeperated) return props.value
-    else if (props.value !== null) return props.value?.toLocaleString()
-    else return null
+const amount = computed(() => {
+  if (!props.showSeparated) return props.value
+  else if (props.value !== null) return props.value?.toLocaleString()
+  else return null
 })
 
-const isInfinity = computed(()=>{
-    return props.value === 2147483647
+const isInfinity = computed(() => {
+  return props.value === 2147483647
 })
-
 </script>
 
 <template>
