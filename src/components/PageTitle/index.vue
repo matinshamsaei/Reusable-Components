@@ -8,7 +8,8 @@ type Props = {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  icon: 'list'
+  icon: 'list',
+  noTopSpace: true
 })
 </script>
 
