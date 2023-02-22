@@ -1,13 +1,14 @@
 export default {
   add: 'افزودن',
-  cancel: 'انصراف'
+  cancel: 'انصراف',
   email: 'ایمیل',
   excelExport: 'خروجی اکسل',
   mobile: 'موبایل',
+  moreResult: 'نتایج بیشتر',
   noRecords: 'رکوردی برای نمایش وجود ندارد',
   reportDate: 'تاریخ گزارش',
+  save: 'ذخیره',
   search: 'جستجو',
   searching: 'در حال جستجو',
-  moreResult: 'نتایج بیشتر',
-  save: 'ذخیره',
+  clickToSelect: 'برای انتخاب کلیک کنید'
 }

@@ -1,13 +1,14 @@
 export default {
   add: 'Add',
-  cancel: 'Cancel'
+  cancel: 'Cancel',
   email: 'Email',
   excelExport: 'Excel Export',
   mobile: 'Mobile',
+  moreResult: 'More Result',
   noRecords: 'There are no records to show',
   reportDate: 'report Date',
+  save: 'Save',
   search: 'Search',
   searching: 'Searching',
-  moreResult: 'More Result',
-  save: 'Save',
+  clickToSelect: 'Click to select'
 }

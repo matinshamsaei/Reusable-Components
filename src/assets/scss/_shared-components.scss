@@ -1,5 +1,4 @@
 // Required
-
 *[dir='rtl'] {
   .card-header-required {
     .card-header::after {
@@ -75,23 +74,30 @@
 
 .vertical-center {
   position: absolute;
-  right: 10px;
   top: 50%;
+  right: .8rem;
   transform: translateY(-50%);
   z-index: 20;
 }
 
-.auto-complete-list {
-  border-left: 0 !important;
-  border-right: 0 !important;
 
-  &:hover {
-    background-color: rgba($color: $success, $alpha: .3);
+*[dir='rtl'] {
+  .vertical-center {
+    left: .8rem !important;
+    right: unset !important;
   }
 }
 
-.bg-light-success {
-  background-color: rgba($color: $success, $alpha: .5);
+.auto-complete-list {
+  &:hover {
+    background-color: rgba($color: $primary, $alpha: .3);
+  }
 }
+
+.bg-light-primary {
+  background-color: rgba($color: $primary, $alpha: .5);
+}
+
+
 
 
