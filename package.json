@@ -12,6 +12,11 @@
   },
   "dependencies": {
     "@babel/types": "^7.20.7",
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+    "@fortawesome/free-brands-svg-icons": "^6.3.0",
+    "@fortawesome/free-regular-svg-icons": "^6.3.0",
+    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "@popperjs/core": "^2.11.6",
     "@routaa/ui-kit": "0.0.5",
     "@vueuse/core": "^9.12.0",
