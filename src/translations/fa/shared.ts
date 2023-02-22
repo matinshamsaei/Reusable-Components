@@ -1,4 +1,5 @@
 export default {
+  clock: 'ساعت',
   email: 'ایمیل',
   excelExport: 'خروجی اکسل',
   lastWeekDay: 'dddd [گذشته]',

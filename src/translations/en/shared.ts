@@ -1,4 +1,5 @@
 export default {
+  clock: 'Clock',
   email: 'Email',
   excelExport: 'Excel Export',
   lastWeekDay: '[Last] dddd',

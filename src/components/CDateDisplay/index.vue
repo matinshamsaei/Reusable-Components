@@ -9,7 +9,8 @@
         v-if="props.icon"
         icon="calendar-days"
         :size="props.iconSize"
-        :class="[props.iconClass, { 'mr-1': $dir.ltr, 'ml-1': $dir.rtl }]"
+        class="me-1"
+        :class="props.iconClass"
       />
       {{ relativeTime }}
     </span>
@@ -19,7 +20,8 @@
         v-if="props.icon"
         icon="calendar-days"
         :size="props.iconSize"
-        :class="[props.iconClass, { 'mr-1': $dir.ltr, 'ml-1': $dir.rtl }]"
+        class="me-1"
+        :class="props.iconClass"
       />
       {{ humanizedTime }}
     </span>
@@ -31,7 +33,8 @@
             v-if="props.icon"
             icon="clock"
             :size="props.iconSize"
-            :class="[props.iconClass, { 'mr-1': $dir.ltr, 'ml-1': $dir.rtl }]"
+            class="me-1"
+            :class="props.iconClass"
           />
 
           <span v-if="props.seconds" id="time-vs">
@@ -48,7 +51,8 @@
             v-if="props.icon"
             icon="calendar-days"
             :size="props.iconSize"
-            :class="[props.iconClass, { 'mr-1': $dir.ltr, 'ml-1': $dir.rtl }]"
+            class="me-1"
+            :class="props.iconClass"
           />
 
           <span id="get-day" v-if="props.dayName" class="me-2"> {{ getDayName }} </span>
@@ -60,10 +64,11 @@
             v-if="props.icon"
             icon="clock"
             :size="props.iconSize"
-            :class="[props.iconClass, { 'mr-1': $dir.ltr, 'ml-1': $dir.rtl }]"
+            class="me-1"
+            :class="props.iconClass"
           />
 
-          <span v-else> {{ $t('shared.clock') }} </span>
+          <span v-else> {{ t('shared.clock') }} </span>
 
           <span v-if="props.seconds" id="time-vs">
             {{ timeVS }}
