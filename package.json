@@ -18,7 +18,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@popperjs/core": "^2.11.6",
-    "@routaa/ui-kit": "0.0.5",
+    "@routaa/ui-kit": "0.0.6",
     "@vueuse/core": "^9.12.0",
     "bootstrap": "^5.2.3",
     "cookies-next": "^2.1.1",

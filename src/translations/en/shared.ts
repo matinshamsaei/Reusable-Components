@@ -1,6 +1,6 @@
 export default {
   add: 'Add',
-  cancel: 'Cancel'
+  cancel: 'Cancel',
   email: 'Email',
   excelExport: 'Excel Export',
   mobile: 'Mobile',

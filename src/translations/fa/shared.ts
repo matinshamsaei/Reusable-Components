@@ -1,6 +1,6 @@
 export default {
   add: 'افزودن',
-  cancel: 'انصراف'
+  cancel: 'انصراف',
   email: 'ایمیل',
   excelExport: 'خروجی اکسل',
   mobile: 'موبایل',
