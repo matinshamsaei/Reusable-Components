@@ -3,7 +3,7 @@
   .card-header-required {
     .card-header::after {
       content: '*';
-      color: red;
+      color: $danger;
       position: absolute;
       right: 8px;
     }
@@ -11,26 +11,34 @@
   .required {
     .input-group-prepend .input-group-text::after {
       content: '*';
-      color: red;
+      color: $danger;
       transform: translateY(-3px);
-      padding-right: 1rem !important;
+      padding-right: .4rem !important;
     }
+
+    .input-group-text::after {
+      content: '*';
+      color: $danger;
+      transform: translateY(-3px);
+      padding-right: .4rem !important;
+    }
+
     .card-header::after {
       content: '*';
-      color: red;
+      color: $danger;
       transform: translateY(-3px);
     }
     .static-card::after {
       content: '*';
-      color: red;
+      color: $danger;
       transform: translateY(-3px);
-      padding-right: 1rem !important;
+      padding-right: .4rem !important;
     }
     .range-input::after {
       content: '*';
-      color: red;
+      color: $danger;
       transform: translateY(-3px);
-      padding-right: 1rem !important;
+      padding-right: .4rem !important;
     }
   }
 }
@@ -39,7 +47,7 @@
   .card-header-required {
     .card-header::after {
       content: '*';
-      color: red;
+      color: $danger;
       position: absolute;
       left: 8px;
     }
@@ -47,22 +55,29 @@
   .required {
     .input-group-prepend .input-group-text::after {
       content: '*';
-      color: red;
+      color: $danger;
       transform: translateY(-3px);
-      padding-right: 1rem !important;
+      padding-right: .4rem !important;
+    }
+
+    .input-group-text::after {
+      content: '*';
+      color: $danger;
+      transform: translateY(-3px);
+      padding-right: .4rem !important;
     }
 
     .card-header::after {
       content: '*';
-      color: red;
+      color: $danger;
       transform: translateY(-3px);
     }
 
     .static-card::after {
       content: '*';
-      color: red;
+      color: $danger;
       transform: translateY(-3px);
-      padding-right: 1rem !important;
+      padding-right: .4rem !important;
     }
   }
 }
@@ -88,15 +103,6 @@
   }
 }
 
-.auto-complete-list {
-  &:hover {
-    background-color: rgba($color: $primary, $alpha: .3);
-  }
-}
-
-.bg-light-primary {
-  background-color: rgba($color: $primary, $alpha: .5);
-}
 
 
 

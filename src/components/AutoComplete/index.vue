@@ -3,15 +3,14 @@ import { computed, onMounted, ref, watch, type HTMLAttributes } from 'vue'
 import type { IObject } from '../../utils/object'
 import useTranslations from '../../composable/useTranslations'
 import {
-  RInputGroup,
-  RFormInput,
+  RBadge,
   RModal,
   RListGroup,
+  RFormInput,
+  RInputGroup,
   RListGroupItem,
-  RBadge,
   RInputGroupAppend,
   RInputGroupPrepend,
-  RCard,
   vRFocus
 } from '@routaa/ui-kit'
 
@@ -31,14 +30,11 @@ type Props = {
   perPage?: number
   select?: Function
   search?: Function
-  default?: boolean
   noBadge?: boolean
   noDetails?: boolean
-  top?: boolean
   filterName?: string
   required?: boolean
-  resultClasses?: HTMLAttributes['class']
-  selectedVariant?: string
+  resultClass?: HTMLAttributes['class']
   noBadgeVariant?: string
   searchIcon?: string
   searchIconVariant?: string
@@ -46,7 +42,6 @@ type Props = {
   clearIconVariant?: string
   loadingIcon?: string
   loadingIconVariant?: string
-  expandVariant?: string
 }
 
 type Error = {
@@ -66,19 +61,16 @@ const props = withDefaults(defineProps<Props>(), {
   perPage: 30,
   noBadge: false,
   noDetails: false,
-  top: false,
   filterName: 'keyword',
   required: false,
   dir: 'auto',
-  selectedVariant: 'light-primary',
   noBadgeVariant: 'secondary',
   searchIcon: 'magnifying-glass',
-  searchIconVariant: 'primary',
+  searchIconVariant: 'muted',
   clearIcon: 'xmark',
   clearIconVariant: 'muted',
   loadingIcon: 'circle-notch',
-  loadingIconVariant: 'muted',
-  expandVariant: 'primary'
+  loadingIconVariant: 'muted'
 })
 
 interface Emits {
@@ -94,14 +86,13 @@ const emit = defineEmits<Emits>()
 
 const progressing = ref<boolean>(true)
 const keywordSearch = ref<string>('')
-const isExpandable = ref<boolean>(false)
 const page = ref<number>(1)
 const timer = ref<number>(0)
 const isVisible = ref(false)
 const results = ref<object[]>([])
 const text = ref<string>('')
 const changeKeyword = ref<boolean>(false)
-const resultClasses = ref([props.resultClasses, 'cursor-pointer border-0 shadow-sm auto-complete-list'])
+const resultClasses = ref([props.resultClass, 'cursor-pointer list-group-item-action'])
 
 const model = computed({
   get() {
@@ -128,11 +119,7 @@ onMounted(() => {
 
 watch(
   () => keywordSearch.value,
-  (val) => {
-    page.value = 1
-    changeKeyword.value = true
-    if (val === '') model.value = ''
-  }
+  () => (changeKeyword.value = true)
 )
 
 const getText = (item: IObject): string | null => {
@@ -209,17 +196,9 @@ const searchKeyword = (keyword: string) => {
 }
 
 const isSelect = (item: IObject) => {
-  if (item && typeof item === 'object') {
+  if (item && typeof item === 'object')
     return typeof props.valueField === 'string' && model.value === item[props.valueField]
-  } else return false
-}
-
-const expandResult = () => {
-  if (isExpandable.value) {
-    progressing.value = true
-    page.value++
-    getResults(keywordSearch.value, page.value, true)
-  }
+  else return false
 }
 
 const setSelected = async () => {
@@ -236,19 +215,17 @@ const setSelected = async () => {
   }
 }
 
-const getResults = async (keyword: string = keywordSearch.value, currentPage: number = 1, expand: boolean = false) => {
-  const filter = setFilter(keyword, currentPage, expand)
+const getResults = async (keyword: string = keywordSearch.value) => {
+  const filter = setFilter(keyword)
 
   try {
     if (props.search && typeof props.search === 'function') {
       const items = await props.search(filter)
 
       if (items && items.length) {
-        isExpandable.value = items.length >= props.perPage
-        if (expand) results.value.push(...items)
-        else results.value = items
+        results.value = items
 
-        if (model.value && !keyword) updateValue(items[0])
+        if (model.value && !keyword && !changeKeyword.value) updateValue(items[0])
       } else results.value = []
     }
 
@@ -258,16 +235,15 @@ const getResults = async (keyword: string = keywordSearch.value, currentPage: nu
   }
 }
 
-const setFilter = (keyword: string, currentPage: number, expand: boolean = false): object => {
+const setFilter = (keyword: string): object => {
   let filter: IObject = {
-    size: props.perPage
+    size: props.perPage,
+    page: page.value
   }
 
-  if (model.value && !keyword && !expand && !changeKeyword.value) filter[props.filterName] = model.value
-  if (props.filterName && typeof props.filterName === 'string' && keyword && typeof keyword === 'string' && !expand)
+  if (model.value && !keyword && !changeKeyword.value) filter[props.filterName] = model.value
+  if (props.filterName && typeof props.filterName === 'string' && keyword && typeof keyword === 'string')
     filter[props.filterName] = keyword
-
-  filter.page = currentPage && typeof currentPage === 'number' && currentPage > 1 ? currentPage : page.value
 
   if (props.extendFilter && typeof props.extendFilter === 'object') filter = { ...filter, ...props.extendFilter }
 
@@ -304,8 +280,8 @@ const emitChange = (item: string | number): void => {
 </script>
 
 <template>
-  <RInputGroup :prepend="props.prepend" :size="props.size" :class="required ? 'required' : ''">
-    <RInputGroupPrepend v-if="$slots.prepend">
+  <RInputGroup :prepend="props.prepend" :size="props.size" :class="props.required ? 'required' : ''">
+    <RInputGroupPrepend v-if="$slots.prepend" is-text>
       <slot v-if="$slots.prepend" />
     </RInputGroupPrepend>
 
@@ -341,9 +317,9 @@ const emitChange = (item: string | number): void => {
     scrollable
     centered
     hide-footer
-    content-class="px-2 py-3"
-    header-class="border-0 px-4 pb-0"
-    body-class="pt-2"
+    header-class="p-2"
+    header-bg-variant="light"
+    body-class="px-0 pb-1 pt-0"
     @hide="hideModal"
     @shown="getResults"
   >
@@ -352,8 +328,10 @@ const emitChange = (item: string | number): void => {
         <RFormInput
           v-model="keywordSearch"
           v-r-focus
+          size="sm"
           class="auto-complete"
           :dir="props.dir"
+          :debounce="props.debounce"
           :placeholder="$t('shared.search')"
           @input="searchKeyword($event.target.value)"
         />
@@ -369,26 +347,21 @@ const emitChange = (item: string | number): void => {
       </div>
     </template>
 
-    <RListGroup id="options" class="px-2 rounded-0">
+    <RListGroup id="options" flush class="px-0 rounded">
       <RListGroupItem v-if="progressing" class="border-0 text-center">
         <font-awesome-icon spin :icon="props.loadingIcon" size="4x" :class="`text-${props.loadingIconVariant}`" />
       </RListGroupItem>
 
       <template v-else-if="results && results.length">
-        <RCard
+        <RListGroupItem
           v-for="(item, index) in results"
           :key="getValue(item)"
-          body-class="py-3"
-          :class="[
-            isSelect(item) ? `bg-${props.selectedVariant}` : '',
-            { 'mb-1': index !== results.length - 1 },
-            resultClasses
-          ]"
+          :class="[{ active: isSelect(item) }, resultClasses]"
           @click="choose(item)"
         >
           <slot name="item" :item="item">
             <div :id="`item-${index}`" class="row">
-              <div v-if="getText(item)" :id="`item-text-${index}`" class="flex-grow-1 col-auto">
+              <div v-if="getText(item)" :id="`item-text-${index}`" class="flex-grow-1 col-auto small">
                 <slot name="item-text" :item="item">
                   {{ getText(item) }}
 
@@ -405,24 +378,12 @@ const emitChange = (item: string | number): void => {
               </div>
             </div>
           </slot>
-        </RCard>
-
-        <RListGroupItem
-          v-if="isExpandable"
-          variant="success"
-          action
-          class="py-2 px-2 rounded text-center cursor-pointer border-0 mt-3 shadow-sm"
-          @click="expandResult"
-        >
-          <slot name="expand-text">
-            {{ $t('shared.moreResult') }}
-          </slot>
         </RListGroupItem>
       </template>
 
-      <RCard v-else class="text-muted cursor-pointer border-0 shadow-sm text-center">
+      <RListGroupItem v-else class="text-muted cursor-pointer text-center">
         {{ $t('shared.noRecords') }}
-      </RCard>
+      </RListGroupItem>
     </RListGroup>
   </RModal>
 </template>
