@@ -10,6 +10,7 @@ export default {
   oopsWeHaveAProblem: 'Oops! we have a problem',
   pageNotFound: 'Page not found!',
   reportDate: 'report Date',
+  return: 'Return',
   save: 'Save',
   tryAgain: 'Try again'
 }

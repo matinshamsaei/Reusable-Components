@@ -10,6 +10,7 @@ export default {
   oopsWeHaveAProblem: 'مشکلی پیش آمده!',
   pageNotFound: 'صفحه مورد نظر یافت نشد!',
   reportDate: 'تاریخ گزارش',
+  return: 'بازگشت',
   save: 'ذخیره',
   tryAgain: 'دوباره امتحان کنید'
 }
