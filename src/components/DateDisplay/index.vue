@@ -9,7 +9,7 @@ const globalProps = useGlobalProps()
 const { t } = useI18n()
 
 type Props = {
-  modelValue?: string | number
+  modelValue: string | number
   label?: string
   labelClass?: [] | object | string
   relative?: boolean
@@ -97,11 +97,11 @@ const humanizedTime = computed(() => {
     return moment.value?.calendar()
   } else {
     return moment.value?.calendar(null, {
-      sameDay: t('forms.today'),
-      nextDay: t('forms.tomorrow'),
+      sameDay: t('shared.today'),
+      nextDay: t('shared.tomorrow'),
       nextWeek: 'dddd',
-      lastDay: t('forms.yesterday'),
-      lastWeek: t('forms.lastWeekDay'),
+      lastDay: t('shared.yesterday'),
+      lastWeek: t('shared.lastWeekDay'),
       sameElse: dateFormatV.value
     })
   }
