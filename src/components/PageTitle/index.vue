@@ -1,7 +1,7 @@
 <script setup lang="ts">
 type Props = {
   size?: string
-  title?: string
+  title: string
   icon?: string
   simple?: boolean
   noTopSpace?: boolean
