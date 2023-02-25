@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import momentTimezone from 'moment-timezone'
 import useGlobalProps from '../../composable/useGlobalProps'
 import momentJalaali from 'moment-jalaali'
 import { computed } from 'vue'
@@ -57,7 +56,7 @@ const dateFormatV = computed(() => {
   }
 })
 
-const moment = computed<string | null>(() => {
+const moment = computed(() => {
   if (!props.modelValue) return null
   if (props.mode === 'epoch') return momentJalaali(Number(props.modelValue))
   else return momentJalaali.utc(props.modelValue, 'YYYY-MM-DDTHH:mm:ss.SSS')
@@ -65,13 +64,13 @@ const moment = computed<string | null>(() => {
 
 const dateV = computed(() => {
   if (props.modelValue) {
-    return moment.value.format(dateFormatV.value)
+    return moment.value?.format(dateFormatV.value)
   }
 })
 
 const getDayName = computed(() => {
   if (props.modelValue) {
-    return moment.value.format('dddd')
+    return moment.value?.format('dddd')
   } else {
     return null
   }
@@ -79,25 +78,25 @@ const getDayName = computed(() => {
 
 const timeV = computed(() => {
   if (props.modelValue) {
-    return moment.value.format(props.timeFormat)
+    return moment.value?.format(props.timeFormat)
   }
 })
 
 const timeVS = computed(() => {
   if (props.modelValue) {
-    return moment.value.format(props.timeFormatSecond)
+    return moment.value?.format(props.timeFormatSecond)
   }
 })
 
 const relativeTime = computed(() => {
-  return moment.value.fromNow()
+  return moment.value?.fromNow()
 })
 
 const humanizedTime = computed(() => {
   if (props.time) {
-    return moment.value.calendar()
+    return moment.value?.calendar()
   } else {
-    return moment.value.calendar(null, {
+    return moment.value?.calendar(null, {
       sameDay: t('forms.today'),
       nextDay: t('forms.tomorrow'),
       nextWeek: 'dddd',
