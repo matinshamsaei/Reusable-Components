@@ -6,8 +6,6 @@ import SEOConfig from './SEO'
 import ThumborConfig from './Thumbor'
 import { deepMerge } from '../utils/object'
 
-console.log(BaseConfig);
-
 const mergedConfigs = {
   ...deepMerge(AppConfig, extendConfig),
   ...BaseConfig,

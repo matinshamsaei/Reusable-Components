@@ -2,9 +2,11 @@ export default {
   add: 'Add',
   backToHome: 'Back to home',
   cancel: 'Cancel',
+  clock: 'Clock',
   email: 'Email',
   excelExport: 'Excel Export',
-  loadAgain: 'Loade again',
+  lastWeekDay: '[Last] dddd',
+  loadAgain: 'Load again',
   mobile: 'Mobile',
   noRecords: 'There are no records to show',
   oopsWeHaveAProblem: 'Oops! we have a problem',
@@ -12,5 +14,17 @@ export default {
   reportDate: 'report Date',
   return: 'Return',
   save: 'Save',
-  tryAgain: 'Try again'
+  today: 'Today',
+  tomorrow: 'Tomorrow',
+  tryAgain: 'Try again',
+  week: {
+    Saturday: 'Saturday',
+    Sunday: 'Sunday',
+    Monday: 'Monday',
+    Tuesday: 'Tuesday',
+    Wednesday: 'Wednesday',
+    Thursday: 'Thursday',
+    Friday: 'Friday'
+  },
+  yesterday: 'Yesterday'
 }

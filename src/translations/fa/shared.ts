@@ -2,8 +2,10 @@ export default {
   add: 'افزودن',
   backToHome: 'بازگشت به صفحه اصلی',
   cancel: 'انصراف',
+  clock: 'ساعت',
   email: 'ایمیل',
   excelExport: 'خروجی اکسل',
+  lastWeekDay: 'dddd [گذشته]',
   loadAgain: 'بارگیری مجدد',
   mobile: 'موبایل',
   noRecords: 'رکوردی برای نمایش وجود ندارد',
@@ -12,5 +14,17 @@ export default {
   reportDate: 'تاریخ گزارش',
   return: 'بازگشت',
   save: 'ذخیره',
-  tryAgain: 'دوباره امتحان کنید'
+  today: 'امروز',
+  tomorrow: 'فردا',
+  tryAgain: 'دوباره امتحان کنید',
+  week: {
+    Saturday: 'شنبه',
+    Sunday: 'یکشنبه',
+    Monday: 'دوشنبه',
+    Tuesday: 'سه شنبه',
+    Wednesday: 'چهارشنبه',
+    Thursday: 'پنج شنبه',
+    Friday: 'جمعه'
+  },
+  yesterday: 'دیروز'
 }

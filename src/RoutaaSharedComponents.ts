@@ -24,13 +24,15 @@ const plugin: Plugin = {
   }
 }
 
-interface Options {
+export interface SharedComponentOptions {
   config: object
+  locale: string
 }
 
-export const createSharedComponents = (options: Options) => {
+export const createSharedComponents = (options: SharedComponentOptions) => {
   const install = (app: App) => {
     app.config.globalProperties.$config = options.config
+    app.config.globalProperties.$locale = options.locale
   }
 
   return {
