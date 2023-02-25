@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { RButton, RCollapse } from '@routaa/ui-kit'
+import { RButton, RCollapse, vRToggle } from '@routaa/ui-kit'
 import PageTitle from '@/components/PageTitle/index.vue'
-import { vRToggle } from '@routaa/ui-kit'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
