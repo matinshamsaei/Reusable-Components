@@ -5,6 +5,7 @@ import { createI18n } from 'vue-i18n'
 
 import './assets/scss/style.scss'
 import config from './plugins/config'
+import locale from './plugins/locale'
 import FontAwesomeIcon from './plugins/font-awesome'
 import messages from './translations'
 
@@ -24,6 +25,7 @@ const i18n = createI18n({
 
 app.use(i18n)
 app.use(config)
+app.use(locale)
 app.use(router)
 
 app.component('font-awesome-icon', FontAwesomeIcon)
