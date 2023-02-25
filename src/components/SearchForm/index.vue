@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   <div>
     <div class="row d-flex justify-content-between align-items-center mb-4 pt-1">
       <div class="col-12 col-sm-6">
-        <PageTitle :title="searchTitle" :icon="props.icon" :simple="false" :noTopSpace="false" />
+        <PageTitle :title="searchTitle" :icon="props.icon" />
       </div>
 
       <div class="d-flex justify-content-end col-12 col-sm-6">
