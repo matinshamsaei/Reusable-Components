@@ -50,6 +50,7 @@ export default defineConfig({
   },
   css: { preprocessorOptions: { scss: { charset: false } } },
   server: {
-    host: true
+    host: true,
+    port: 5050
   }
 })
