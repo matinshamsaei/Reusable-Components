@@ -4,7 +4,7 @@
       {{ props.label }}
     </span>
 
-    <span v-if="props.value && props.relative" id="relative-time">
+    <span v-if="props.modelValue && props.relative" id="relative-time">
       <font-awesome-icon
         v-if="props.icon"
         icon="calendar-days"
@@ -15,7 +15,7 @@
       {{ relativeTime }}
     </span>
 
-    <span v-else-if="props.value && props.humanize" id="humanized-time">
+    <span v-else-if="props.modelValue && props.humanize" id="humanized-time">
       <font-awesome-icon
         v-if="props.icon"
         icon="calendar-days"
@@ -26,7 +26,7 @@
       {{ humanizedTime }}
     </span>
 
-    <span v-else-if="props.value" id="date">
+    <span v-else-if="props.modelValue" id="date">
       <template v-if="isFinity">
         <span v-if="props.time && props.firstIsDate" class="me-2">
           <font-awesome-icon
@@ -56,6 +56,7 @@
           />
 
           <span id="get-day" v-if="props.dayName" class="me-2"> {{ getDayName }} </span>
+
           {{ dateV }}
         </template>
 
@@ -86,15 +87,18 @@
 </template>
 
 <script setup lang="ts">
+import momentTimezone from 'moment-timezone'
+import useGlobalProps from '../../composable/useGlobalProps'
+import momentJalaali from 'moment-jalaali'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import moment from 'moment-jalaali'
-import 'moment-timezone'
+
+const globalProps = useGlobalProps()
 
 const { t } = useI18n()
 
 type Props = {
-  value?: string
+  modelValue?: string | number
   label?: string
   labelClass?: [] | object | string
   relative?: boolean
@@ -105,7 +109,7 @@ type Props = {
   date?: boolean
   time?: boolean
   icon?: boolean
-  dataFormat?: string
+  dateFormat?: string
   timeFormat?: string
   timeFormatSecond?: string
   iconClass?: string
@@ -119,7 +123,7 @@ const props = withDefaults(defineProps<Props>(), {
   humanize: false,
   dayName: false,
   seconds: false,
-  date: false,
+  date: true,
   time: false,
   icon: false,
   dateFormat: 'YYYY/M/D',
@@ -130,64 +134,64 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const isFinity = computed(() => {
-  return props.value !== '2999-01-01T00:00:00'
+  return props.modelValue !== '2999-01-01T00:00:00'
 })
 
 const dateFormatV = computed(() => {
-  // if (this.$store.state.$locale === 'fa') {
-  //   return this.dateFormat.replace(/Y+|M+|D+/g, (m) => `j${m}`)
-  // } else {
-  return props.dateFormat
-  // }
-})
-
-const getDayName = computed(() => {
-  // if (props.value) {
-  // return this.moment.tz(this.$config.timeZone.text).format('dddd')
-  // } else {
-  return null
-  // }
+  if (globalProps.$locale === 'fa') {
+    return props.dateFormat.replace(/Y+|M+|D+/g, (m) => `j${m}`)
+  } else {
+    return props.dateFormat
+  }
 })
 
 const moment = computed<string | null>(() => {
-  if (!props.value) return null
-  if (props.mode === 'epoch') return moment(Number(props.value))
-  else return moment.utc(props.value, 'YYYY-MM-DDTHH:mm:ss.SSS')
+  if (!props.modelValue) return null
+  if (props.mode === 'epoch') return momentJalaali(Number(props.modelValue))
+  else return momentJalaali.utc(props.modelValue, 'YYYY-MM-DDTHH:mm:ss.SSS')
 })
 
 const dateV = computed(() => {
-  // if (props.value) {
-  //   return this.moment.tz(this.$config.timeZone.text).format(this.dateFormatV)
-  // }
+  if (props.modelValue) {
+    return moment.value.format(dateFormatV.value)
+  }
+})
+
+const getDayName = computed(() => {
+  if (props.modelValue) {
+    return moment.value.format('dddd')
+  } else {
+    return null
+  }
 })
 
 const timeV = computed(() => {
-  if (props.value) {
-    return moment.format(props.timeFormat)
+  if (props.modelValue) {
+    return moment.value.format(props.timeFormat)
   }
 })
 
 const timeVS = computed(() => {
-  if (props.value) {
-    return moment.format(props.timeFormatSecond)
+  if (props.modelValue) {
+    return moment.value.format(props.timeFormatSecond)
   }
 })
 
 const relativeTime = computed(() => {
-  return moment.fromNow()
+  return moment.value.fromNow()
 })
 
 const humanizedTime = computed(() => {
   if (props.time) {
-    return moment.calendar()
+    return moment.value.calendar()
   } else {
-    return moment.calendar(null, {
+    return moment.value.calendar(null, {
       sameDay: t('forms.today'),
       nextDay: t('forms.tomorrow'),
       nextWeek: 'dddd',
       lastDay: t('forms.yesterday'),
       lastWeek: t('forms.lastWeekDay'),
-      sameElse: dateFormatV
+      sameElse: dateFormatV.value
     })
   }
 })
