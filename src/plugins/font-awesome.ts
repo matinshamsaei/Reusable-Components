@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import {} from '@fortawesome/free-regular-svg-icons'
 
-import { faXmark, faMagnifyingGlass, faCircleNotch } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faMagnifyingGlass, faCircleNotch, faRotateLeft, faList } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faXmark, faMagnifyingGlass, faCircleNotch)
+library.add(faXmark, faMagnifyingGlass, faCircleNotch, faRotateLeft, faList)
 
 export default FontAwesomeIcon

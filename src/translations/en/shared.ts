@@ -1,14 +1,20 @@
 export default {
   add: 'Add',
+  backToHome: 'Back to home',
   cancel: 'Cancel',
+  clickToSelect: 'Click to select'
   email: 'Email',
   excelExport: 'Excel Export',
+  loadAgain: 'Load again',
   mobile: 'Mobile',
   moreResult: 'More Result',
   noRecords: 'There are no records to show',
+  oopsWeHaveAProblem: 'Oops! we have a problem',
+  pageNotFound: 'Page not found!',
   reportDate: 'report Date',
+  return: 'Return',
   save: 'Save',
   search: 'Search',
   searching: 'Searching',
-  clickToSelect: 'Click to select'
+  tryAgain: 'Try again',
 }
