@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import RFormSelect from '@/components/RForm/RFormSelect/index.vue'
-import RPagination from '@/components/RPagination/index.vue'
-
-import { computed } from 'vue'
+import { RFormSelect, RPagination } from '@routaa/ui-kit'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-const sizeOptions = [10, 20, 50, 100]
+const sizeOptions = ref([10, 20, 50, 100])
 
 const emit = defineEmits<Emits>()
 
@@ -38,7 +36,7 @@ const page = computed({
   get() {
     return props.currentPage
   },
-  set(value) {
+  set(value: string | number) {
     if (checkPagination(perPage)) value = 1
     emit('update:currentPage', value)
   }
@@ -48,14 +46,14 @@ const size = computed({
   get() {
     return props.perPage
   },
-  set(val) {
+  set(val: string | number) {
     if (checkPagination(+val)) page.value = 1
     emit('update:perPage', val)
   }
 })
 
 const isLastPage = computed(() => {
-  return perPage * currentPage >= props.total
+  if (typeof props.total === 'number') return perPage * currentPage >= props.total
 })
 
 const from = computed(() => {
@@ -72,7 +70,7 @@ const to = computed(() => {
 function checkPagination(perPage: number) {
   let to
   let from
-  if (perPage * currentPage >= props.total) {
+  if (typeof props.total === 'number' && perPage * currentPage >= props.total) {
     to = props.total
   } else {
     to = perPage * currentPage
@@ -90,7 +88,7 @@ function checkPagination(perPage: number) {
     :class="card ? 'card' : 'justify-content-center'"
   >
     <div class="row d-flex justify-content-between">
-      <div v-if="props.showTotal" class="col-12 d-flex align-items-center text-dark mb-3 ms-2 my-sm-1">
+      <div v-if="props.showTotal" class="col-sm col-12 d-flex align-items-center text-dark mb-3 ms-2 my-sm-1">
         <div class="mx-auto mx-sm-0">
           <h6 class="d-inline-block font-md mb-0" id="from-to">{{ from }} {{ t('shared.until') }} {{ to }}</h6>
 
@@ -108,7 +106,7 @@ function checkPagination(perPage: number) {
         </div>
       </div>
 
-      <div v-if="props.total > props.perPage" class="col-12 d-flex">
+      <div v-if="props.total > props.perPage" class="d-flex my-auto col-sm col-12">
         <RPagination
           v-model="page"
           :totalRows="props.total"
@@ -117,8 +115,8 @@ function checkPagination(perPage: number) {
         />
       </div>
 
-      <div v-if="props.showPerPage" class="col-12 d-flex me-1 my-2">
-        <div class="d-flex align-items-center font-md mx-auto mx-sm-0">
+      <div v-if="props.showPerPage" class="d-flex me-1 my-2 col-sm col-12">
+        <div class="d-flex align-items-center font-md ms-auto">
           <div class="text-nowrap text-dark px-2">
             {{ t('shared.count') }}
           </div>
