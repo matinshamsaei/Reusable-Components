@@ -1,5 +1,6 @@
 export default {
   add: 'Add',
+  backToHome: 'Back to home',
   cancel: 'Cancel',
   clock: 'Clock',
   email: 'Email',
@@ -9,7 +10,9 @@ export default {
   mobile: 'Mobile',
   noRecords: 'There are no records to show',
   oopsWeHaveAProblem: 'Oops! we have a problem',
+  pageNotFound: 'Page not found!',
   reportDate: 'report Date',
+  return: 'Return',
   save: 'Save',
   today: 'Today',
   tomorrow: 'Tomorrow',
