@@ -6,5 +6,6 @@ export default {
   mobile: 'موبایل',
   noRecords: 'رکوردی برای نمایش وجود ندارد',
   reportDate: 'تاریخ گزارش',
-  save: 'ذخیره',
+  return: 'بازگشت',
+  save: 'ذخیره'
 }

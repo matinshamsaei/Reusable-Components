@@ -6,5 +6,6 @@ export default {
   mobile: 'Mobile',
   noRecords: 'There are no records to show',
   reportDate: 'report Date',
-  save: 'Save',
+  return: 'Return',
+  save: 'Save'
 }

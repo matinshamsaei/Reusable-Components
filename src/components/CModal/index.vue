@@ -1,20 +1,20 @@
-<script>
+<script lang="ts">
 export default {
   inheritAttrs: false
 }
 </script>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, useAttrs } from 'vue'
+import { ref, watch, nextTick, type Component } from 'vue'
 import { RModal, RButton } from '@routaa/ui-kit'
 
 type Props = {
-  value?: boolean
+  modelValue?: boolean
   icon?: [] | string
   iconClass?: object | string
   disabled?: boolean
   notActivator?: boolean
-  tag?: string
+  tag?: Component | string
   progressing?: boolean
   tagAttrs?: object
   label?: string
@@ -23,20 +23,26 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   notActivator: false,
-  tag: 'RButton',
+  tag: RButton,
   progressing: false,
   tagAttrs: () => ({})
 })
 
-const emits = defineEmits(['input', 'show', 'shown', 'submit', 'hide', 'hidden'])
+interface ModalEmits {
+  (e: 'input', value: boolean): void
+  (e: 'show'): void
+  (e: 'shown'): void
+  (e: 'submit', value: object): void
+  (e: 'hide'): void
+  (e: 'hidden'): void
+}
+const emits = defineEmits<ModalEmits>()
 
 const open = ref<boolean>(false)
 
 watch(
-  () => props.value,
-  (val) => {
-    open.value = val
-  }
+  () => props.modelValue,
+  (val) => (open.value = val)
 )
 
 watch(open, (val) => {
@@ -65,20 +71,13 @@ function hide() {
     emits('hidden')
   })
 }
-
-const attrs = useAttrs()
 </script>
 
 <template>
   <span :class="{ 'd-inline-block': tag }">
     <slot v-if="!props.notActivator" name="activator" :show="show" :hide="hide" :attrs="props.tagAttrs">
       <component id="c-modal-component" :is="props.tag" v-bind="props.tagAttrs" @click.stop="show">
-        <font-awesome-icon
-          v-if="icon"
-          id="c-modal-icon"
-          :icon="icon"
-          :class="[iconClass, 'align-middle me-1']"
-        />
+        <font-awesome-icon v-if="icon" id="c-modal-icon" :icon="icon" :class="[iconClass, 'align-middle me-1']" />
 
         {{ label }}
       </component>
