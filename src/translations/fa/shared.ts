@@ -17,5 +17,14 @@ export default {
   today: 'امروز',
   tomorrow: 'فردا',
   tryAgain: 'دوباره امتحان کنید',
+  week: {
+    Saturday: 'شنبه',
+    Sunday: 'یکشنبه',
+    Monday: 'دوشنبه',
+    Tuesday: 'سه شنبه',
+    Wednesday: 'چهارشنبه',
+    Thursday: 'پنج شنبه',
+    Friday: 'جمعه'
+  },
   yesterday: 'دیروز'
 }

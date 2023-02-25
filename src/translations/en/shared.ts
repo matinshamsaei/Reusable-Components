@@ -17,5 +17,14 @@ export default {
   today: 'Today',
   tomorrow: 'Tomorrow',
   tryAgain: 'Try again',
+  week: {
+    Saturday: 'Saturday',
+    Sunday: 'Sunday',
+    Monday: 'Monday',
+    Tuesday: 'Tuesday',
+    Wednesday: 'Wednesday',
+    Thursday: 'Thursday',
+    Friday: 'Friday'
+  },
   yesterday: 'Yesterday'
 }

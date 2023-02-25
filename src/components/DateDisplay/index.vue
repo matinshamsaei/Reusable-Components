@@ -70,7 +70,7 @@ const dateV = computed(() => {
 
 const getDayName = computed(() => {
   if (props.modelValue) {
-    return moment.value?.format('dddd')
+    return t(`shared.week.${moment.value?.format('dddd')}`)
   } else {
     return null
   }
@@ -165,7 +165,7 @@ const humanizedTime = computed(() => {
             :class="props.iconClass"
           />
 
-          <span id="get-day" v-if="props.dayName" class="me-2"> {{ getDayName }} </span>
+          <span v-if="props.dayName" id="get-day" dir="ltr" class="me-2"> {{ getDayName }} </span>
 
           {{ dateV }}
         </template>
