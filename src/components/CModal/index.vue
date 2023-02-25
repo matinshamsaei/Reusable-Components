@@ -14,7 +14,7 @@ type Props = {
   iconClass?: object | string
   disabled?: boolean
   notActivator?: boolean
-  tag?: Component | string
+  tag?: Component | string | object
   progressing?: boolean
   tagAttrs?: object
   label?: string
