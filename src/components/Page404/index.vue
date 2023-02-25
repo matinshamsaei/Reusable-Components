@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import { RImg, RButton } from '@routaa/ui-kit'
-
-const { t } = useI18n()
 </script>
 
 <template>
