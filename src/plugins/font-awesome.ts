@@ -10,9 +10,10 @@ import {
   faInfinity,
   faList,
   faRotateLeft,
-  faUserGear
+  faUserGear,
+  faXmark
 } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faRotateLeft, faInfinity, faClock, faCalendarDays, faList, faUserGear, faFilter)
+library.add(faRotateLeft, faInfinity, faClock, faCalendarDays, faList, faUserGear, faFilter, faXmark)
 
 export default FontAwesomeIcon

@@ -6,40 +6,27 @@
     height: 100px;
   }
   .items {
-    display: inline-flex;
-    flex-wrap: wrap;
+    @extend .d-inline-flex, .flex-wrap;
     .item {
-      @extend .me-2;
-      display: flex;
-      align-items: stretch;
-      // justify-content: center;
+      @extend .me-2, .d-flex, .align-items-stretch;
       .file {
-        @extend .h5, .mb-0, .text-dark;
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
+        @extend .h5, .mb-0, .text-dark, .w-100, .d-flex, .flex-wrap, .align-items-center, .justify-content-center;
       }
       .image {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
+        @extend .d-flex, .align-items-center, .justify-content-center, .w-100;
       }
-      @extend .border, .rounded-lg, .overflow-hidden, .position-relative;
+      @extend .border, .rounded, .overflow-hidden, .position-relative;
       .remove-btn {
-        color: $white;
-        display: none;
-        position: absolute;
-        border-radius: 50%;
+        @extend .position-absolute, .text-white, .d-none, .rounded-circle;
         background-color: rgba(126, 126, 126, 0.7);
         left: 3px;
         top: 3px;
+        width: 1.5rem;
+        height: 1.5rem;
       }
       &:hover {
         .remove-btn {
-          display: inline-block;
+          @extend .d-flex, .align-items-center, .justify-content-center;
         }
       }
     }

@@ -8,7 +8,7 @@ type Props = {
   disabled?: boolean
   lightbox?: boolean
   multiple?: boolean
-  prefixUrl?: String
+  prefixUrl?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,16 +50,23 @@ const removeItem = (i: string) => {
 
 <template>
   <div class="file-display">
-    <draggable class="items" :disabled="!isDraggable" v-bind="getSortableOptions()" v-model="model">
-      <item
-        v-for="item in model"
-        :key="item"
-        :value="item"
-        :prefixUrl="props.prefixUrl"
-        :disabled="props.disabled"
-        :class="{ 'mb-3': props.multiple }"
-        @remove="removeItem"
-      />
+    <draggable
+      v-model="model"
+      class="items"
+      item-key="fileDisplay"
+      group="images"
+      :disabled="!isDraggable"
+      v-bind="getSortableOptions()"
+    >
+      <template #item="{ element }">
+        <item
+          :model="element"
+          :prefixUrl="props.prefixUrl"
+          :disabled="props.disabled"
+          :class="{ 'mb-3': props.multiple }"
+          @remove="removeItem"
+        />
+      </template>
     </draggable>
   </div>
 </template>
