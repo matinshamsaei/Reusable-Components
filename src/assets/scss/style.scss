@@ -1,2 +1,6 @@
-@import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
+@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
 @import '../../../node_modules/@routaa/ui-kit/routaa-ui-kit.css';
+
+@import 'utils';
+
+@import 'shared-components';
