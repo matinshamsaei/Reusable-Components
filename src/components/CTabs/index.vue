@@ -1,34 +1,29 @@
-<template>
-  <b-tabs
-    nav-class="border-0"
-    :nav-wrapper-class="['border-0', wrapperClass]"
-    :content-class="contentClass + ' border-0'"
-    :card="card"
-    :active-nav-item-class="activeNavClass"
-    :class="{ bordered: hasBorder }"
-  >
-    <b-tab
-      v-for="item in items"
-      :key="item.value"
-      :title="item.text"
-      :active="tabQueryEquality(item.value)"
-      :lazy="lazy"
-      :class="tabClass"
-      @click="tabClick(item.value)"
-    >
-      <component v-if="item.component" :is="item.component"></component>
-
-      <slot name="tab"></slot>
-    </b-tab>
-  </b-tabs>
-</template>
-
 <script setup lang="ts">
-// import { BTabs, BTab } from 'bootstrap-vue'
-// import { serializer } from '@/lib/util'
+import { ref, nextTick, onMounted, watch, type Component } from 'vue'
+import { RTabs, RTab } from '@routaa/ui-kit'
+import { useRouter, useRoute } from 'vue-router'
+import { serializer } from '@/lib/utils'
+
+const router = useRouter()
+
+const route = useRoute()
+
+const activeTabIndex = ref<number>(0)
+
+interface Emit {
+  (e: 'change', value: any): void
+}
+
+const emit = defineEmits<Emit>()
+
+type Items = {
+  text: string
+  value: any
+  component?: Component | string | object
+}
 
 type Props = {
-  items?: []
+  items?: Items[]
   card?: boolean
   lazy?: boolean
   hasBorder?: boolean
@@ -45,38 +40,67 @@ const props = withDefaults(defineProps<Props>(), {
   tabClass: 'm-1'
 })
 
-function tabClick(value) {
-  //     if (value != this.$route.query.tab) {
-  //       let qs = {}
-  //       qs.tab = value
-  //       this.$router.push(`?${serializer(qs)}`)
-  //       this.emitChange(value)
-  //     }
+watch(
+  () => route.query.tab,
+  () => {
+    changeTab()
+  }
+)
+
+onMounted(() => {
+  if (route.query.tab) changeTab()
+})
+
+function tabClick(value: string) {
+  if (value != route.query.tab) {
+    let qs: { tab?: string } = {}
+    qs.tab = value
+    router.push(`?${serializer(qs)}`)
+    emitChange(value)
+  }
 }
 
 function changeTab() {
-  //     this.items.forEach((item, index) => {
-  //       if (item.value == this.$route.query.tab) {
-  //         this.activeTabIndex = index
-  //         this.$nextTick(() => this.tabClick(this.$route.query.tab))
-  //       }
-  //     })
+  props.items &&
+    props.items.length &&
+    props.items.forEach((item, index) => {
+      if (item.value == route.query.tab) {
+        activeTabIndex.value = index
+        nextTick(() => tabClick((typeof route.query.tab === 'string' && route.query.tab) || ''))
+      }
+    })
 }
 
-function emitChange(value) {
-//     if (this.$route.query.tab !== value) this.$emit('change', value)
+function emitChange(value: string) {
+  if (route.query.tab !== value) emit('change', value)
 }
 
-function tabQueryEquality(value) {
-//     return this.$route.query.tab == value
+function tabQueryEquality(value: object) {
+  return route.query.tab == value
 }
-
-// watch: {
-//   '$route.query.tab'() {
-//     this.changeTab()
-//   }
-// },
-// mounted() {
-//   if (this.$route.query.tab) this.changeTab()
-// }
 </script>
+
+<template>
+  <RTabs
+    nav-class="border-0"
+    :nav-wrapper-class="['border-0', wrapperClass]"
+    :content-class="contentClass + ' border-0'"
+    :card="props.card"
+    :active-nav-item-class="activeNavClass"
+    :class="{ bordered: props.hasBorder }"
+  >
+    <RTab
+      v-for="item in items"
+      :key="item.value"
+      :title="item.text"
+      :active="tabQueryEquality(item.value)"
+      :lazy="props.lazy"
+      :class="props.tabClass"
+      @click="tabClick(item.value)"
+    >
+      <component v-if="item.component" :is="item.component"></component>
+
+      <slot name="tab"></slot>
+    </RTab>
+  </RTabs>
+</template>
