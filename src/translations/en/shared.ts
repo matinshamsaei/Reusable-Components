@@ -13,5 +13,6 @@ export default {
   reportDate: 'report Date',
   return: 'Return',
   save: 'Save',
+  search: 'Search',
   tryAgain: 'Try again'
 }

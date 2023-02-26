@@ -13,5 +13,6 @@ export default {
   reportDate: 'تاریخ گزارش',
   return: 'بازگشت',
   save: 'ذخیره',
+  search: 'جستجو',
   tryAgain: 'دوباره امتحان کنید'
 }

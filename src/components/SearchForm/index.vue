@@ -6,9 +6,6 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-const searchTitle = computed(() => {
-  return props.title || t('shared.search')
-})
 
 type Props = {
   search?: boolean
@@ -21,41 +18,43 @@ const props = withDefaults(defineProps<Props>(), {
   search: true,
   icon: 'user-gear'
 })
+
+const searchTitle = computed(() => {
+  return props.title || t('shared.search')
+})
 </script>
 
 <template>
-  <div>
-    <div class="row d-flex justify-content-between align-items-center mb-4 pt-1">
-      <div class="col-12 col-sm-6">
-        <PageTitle :title="searchTitle" :icon="props.icon" />
-      </div>
-
-      <div class="d-flex justify-content-end col-12 col-sm-6">
-        <slot name="actions-left"></slot>
-
-        <RButton
-          v-if="props.search"
-          size="md"
-          v-r-toggle="'filter-body'"
-          variant="outline-dark"
-          class="text-nowrap px-4 ms-3"
-        >
-          <font-awesome-icon icon="filter" size="sm" class="align-middle me-1" />
-          {{ t('shared.filter') }}
-        </RButton>
-      </div>
+  <div class="row d-flex justify-content-between align-items-center mb-4 pt-1">
+    <div class="col-12 col-sm-6">
+      <PageTitle :title="searchTitle" :icon="props.icon" />
     </div>
 
-    <RCollapse id="filter-body">
-      <div class="card search-box">
-        <div class="card-body py-2">
-          <div class="row d-flex justify-content-between">
-            <div class="col">
-              <slot></slot>
-            </div>
+    <div class="d-flex justify-content-end col-12 col-sm-6">
+      <slot name="actions-left"></slot>
+
+      <RButton
+        v-if="props.search"
+        size="md"
+        v-r-toggle="'filter-body'"
+        variant="outline-dark"
+        class="text-nowrap px-4 ms-3"
+      >
+        <font-awesome-icon icon="filter" size="sm" class="align-middle me-1" />
+        {{ t('shared.filter') }}
+      </RButton>
+    </div>
+  </div>
+
+  <RCollapse id="filter-body">
+    <div class="card search-box">
+      <div class="card-body py-2">
+        <div class="row d-flex justify-content-between">
+          <div class="col">
+            <slot></slot>
           </div>
         </div>
       </div>
-    </RCollapse>
-  </div>
+    </div>
+  </RCollapse>
 </template>
