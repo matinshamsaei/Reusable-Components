@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import CTabs from './CTabs/index.vue'
-import CPageTitle from '@/components/shared/CPageTitle/index.vue'
-import RButton from '@/components/RButton/index.vue'
+import { useAttrs } from 'vue'
+import { RButton } from '@routaa/ui-kit'
+import PageTitle from '@/components/PageTitle/index.vue'
+import CTabs from '@/components/CTabs/index.vue'
+
+const attrs = useAttrs()
+
+const emit = defineEmits<Emits>()
 
 type BtnData = {
   text: string
@@ -11,23 +16,21 @@ type BtnData = {
 }
 
 type SortItems = {
-  item: string
+  text: string
   value: string
 }
 
 type Props = {
-  title?: string
+  title: string
   icon?: string
   disableBtn?: boolean
-  sortItems?: [SortItems]
+  sortItems?: SortItems[]
   btnData?: BtnData
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disableBtn: false
 })
-
-const emit = defineEmits<Emits>()
 
 interface Emits {
   (e: 'btnClick'): void
@@ -44,8 +47,8 @@ function emitChange(item: any) {
 </script>
 
 <template>
-  <div class="w-100 mb-4 pt-1 d-flex justify-content-between align-items-center flex-wrap">
-    <c-page-title :title="title" :icon="icon" :simple="false" />
+  <div v-bind="attrs" class="w-100 mb-4 pt-1 d-flex justify-content-between align-items-center flex-wrap">
+    <PageTitle :title="title" :icon="icon" :simple="false" />
 
     <RButton
       v-if="props.btnData?.text || props.btnData?.icon"
@@ -64,6 +67,6 @@ function emitChange(item: any) {
     v-if="props.sortItems"
     class="mb-4 d-flex justify-content-center justify-content-md-start align-items-center flex-wrap page-header"
   >
-    <c-tabs :items="props.sortItems" contentClass="bg-transparent" @change="emitChange" />
+    <CTabs :items="props.sortItems" contentClass="bg-transparent" @change="emitChange" />
   </div>
 </template>
