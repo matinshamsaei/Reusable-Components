@@ -221,7 +221,6 @@ const getResults = async (keyword: string = keywordSearch.value) => {
   try {
     if (props.search && typeof props.search === 'function') {
       const items = await props.search(filter)
-
       if (items && items.length) {
         results.value = items
 
@@ -231,6 +230,7 @@ const getResults = async (keyword: string = keywordSearch.value) => {
 
     progressing.value = false
   } catch (err) {
+    results.value = []
     if (typeof err === 'object') errorHandler(err)
   }
 }
@@ -319,7 +319,7 @@ const emitChange = (item: string | number): void => {
     hide-footer
     header-class="p-2"
     header-bg-variant="light"
-    body-class="px-0 pb-1 pt-0"
+    :body-class="['px-0', progressing ? 'py-2' : 'pb-1 pt-0']"
     @hide="hideModal"
     @shown="getResults"
   >
