@@ -8,7 +8,6 @@ export default {
   filter: 'filter',
   lastWeekDay: '[Last] dddd',
   loadAgain: 'Load again',
-  loadAgain: 'Loade again',
   mobile: 'Mobile',
   noRecords: 'There are no records to show',
   oopsWeHaveAProblem: 'Oops! we have a problem',
