@@ -1,0 +1,142 @@
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
+
+$utilities: map-merge(
+  $utilities, (
+    "margin-start": map-merge(
+      map-get($utilities, "margin-start"),  
+      ( class: ml ),
+    ),
+    "margin-end": map-merge(
+      map-get($utilities, "margin-end"),
+      ( class: mr ),
+    ),
+    "padding-end": map-merge(
+      map-get($utilities, "padding-end"),
+      ( class: pr ),
+    ),
+    "padding-start": map-merge(
+      map-get($utilities, "padding-start"),
+      ( class: pl ),
+    ),
+  )
+);
+
+
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/images';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/tables';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/transitions';
+@import 'bootstrap/scss/dropdown';
+@import 'bootstrap/scss/button-group';
+@import 'bootstrap/scss/nav';
+@import 'bootstrap/scss/navbar';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/accordion';
+@import 'bootstrap/scss/breadcrumb';
+@import 'bootstrap/scss/pagination';
+@import 'bootstrap/scss/badge';
+@import 'bootstrap/scss/alert';
+@import 'bootstrap/scss/progress';
+@import 'bootstrap/scss/list-group';
+@import 'bootstrap/scss/close';
+@import 'bootstrap/scss/toasts';
+@import 'bootstrap/scss/modal';
+@import 'bootstrap/scss/tooltip';
+@import 'bootstrap/scss/popover';
+@import 'bootstrap/scss/carousel';
+@import 'bootstrap/scss/spinners';
+@import 'bootstrap/scss/offcanvas';
+@import 'bootstrap/scss/placeholders';
+
+// Helpers
+@import 'bootstrap/scss/helpers';
+
+@import 'bootstrap/scss/utilities/api';
+
+@each $size in (0, 1, 2, 3, 4, 5, 'auto') {
+  @each $breakpoint in ('', '-sm', '-md', '-lg', '-xl') {
+    *[dir='rtl'] {
+      @if $breakpoint {
+        .ms#{$breakpoint}-#{$size} {
+          @extend .mr#{$breakpoint}-#{$size};
+        }
+        .me#{$breakpoint}-#{$size} {
+          @extend .ml#{$breakpoint}-#{$size};
+        }
+        @if $size != 'auto' {
+          .ps#{$breakpoint}-#{$size} {
+            @extend .pr#{$breakpoint}-#{$size};
+          }
+          .pe#{$breakpoint}-#{$size} {
+            @extend .pl#{$breakpoint}-#{$size};
+          }
+        }
+      } @else {
+        .ms-#{$size} {
+          @extend .mr-#{$size};
+        }
+        .me-#{$size} {
+          @extend .ml-#{$size};
+        }
+        @if $size != 'auto' {
+          .ps-#{$size} {
+            @extend .pr-#{$size};
+          }
+          .pe-#{$size} {
+            @extend .pl-#{$size};
+          }
+        }
+      }
+    }
+
+    *[dir='ltr'] {
+      @if $breakpoint {
+        .ms#{$breakpoint}-#{$size} {
+          @extend .ml#{$breakpoint}-#{$size};
+        }
+        .me#{$breakpoint}-#{$size} {
+          @extend .mr#{$breakpoint}-#{$size};
+        }
+        @if $size != 'auto' {
+          .ps#{$breakpoint}-#{$size} {
+            @extend .pl#{$breakpoint}-#{$size};
+          }
+          .pe#{$breakpoint}-#{$size} {
+            @extend .pr#{$breakpoint}-#{$size};
+          }
+        }
+      } @else {
+        .ms-#{$size} {
+          @extend .ml-#{$size};
+        }
+        .me-#{$size} {
+          @extend .mr-#{$size};
+        }
+        @if $size != 'auto' {
+          .ps-#{$size} {
+            @extend .pl-#{$size};
+          }
+          .pe-#{$size} {
+            @extend .pr-#{$size};
+          }
+        }
+      }
+    }
+  }
+}
+
+html {
+  &[dir='rtl'] {
+    @import 'bootstrap/dist/css/bootstrap-utilities.rtl.min';
+  }
+}
