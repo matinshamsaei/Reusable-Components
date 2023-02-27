@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { RLink, RListGroupItem, RDropdownItem } from '@routaa/ui-kit'
 
 type Props = {
-  tag?: string
+  tag?: 'RLink' | 'r-link' | 'RListGroupItem' | 'r-list-group-item' | 'RDropdownItem' | 'r-dropdown-item'
   to?: string
   href?: string
   target?: '_self' | '_blank' | '_parent' | '_top' | 'framename'
@@ -37,7 +37,7 @@ const attrs = computed(() => {
     }
   }
   let nextRoute = router.resolve(to)
-  // add permanent query to next route if exist in current and doesnt exist in next route
+  // add permanent query to next route if exist in current and doesn't exist in next route
   nextRoute = router.resolve(nextRoute)
   if (isAbsoluteUrl(nextRoute.href)) {
     attrs.href = nextRoute.href.replace('/', '')
