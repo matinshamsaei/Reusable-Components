@@ -18,7 +18,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@popperjs/core": "^2.11.6",
-    "@routaa/ui-kit": "0.0.6",
+    "@routaa/ui-kit": "1.1.0",
     "@types/moment-jalaali": "^0.7.5",
     "@types/moment-locales-webpack-plugin": "^1.2.3",
     "@vueuse/core": "^9.12.0",

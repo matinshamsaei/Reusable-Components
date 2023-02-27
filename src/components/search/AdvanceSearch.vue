@@ -3,9 +3,11 @@ import { ref, computed, onMounted } from 'vue'
 import { RTable, RButton, RInputGroup, RInputGroupText, RInputGroupAppend, RBadge } from '@routaa/ui-kit'
 import CModal from '@/components/CModal/index.vue'
 import { mobileNormalizer } from '@/utils/shared'
+import type { IObject } from '../../utils/object'
+import { isObject } from '@vue/shared'
 
 type Props = {
-  modelValue?: object | []
+  modelValue: Array<IObject>
   size?: string
   prepend?: string
   title?: string
@@ -26,9 +28,9 @@ const props = withDefaults(defineProps<Props>(), {
   multiple: false
 })
 
-const progressing = ref(false)
-const open = ref(false)
-const items = ref([])
+const progressing = ref<boolean>(false)
+const open = ref<boolean>(false)
+const items = ref<[]>([])
 
 type Emits = {
   (e: 'input', value: object | undefined): void
@@ -36,36 +38,36 @@ type Emits = {
   (e: 'initialize', value: object): void
   (e: 'remove', value: object): void
   (e: 'clear', value: object): void
-  (e: 'select', value: object): void
+  (e: 'select', value: object | null): void
 }
 
 const emits = defineEmits<Emits>()
 
-let selectedItems = computed({
+let selectedItems = computed<IObject[]>({
   get() {
     return props.modelValue
   },
-  set(val: object | undefined) {
+  set(val: Array<IObject>) {
     emits('input', val)
   }
 })
 
-onMounted(() => {
-  initialize()
-})
+// onMounted(() => {
+//   initialize()
+// })
 
-function initialize() {
-  if (props.select) {
-    props.select().then((res: object) => {
-      emitInitialize(res)
-      if (!res) return
-      if (!props.multiple) {
-        res = [res]
-      }
-      selectedItems = res
-    })
-  }
-}
+// function initialize() {
+//   if (props.select) {
+//     props.select().then((res: any) => {
+//       emitInitialize(res)
+//       if (!res) return
+//       if (!props.multiple) {
+//         res = [res]
+//       }
+//       selectedItems = res
+//     })
+//   }
+// }
 
 function show() {
   open.value = true
@@ -75,7 +77,7 @@ function hide() {
   open.value = false
 }
 
-function getText(item: object) {
+function getText(item: IObject) {
   if (!item) return null
   if (!props.textField) return item.name
   if (typeof props.textField === 'string') return NormalizeText(item[props.textField])
@@ -88,12 +90,11 @@ function NormalizeText(text: string) {
   return text
 }
 
-function getValue(item: object) {
+function getValue(item: IObject) {
   if (!item) return null
   if (!props.valueField) return item.id
   if (typeof props.valueField === 'string') return item[props.valueField]
-
-  return props.valueField(item)
+  if (typeof props.valueField === 'function') return props.valueField(item)
 }
 
 function getKey(item: object) {
@@ -105,9 +106,9 @@ function reset() {
   emits('reset')
 }
 
-function emitInitialize(item: object) {
-  emits('initialize', item)
-}
+// function emitInitialize(item: object) {
+//   emits('initialize', item)
+// }
 
 function emitRemove(item: object) {
   emits('remove', item)
@@ -115,14 +116,14 @@ function emitRemove(item: object) {
 /*
 function emitClear(item: object) {
   emits('clear', item)
-}
+}emits
 */
-function emitSelect(item: object) {
+function emitSelect(item: object | null) {
   emits('select', item)
 }
 
 function isSelected(item: object) {
-  return !!selectedItems.find((i) => getValue(i) == getValue(item))
+  return !!selectedItems.value?.find((i: any) => getValue(i) == getValue(item))
 }
 
 function toggleItem(item: object) {
@@ -133,44 +134,46 @@ function toggleItem(item: object) {
     if (isItemSelected) {
       removeItem(item)
     } else {
-      const items = [...selectedItems]
+      const items: IObject[] = [...(selectedItems.value as [])]
       items.push(item)
-      selectedItems = items
+      selectedItems.value = items
       emitSelect(item)
     }
   } else {
-    selectedItems = [item]
+    selectedItems.value = [item]
     emitSelect(item)
     hide()
   }
 }
 
 function removeItem(item: object) {
-  selectedItems = selectedItems.filter((i) => getValue(i) !== getValue(item))
+  selectedItems.value = selectedItems.value?.filter((i: any) => getValue(i) !== getValue(item))
   emitRemove(item)
   emitSelect(selectedItems)
 }
 
 function searching() {
   progressing.value = true
-  search()
-    .then((res: object) => {
-      items.value = res
-      return res
-    })
-    .catch((err: object) => {
-      $showError('advance-search : ' + $getLocaleErrorMessage(err))
-      selected = []
-    })
-    .finally(() => {
-      progressing.value = false
-    })
+  if (props.search)
+    props
+      .search()
+      .then((res: []) => {
+        items.value = res
+        return res
+      })
+      .catch((err: object) => {
+        // $showError('advance-search : ' + $getLocaleErrorMessage(err))
+        // selected = []
+      })
+      .finally(() => {
+        progressing.value = false
+      })
 }
 
 function clear() {
-  if ($isEmpty(selectedItems)) return
-  selectedItems = []
-  const val = props.multiple ? selectedItems : selectedItems[0]
+  // if ($isEmpty(selectedItems)) return
+  selectedItems.value = []
+  const val = props.multiple ? selectedItems.value : selectedItems.value[0]
   emits('clear', val)
   emitSelect(null)
 }
@@ -222,7 +225,11 @@ function clear() {
             </RInputGroupText>
           </RInputGroupAppend>
 
-          <RInputGroupAppend v-else-if="value && value.length && !disabled" @click="clear()" class="cursor-pointer">
+          <RInputGroupAppend
+            v-else-if="props.modelValue && props.modelValue.length && !disabled"
+            @click="clear()"
+            class="cursor-pointer"
+          >
             <RInputGroupText class="bg-white">
               <font-awesome-icon :size="size == 'sm' ? null : size" icon="xmark" class="text-muted" />
             </RInputGroupText>
@@ -277,17 +284,16 @@ function clear() {
                 <font-awesome-icon
                   @click="removeItem(item)"
                   icon="xmark"
-                  class="mr-2 text-secondary cursor-pointer"
-                  :class="{ 'ml-1 align-middle': $dir.rtl, 'mr-1': $dir.ltr }"
+                  class="mr-2 cursor-pointer text-secondary align-middle ms-1"
                 />
               </slot>
             </RBadge>
           </div>
         </slot>
 
-        <b-btn v-if="selectedItems.length" variant="danger" @click="clear" class="ms-auto" size="sm">
+        <RButton v-if="selectedItems.length" variant="danger" @click="clear" class="ms-auto" size="sm">
           {{ $t('shared.removeAll') }}
-        </b-btn>
+        </RButton>
       </div>
 
       <RTable
@@ -295,18 +301,13 @@ function clear() {
         striped
         hover
         bordered
-        head-variant="bg-table"
-        :busy.sync="progressing"
         :fields="fields"
         :items="items"
-        stacked="lg"
         :empty-text="$t('shared.noRecords')"
-        :empty-filtered-text="$t('shared.noMatchingRecords')"
-        show-empty
       >
-        <template v-for="(_, slot) in $scopedSlots" v-slot:[slot]="props">
+        <!-- <template v-for="(_, slot) in $scopedSlots" v-slot:[slot]="props">
           <slot :name="slot" v-bind="props" :show="show" :hide="hide" />
-        </template>
+        </template> -->
 
         <template #cell(actions)="props">
           <slot name="cell(actions)" v-bind="{ ...props, show, hide }">
