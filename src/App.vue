@@ -1,25 +1,29 @@
-<template>
-  <div class="container my-5">
-    <RFormInput v-model="email" name="email" placeholder="email" class="mb-3" />
-    <RFormInput v-model="password" type="password" name="password" placeholder="password" />
-  </div>
-</template>
-
-<script setup>
-import {ref} from 'vue'
+<script setup lang="ts">
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
+import ErrorsDisplay from './components/ErrorsDisplay/index.vue'
 import { RFormInput } from '@routaa/ui-kit'
+import { ref } from 'vue'
 
-const email = ref('')
-const password = ref('')
-
+// Define a validation schema
 const schema = yup.object({
   email: yup.string().required().email(),
   password: yup.string().required().min(8)
 })
 
-const { handleSubmit } = useForm({
+// Create a form context with the validation schema
+const { errors, useFieldModel } = useForm({
   validationSchema: schema
 })
+
+const [email, password] = useFieldModel(['email', 'password'])
 </script>
+
+<template>
+  <div class="container my-5">
+    <ErrorsDisplay :errors="errors" :show="false" />
+
+    <RFormInput v-model="email" name="email" placeholder="email" />
+    <RFormInput v-model="password" name="password" placeholder="password" class="mt-3" />
+  </div>
+</template>
