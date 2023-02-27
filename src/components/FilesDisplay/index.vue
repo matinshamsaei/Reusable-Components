@@ -4,7 +4,7 @@ import draggable from 'vuedraggable'
 import Item from './Item.vue'
 
 type Props = {
-  modelValue?: string[]
+  modelValue: string[]
   disabled?: boolean
   lightbox?: boolean
   multiple?: boolean
