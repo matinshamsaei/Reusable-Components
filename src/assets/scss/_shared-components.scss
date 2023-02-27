@@ -82,6 +82,40 @@
   }
 }
 
+// File Display
+.file-display {
+  .dimensions {
+    width: 100px;
+    height: 100px;
+  }
+  .items {
+    @extend .d-inline-flex, .flex-wrap;
+    .item {
+      @extend .me-2, .d-flex, .align-items-stretch;
+      .file {
+        @extend .h5, .mb-0, .text-dark, .w-100, .d-flex, .flex-wrap, .align-items-center, .justify-content-center;
+      }
+      .image {
+        @extend .d-flex, .align-items-center, .justify-content-center, .w-100;
+      }
+      @extend .border, .rounded, .overflow-hidden, .position-relative;
+      .remove-btn {
+        @extend .position-absolute, .text-white, .d-none, .rounded-circle;
+        background-color: rgba(126, 126, 126, 0.7);
+        left: 3px;
+        top: 3px;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      &:hover {
+        .remove-btn {
+          @extend .d-flex, .align-items-center, .justify-content-center;
+        }
+      }
+    }
+  }
+}
+
 // Auto Complete
 .auto-complete {
   width: 100% !important;
@@ -102,8 +136,3 @@
     right: unset !important;
   }
 }
-
-
-
-
-
