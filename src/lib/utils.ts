@@ -1,3 +1,5 @@
+import type { SetupContext } from 'vue'
+
 export function convertNumbers2English(str: string): string | number {
   if (!str) return null
   return str.replace(/[\u0660-\u0669\u06f0-\u06f9]/g, function (c) {
@@ -20,4 +22,17 @@ export function serializer(obj: IObject): string {
       return a
     }, [])
     .join('&')
+}
+
+export function attrsPartitioner(attrs: SetupContext['attrs']) {
+  const onRE = /^on[^a-z]/
+  const attributes: IObject = {}
+  const listeners: IObject = {}
+
+  for (const property in attrs) {
+    if (onRE.test(property)) listeners[property] = attrs[property]
+    else attributes[property] = attrs[property]
+  }
+
+  return { attributes, listeners }
 }

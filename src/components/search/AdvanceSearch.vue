@@ -4,14 +4,13 @@ import { RTable, RButton, RInputGroup, RInputGroupText, RInputGroupAppend, RBadg
 import CModal from '@/components/CModal/index.vue'
 import { mobileNormalizer } from '@/utils/shared'
 import type { IObject } from '../../utils/object'
-import { isObject } from '@vue/shared'
 
 type Props = {
   modelValue: Array<IObject>
   size?: string
   prepend?: string
   title?: string
-  fields?: []
+  fields?: Array<IObject>
   valueField?: string | Function | boolean
   textField?: string | Function
   select?: Function
