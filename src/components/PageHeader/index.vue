@@ -9,13 +9,13 @@ const attrs = useAttrs()
 const emit = defineEmits<Emits>()
 
 type BtnData = {
-  text: string
-  icon: string
-  color: string
-  link: string
+  text?: string
+  icon?: string
+  color?: string
+  link?: string
 }
 
-type SortItems = {
+type SortItem = {
   text: string
   value: string
 }
@@ -24,7 +24,7 @@ type Props = {
   title: string
   icon?: string
   disableBtn?: boolean
-  sortItems?: SortItems[]
+  sortItems?: SortItem[]
   btnData?: BtnData
 }
 
@@ -48,7 +48,7 @@ function emitChange(item: any) {
 
 <template>
   <div v-bind="attrs" class="w-100 mb-4 pt-1 d-flex justify-content-between align-items-center flex-wrap">
-    <PageTitle :title="title" :icon="icon" :simple="false" />
+    <PageTitle :title="props.title" :icon="props.icon" :simple="false" />
 
     <RButton
       v-if="props.btnData?.text || props.btnData?.icon"
