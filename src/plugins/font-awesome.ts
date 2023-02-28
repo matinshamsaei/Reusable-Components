@@ -12,6 +12,7 @@ import {
   faList,
   faMagnifyingGlass,
   faRotateLeft,
+  faSquare,
   faUserGear,
   faXmark
 } from '@fortawesome/free-solid-svg-icons'
@@ -25,6 +26,7 @@ library.add(
   faList,
   faMagnifyingGlass,
   faRotateLeft,
+  faSquare,
   faUserGear,
   faXmark
 )

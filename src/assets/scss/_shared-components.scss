@@ -136,3 +136,17 @@
     right: unset !important;
   }
 }
+
+// dropDown-caret
+
+.no-caret {
+  &::after {
+    display: none;
+  }
+}
+
+// colorPicker btn
+.btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
+  border: none !important;
+  border-color: transparent !important;
+}
