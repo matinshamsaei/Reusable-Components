@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { RTable, RButton, RInputGroup, RInputGroupText, RInputGroupAppend, RBadge } from '@routaa/ui-kit'
-import CModal from '@/components/CModal/index.vue'
+import { $isEmpty } from '@/composable/useGlobal'
 import { mobileNormalizer } from '@/utils/shared'
 import type { IObject } from '../../utils/object'
+import CModal from '@/components/CModal/index.vue'
 
 type Props = {
   modelValue: Array<IObject>
@@ -13,7 +14,6 @@ type Props = {
   fields?: Array<IObject>
   valueField?: string | Function | boolean
   textField?: string | Function
-  select?: Function
   search?: Function
   disabled?: boolean
   multiple?: boolean
@@ -34,7 +34,6 @@ const items = ref<[]>([])
 type Emits = {
   (e: 'input', value: object | undefined): void
   (e: 'reset'): void
-  (e: 'initialize', value: object): void
   (e: 'remove', value: object): void
   (e: 'clear', value: object): void
   (e: 'select', value: object | null): void
@@ -50,24 +49,9 @@ let selectedItems = computed<IObject[]>({
     emits('input', val)
   }
 })
-
-// onMounted(() => {
-//   initialize()
-// })
-
-// function initialize() {
-//   if (props.select) {
-//     props.select().then((res: any) => {
-//       emitInitialize(res)
-//       if (!res) return
-//       if (!props.multiple) {
-//         res = [res]
-//       }
-//       selectedItems = res
-//     })
-//   }
-// }
-
+/*
+  invoke in parent and don't remove it
+*/
 function show() {
   open.value = true
 }
@@ -76,15 +60,49 @@ function hide() {
   open.value = false
 }
 
+function clear() {
+  if ($isEmpty(selectedItems.value)) return
+  selectedItems.value = []
+  const val = props.multiple ? selectedItems.value : selectedItems.value[0]
+  emits('clear', val)
+  emitSelect(null)
+}
+
+function reset() {
+  items.value = []
+  emits('reset')
+}
+
+function searching() {
+  progressing.value = true
+  if (props.search)
+    props
+      .search()
+      .then((res: []) => {
+        items.value = res
+        return res
+      })
+      .catch((err: object) => {
+        // $showError('advance-search : ' + $getLocaleErrorMessage(err))
+        // selected = []
+      })
+      .finally(() => {
+        progressing.value = false
+      })
+}
+/*
+  end
+*/
+
 function getText(item: IObject) {
   if (!item) return null
   if (!props.textField) return item.name
-  if (typeof props.textField === 'string') return NormalizeText(item[props.textField])
+  if (typeof props.textField === 'string') return normalizeText(item[props.textField])
 
-  return NormalizeText(props.textField(item))
+  return normalizeText(props.textField(item))
 }
 
-function NormalizeText(text: string) {
+function normalizeText(text: string) {
   if (text.startsWith('+98' || '09')) return mobileNormalizer(text)
   return text
 }
@@ -100,23 +118,10 @@ function getKey(item: object) {
   return getText(item) + `${getValue(item)}`
 }
 
-function reset() {
-  items.value = []
-  emits('reset')
-}
-
-// function emitInitialize(item: object) {
-//   emits('initialize', item)
-// }
-
 function emitRemove(item: object) {
   emits('remove', item)
 }
-/*
-function emitClear(item: object) {
-  emits('clear', item)
-}emits
-*/
+
 function emitSelect(item: object | null) {
   emits('select', item)
 }
@@ -149,32 +154,6 @@ function removeItem(item: object) {
   selectedItems.value = selectedItems.value?.filter((i: any) => getValue(i) !== getValue(item))
   emitRemove(item)
   emitSelect(selectedItems)
-}
-
-function searching() {
-  progressing.value = true
-  if (props.search)
-    props
-      .search()
-      .then((res: []) => {
-        items.value = res
-        return res
-      })
-      .catch((err: object) => {
-        // $showError('advance-search : ' + $getLocaleErrorMessage(err))
-        // selected = []
-      })
-      .finally(() => {
-        progressing.value = false
-      })
-}
-
-function clear() {
-  // if ($isEmpty(selectedItems)) return
-  selectedItems.value = []
-  const val = props.multiple ? selectedItems.value : selectedItems.value[0]
-  emits('clear', val)
-  emitSelect(null)
 }
 </script>
 
@@ -304,10 +283,6 @@ function clear() {
         :items="items"
         :empty-text="$t('shared.noRecords')"
       >
-        <!-- <template v-for="(_, slot) in $scopedSlots" v-slot:[slot]="props">
-          <slot :name="slot" v-bind="props" :show="show" :hide="hide" />
-        </template> -->
-
         <template #cell(actions)="props">
           <slot name="cell(actions)" v-bind="{ ...props, show, hide }">
             <div class="text-center">

@@ -111,11 +111,7 @@ function searching() {
         :textField="textField"
         v-on="listeners"
         :model-field="false"
-      >
-        <!-- <template v-for="(_, slot) in $scopedSlots" v-slot:[slot]="props">
-          <slot :name="slot" v-bind="props" />
-        </template> -->
-      </auto-complete-multi>
+      />
 
       <auto-complete
         v-else
@@ -127,11 +123,7 @@ function searching() {
         :textField="textField"
         :model-field="false"
         v-on="listeners"
-      >
-        <!-- <template v-for="(_, slot) in $scopedSlots" v-slot:[slot]="props">
-          <slot :name="slot" v-bind="props" />
-        </template> -->
-      </auto-complete>
+      />
     </template>
 
     <advance-search
@@ -149,10 +141,6 @@ function searching() {
       :multiple="multiple"
       v-on="listeners"
       ref="advance"
-    >
-      <!-- <template v-for="(_, slot) in $scopedSlots" v-slot:[slot]="props">
-        <slot :name="slot" v-bind="props" />
-      </template> -->
-    </advance-search>
+    />
   </div>
 </template>
