@@ -2,9 +2,7 @@
 import { RButton, RCollapse, vRToggle } from '@routaa/ui-kit'
 import PageTitle from '@/components/PageTitle/index.vue'
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
+import useTranslations from '@/composable/useTranslations'
 
 type Props = {
   search?: boolean
@@ -18,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const searchTitle = computed(() => {
-  return props.title || t('shared.search')
+  return props.title || useTranslations('shared.search')
 })
 </script>
 
@@ -40,7 +38,7 @@ const searchTitle = computed(() => {
       >
         <font-awesome-icon icon="filter" size="sm" class="align-middle me-1" />
 
-        {{ t('shared.filter') }}
+        {{ useTranslations('shared.filter') }}
       </RButton>
     </div>
   </div>
