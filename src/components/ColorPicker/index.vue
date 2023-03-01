@@ -5,7 +5,7 @@ import { ColorPicker } from 'vue3-colorpicker'
 import 'vue3-colorpicker/style.css'
 
 type Props = {
-  modelValue?: string
+  modelValue: string
   label?: string
   prepend?: string
   size?: string
@@ -27,19 +27,18 @@ const attrs = useAttrs()
 
 interface Emits {
   (e: 'update:modelValue', val: any): void
-  (e: 'input', val: any): void
 }
 
 const emit = defineEmits<Emits>()
 
-const model = computed({
+const model = computed<string>({
   get() {
     return props.modelValue
   },
   set(val: string) {
-    if (val.startsWith('#')) emit('input', val)
-    else if (val.length > 1) emit('input', `#${val}`)
-    else emit('input', null)
+    if (val.startsWith('#')) emit('update:modelValue', val)
+    else if (val.length > 1) emit('update:modelValue', `#${val}`)
+    else emit('update:modelValue', null)
   }
 })
 
