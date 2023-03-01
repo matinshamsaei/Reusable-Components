@@ -136,3 +136,77 @@
     right: unset !important;
   }
 }
+
+// Uploader
+.image-editor {
+  .cropper-view-box {
+    outline: 1px solid var(--secondary) !important;
+  }
+  .cropper-dashed.dashed-v,
+  .cropper-dashed.dashed-h {
+    border: 1px solid var(--light) !important;
+  }
+  .cropper-point {
+    background-color: var(--secondary) !important;
+    border-radius: 50% !important;
+    opacity: 1 !important;
+    width: 10px !important;
+    height: 10px !important;
+  }
+  .cropper-line {
+    background: none !important;
+  }
+  .point-e {
+    margin-top: -5px !important;
+    right: -5px !important;
+  }
+  .point-n {
+    margin-left: -5px !important;
+    top: -5px !important;
+  }
+  .point-w {
+    margin-top: -5px !important;
+    left: -5px !important;
+  }
+  .point-s {
+    margin-left: -5px !important;
+    bottom: -5px !important;
+  }
+  .point-ne {
+    right: -5px !important;
+    top: -5px !important;
+  }
+  .point-nw {
+    left: -5px !important;
+    top: -5px !important;
+  }
+  .point-sw {
+    bottom: -5px !important;
+    left: -5px !important;
+  }
+  .point-se {
+    bottom: -5px !important;
+    right: -5px !important;
+  }
+}
+
+.remove-btn {
+  color: $white;
+  display: none;
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(126, 126, 126, 0.7);
+  left: -86px;
+  top: -14px;
+}
+
+.file-uploader {
+  .card {
+    .caption {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+  }
+}

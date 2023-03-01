@@ -20,6 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 interface Emit {
   (e: 'update:modelValue', val: any): void
+  (e: 'input', val: any): void
 }
 
 const emit = defineEmits<Emit>()
@@ -30,6 +31,7 @@ const model = computed({
   },
   set(val) {
     emit('update:modelValue', val)
+    emit('input', val)
   }
 })
 
