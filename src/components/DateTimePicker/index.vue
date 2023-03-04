@@ -1,7 +1,7 @@
 <template>
   <div>
     <RInputGroup :size="size" :prepend="prepend" class="flex-nowrap">
-      <input type="text" class="custom-input" :placeholder="`${props.placeholder}`" :label="props.label" />
+      <input type="text" class="custom-input form-control" :placeholder="`${props.placeholder}`" :label="props.label" />
 
       <DatePicker
         v-model="model"
@@ -14,6 +14,7 @@
         :type="props.type"
         :format="props.format"
         :disabled="props.disabled"
+        :disable="props.disable"
         :clearable="props.clearable"
       />
     </RInputGroup>
@@ -33,20 +34,20 @@ type Props = {
   prepend?: string
   size?: string
   append?: string
-  displayFormat?: 'dddd jDD jMMMM jYYYY HH:mm:ss' | 'dddd jDD jMMMM jYYYY '
-  inputFormat?: 'jYYYY/jMM/jDD HH:mm' | 'YYYY/MM/DD HH:mm' | 'YYYY/MM/DD HH:mm:ss' | 'YYYY-MM-DD HH:mm:ss' | 'HH:mm'
-  format?: 'jYYYY/jMM/jDD HH:mm' | 'YYYY/MM/DD HH:mm' | 'YYYY/MM/DD HH:mm:ss' | 'YYYY-MM-DD HH:mm:ss' | 'HH:mm'
-  view?: 'day' | 'month' | 'year' | 'time'
-  type?: 'date' | 'datetime' | 'year' | 'month' | 'time'
-  min?: 'string'
-  max?: 'string'
+  displayFormat?:string | 'dddd jDD jMMMM jYYYY HH:mm:ss' | 'dddd jDD jMMMM jYYYY '
+  inputFormat?: string | 'jYYYY/jMM/jDD HH:mm' | 'YYYY/MM/DD HH:mm' | 'YYYY/MM/DD HH:mm:ss' | 'YYYY-MM-DD HH:mm:ss' | 'HH:mm'
+  format?: string | 'jYYYY/jMM/jDD HH:mm' | 'YYYY/MM/DD HH:mm' | 'YYYY/MM/DD HH:mm:ss' | 'YYYY-MM-DD HH:mm:ss' | 'HH:mm'
+  view?: string | 'day' | 'month' | 'year' | 'time'
+  type?: string | 'date' | 'datetime' | 'year' | 'month' | 'time'
+  min?: string
+  max?: string
   editable?: boolean
   customInput?: string
   inputClass?: string
   autoSubmit?: boolean
   disabled?: boolean
-  // disable
-  label?: 'string'
+  disable?: [string] | string | Function
+  label?: string
   clearable?: false
 }
 
@@ -81,13 +82,3 @@ const ShowDateAndTime = computed(() => {
 })
 
 </script>
-
-<style scoped>
-.custom-input {
-  border: 1px solid #dadada;
-  background: #fff;
-  line-height: 30px;
-  padding: 0 15px;
-  vertical-align: middle;
-}
-</style>
