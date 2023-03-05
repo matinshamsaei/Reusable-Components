@@ -274,7 +274,6 @@ function autoScaleFiles(files: FileList): Promise<any> {
 }
 
 function openEditor(file: File): void {
-  console.log(imageEditor.value)
   imageEditor.value?.show(file)
 }
 
