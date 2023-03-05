@@ -67,3 +67,7 @@ export const deepMerge: IDeepMerge = (target: IObject, ...sources: Array<IObject
 }
 
 export type StringKeys<objType extends {}> = Array<Extract<keyof objType, string>>
+
+export const isEmpty = (value: any) => {
+  return value == null || value.length === 0
+}
