@@ -10,6 +10,7 @@ export default {
   lastWeekDay: '[Last] dddd',
   loadAgain: 'Load again',
   mobile: 'Mobile',
+  image: 'Image',
   moreResult: 'More Result',
   noRecords: 'There are no records to show',
   oopsWeHaveAProblem: 'Oops! we have a problem',
