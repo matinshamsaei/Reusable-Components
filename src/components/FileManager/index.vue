@@ -1,46 +1,3 @@
-<template>
-  <div>
-    <FToolbar
-      :progressing="progressing"
-      @openCreateFolder="openCreateFolderDialog"
-      @openUploader="openUploaderDialog"
-      @refresh="refresh"
-    />
-
-    <FBreadcrumb :items="breadcrumbItems" @click="getFolder" />
-
-    <FFiles
-      :items="folderItems"
-      :class="{ 'rounded-bottom': !picker }"
-      :progressing="progressing"
-      :picker="picker"
-      :selected="selected"
-      @select="select"
-      @folder="getFolder"
-      @copy="copy"
-      @open="open"
-      @cut="cut"
-      @paste="paste"
-      @remove="remove"
-      @rename="openRenameDialog"
-      :clipboard="clipboard"
-    />
-
-    <FFooter v-if="picker" class="rounded-bottom" :selected="selected" @confirm="emitPick" @cancel="emitClose" />
-    <FCreate-folder v-if="createFolderOpen" @confirm="createFolder" @cancel="closeCreateFolderDialog" />
-    <Uploader
-      v-model="model"
-      :upload-req="uploadReq"
-      v-if="uploaderOpen"
-      :api="api"
-      :doc-type="docType"
-      :path="path"
-      @close="closeUploaderDialog"
-    />
-    <FRename v-if="!!renameItem" :old-name="renameItem.name" @confirm="rename" @cancel="closeRenameDialog" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue'
 import FBreadcrumb from './Breadcrumb.vue'
@@ -116,7 +73,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const folderItems = ref<object[]>([])
-let selected:ModelType = reactive({})
+let selected: ModelType = reactive({})
 const progressing = ref(true)
 const path = ref<string>('')
 const createFolderOpen = ref(false)
@@ -336,3 +293,46 @@ function emitClose() {
   emit('close')
 }
 </script>
+
+<template>
+  <div>
+    <FToolbar
+      :progressing="progressing"
+      @openCreateFolder="openCreateFolderDialog"
+      @openUploader="openUploaderDialog"
+      @refresh="refresh"
+    />
+
+    <FBreadcrumb :items="breadcrumbItems" @click="getFolder" />
+
+    <FFiles
+      :items="folderItems"
+      :class="{ 'rounded-bottom': !picker }"
+      :progressing="progressing"
+      :picker="picker"
+      :selected="selected"
+      @select="select"
+      @folder="getFolder"
+      @copy="copy"
+      @open="open"
+      @cut="cut"
+      @paste="paste"
+      @remove="remove"
+      @rename="openRenameDialog"
+      :clipboard="clipboard"
+    />
+
+    <FFooter v-if="picker" class="rounded-bottom" :selected="selected" @confirm="emitPick" @cancel="emitClose" />
+    <FCreate-folder v-if="createFolderOpen" @confirm="createFolder" @cancel="closeCreateFolderDialog" />
+    <Uploader
+      v-model="model"
+      :upload-req="uploadReq"
+      v-if="uploaderOpen"
+      :api="api"
+      :doc-type="docType"
+      :path="path"
+      @close="closeUploaderDialog"
+    />
+    <FRename v-if="!!renameItem" :old-name="renameItem.name" @confirm="rename" @cancel="closeRenameDialog" />
+  </div>
+</template>

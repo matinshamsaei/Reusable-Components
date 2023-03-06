@@ -1,20 +1,3 @@
-<template>
-  <RModal
-    centered
-    no-fade
-    no-close-on-backdrop
-    no-close-on-esc
-    hide-footer
-    :title="useTranslations('fileManager.upload')"
-    visible
-    lazy
-    @hide="emitClose"
-    body-class="p-4"
-  >
-    <Uploader v-model="model" :upload-req="uploadReq" :upload="uploadApi" @change="emitClose" :accept="accept" />
-  </RModal>
-</template>
-
 <script setup lang="ts">
 import { RModal } from '@routaa/ui-kit'
 import Uploader from '../Uploader/index.vue'
@@ -87,3 +70,20 @@ function emitClose(uploadedDocs: Object) {
   emit('close', uploadedDocs)
 }
 </script>
+
+<template>
+  <RModal
+    centered
+    no-fade
+    no-close-on-backdrop
+    no-close-on-esc
+    hide-footer
+    :title="useTranslations('fileManager.upload')"
+    visible
+    lazy
+    @hide="emitClose"
+    body-class="p-4"
+  >
+    <Uploader v-model="model" :upload-req="uploadReq" :upload="uploadApi" @change="emitClose" :accept="accept" />
+  </RModal>
+</template>

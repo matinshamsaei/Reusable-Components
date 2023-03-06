@@ -1,25 +1,3 @@
-<template>
-  <RModal
-    size="sm"
-    centered
-    no-fade
-    no-close-on-backdrop
-    :title="useTranslations('fileManager.createFolder')"
-    :cancel-title="useTranslations('shared.cancel')"
-    :ok-title="useTranslations('shared.confirm')"
-    visible
-    lazy
-    @hide="emitCancel"
-    @ok="emitConfirm"
-    :ok-disabled="okDisabled"
-    ok-variant="success"
-  >
-    <RInputGroup :prepend="useTranslations('fileManager.newName')">
-      <RFormInput v-model="name" dir="auto" />
-    </RInputGroup>
-  </RModal>
-</template>
-
 <script setup lang="ts">
 import useTranslations from '@/composable/useTranslations'
 import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
@@ -53,3 +31,25 @@ function emitCancel() {
   emit('cancel')
 }
 </script>
+
+<template>
+  <RModal
+    size="sm"
+    centered
+    no-fade
+    no-close-on-backdrop
+    :title="useTranslations('fileManager.createFolder')"
+    :cancel-title="useTranslations('shared.cancel')"
+    :ok-title="useTranslations('shared.confirm')"
+    visible
+    lazy
+    @hide="emitCancel"
+    @ok="emitConfirm"
+    :ok-disabled="okDisabled"
+    ok-variant="success"
+  >
+    <RInputGroup :prepend="useTranslations('fileManager.newName')">
+      <RFormInput v-model="name" dir="auto" />
+    </RInputGroup>
+  </RModal>
+</template>

@@ -1,100 +1,3 @@
-<template>
-  <div class="position-relative">
-    <div class="table-wrap text-left" dir="ltr" @contextmenu="openCtxMenu">
-      <RTable
-        small
-        stacked="sm"
-        hover
-        bordered
-        :empty-text="useTranslations('shared.noRecords')"
-        :empty-filtered-text="useTranslations('shared.noMatchingRecords')"
-        show-empty
-        :fields="fields"
-        :items="files"
-        :busy="progressing"
-        class="mb-0"
-        selectable
-        select-mode="single"
-        :tbody-tr-class="getRowClass"
-        @row-selected="rowSelected"
-        @row-contextmenu="rowContextMenu"
-      >
-        <template #cell(name)="data">
-          <font-awesome-icon size="lg" class="mx-2" :icon="data.item.icon" :class="getIconClass(data.item)" />
-          <span> {{ data.item.name }} </span>
-        </template>
-
-        <template #cell(type)="data">
-          <strong v-if="data.item.folder">{{ data.item.type }}</strong>
-
-          <span class="small" v-else>{{ data.item.type }}</span>
-        </template>
-
-        <div slot="table-busy" class="text-center text-danger my-5" :dir="useTranslations('direction')">
-          <CLoading class="align-middle"></CLoading>
-
-          <strong class="mx-3">{{ useTranslations('fileManager.loading') }} ...</strong>
-        </div>
-      </RTable>
-    </div>
-
-    <RListGroup v-if="ctxMenu.open" class="ctx-menu shadow-sm" :style="ctxMenuPosStyle">
-      <RListGroupItem class="py-2 px-1" button @click="emitOpen" v-if="ctxMenu.item">
-        <font-awesome-icon icon="eye" fixed-width class="text-muted align-middle mx-1" />
-        {{ useTranslations('forms.open') }}
-      </RListGroupItem>
-
-      <RListGroupItem class="py-2 px-1" button @click="emitCopy" v-if="ctxMenu.item">
-        <font-awesome-icon icon="copy" fixed-width class="text-muted align-middle mx-1" />
-        {{ useTranslations('fileManager.copy') }}
-      </RListGroupItem>
-
-      <RListGroupItem class="py-2 px-1" button @click="emitCut" v-if="ctxMenu.item">
-        <font-awesome-icon icon="scissors" fixed-width class="text-muted align-middle mx-1" />
-        {{ useTranslations('fileManager.cut') }}
-      </RListGroupItem>
-
-      <RListGroupItem
-        class="py-2 px-1"
-        :class="{ 'bg-light': !clipboard?.item }"
-        button
-        :disabled="!clipboard?.item"
-        @click="emitPaste"
-      >
-        <font-awesome-icon
-          icon="paste"
-          fixed-width
-          class="align-middle mx-1"
-          :class="{ 'text-muted': clipboard?.item, 'text-moremuted': !clipboard?.item }"
-        />
-
-        {{ useTranslations('fileManager.paste') }}
-      </RListGroupItem>
-
-      <RListGroupItem class="py-2 px-1" button @click="emitRename" v-if="ctxMenu.item">
-        <font-awesome-icon icon="italic" fixed-width class="text-muted align-middle mx-1" />
-
-        {{ useTranslations('fileManager.rename') }}
-      </RListGroupItem>
-
-      <RListGroupItem class="py-2 px-1" button @click="emitRemove" v-if="ctxMenu.item">
-        <font-awesome-icon icon="trash" fixed-width class="text-muted align-middle mx-1" />
-
-        {{ useTranslations('fileManager.remove') }}
-      </RListGroupItem>
-    </RListGroup>
-  </div>
-
-  <div
-    v-if="ctxMenu.open"
-    class="ctx-menu-backdrop"
-    @contextmenu.prevent="removeCtxMenuItem"
-    @keyup.esc="removeCtxMenuItem"
-    @click="removeCtxMenuItem"
-    tabindex="0"
-  />
-</template>
-
 <script setup lang="ts">
 import { RTable, RListGroupItem } from '@routaa/ui-kit'
 import CLoading from '../CLoading/index.vue'
@@ -333,3 +236,100 @@ function openCtxMenu(e: CtxMenuType) {
   ctxMenu.y = e.layerY
 }
 </script>
+
+<template>
+  <div class="position-relative">
+    <div class="table-wrap text-left" dir="ltr" @contextmenu="openCtxMenu">
+      <RTable
+        small
+        stacked="sm"
+        hover
+        bordered
+        :empty-text="useTranslations('shared.noRecords')"
+        :empty-filtered-text="useTranslations('shared.noMatchingRecords')"
+        show-empty
+        :fields="fields"
+        :items="files"
+        :busy="progressing"
+        class="mb-0"
+        selectable
+        select-mode="single"
+        :tbody-tr-class="getRowClass"
+        @row-selected="rowSelected"
+        @row-contextmenu="rowContextMenu"
+      >
+        <template #cell(name)="data">
+          <font-awesome-icon size="lg" class="mx-2" :icon="data.item.icon" :class="getIconClass(data.item)" />
+          <span> {{ data.item.name }} </span>
+        </template>
+
+        <template #cell(type)="data">
+          <strong v-if="data.item.folder">{{ data.item.type }}</strong>
+
+          <span class="small" v-else>{{ data.item.type }}</span>
+        </template>
+
+        <div slot="table-busy" class="text-center text-danger my-5" :dir="useTranslations('direction')">
+          <CLoading class="align-middle"></CLoading>
+
+          <strong class="mx-3">{{ useTranslations('fileManager.loading') }} ...</strong>
+        </div>
+      </RTable>
+    </div>
+
+    <RListGroup v-if="ctxMenu.open" class="ctx-menu shadow-sm" :style="ctxMenuPosStyle">
+      <RListGroupItem class="py-2 px-1" button @click="emitOpen" v-if="ctxMenu.item">
+        <font-awesome-icon icon="eye" fixed-width class="text-muted align-middle mx-1" />
+        {{ useTranslations('forms.open') }}
+      </RListGroupItem>
+
+      <RListGroupItem class="py-2 px-1" button @click="emitCopy" v-if="ctxMenu.item">
+        <font-awesome-icon icon="copy" fixed-width class="text-muted align-middle mx-1" />
+        {{ useTranslations('fileManager.copy') }}
+      </RListGroupItem>
+
+      <RListGroupItem class="py-2 px-1" button @click="emitCut" v-if="ctxMenu.item">
+        <font-awesome-icon icon="scissors" fixed-width class="text-muted align-middle mx-1" />
+        {{ useTranslations('fileManager.cut') }}
+      </RListGroupItem>
+
+      <RListGroupItem
+        class="py-2 px-1"
+        :class="{ 'bg-light': !clipboard?.item }"
+        button
+        :disabled="!clipboard?.item"
+        @click="emitPaste"
+      >
+        <font-awesome-icon
+          icon="paste"
+          fixed-width
+          class="align-middle mx-1"
+          :class="{ 'text-muted': clipboard?.item, 'text-moremuted': !clipboard?.item }"
+        />
+
+        {{ useTranslations('fileManager.paste') }}
+      </RListGroupItem>
+
+      <RListGroupItem class="py-2 px-1" button @click="emitRename" v-if="ctxMenu.item">
+        <font-awesome-icon icon="italic" fixed-width class="text-muted align-middle mx-1" />
+
+        {{ useTranslations('fileManager.rename') }}
+      </RListGroupItem>
+
+      <RListGroupItem class="py-2 px-1" button @click="emitRemove" v-if="ctxMenu.item">
+        <font-awesome-icon icon="trash" fixed-width class="text-muted align-middle mx-1" />
+
+        {{ useTranslations('fileManager.remove') }}
+      </RListGroupItem>
+    </RListGroup>
+  </div>
+
+  <div
+    v-if="ctxMenu.open"
+    class="ctx-menu-backdrop"
+    @contextmenu.prevent="removeCtxMenuItem"
+    @keyup.esc="removeCtxMenuItem"
+    @click="removeCtxMenuItem"
+    tabindex="0"
+  />
+</template>

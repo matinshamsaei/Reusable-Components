@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import { RLink } from '@routaa/ui-kit'
+
+type Items = {
+  name: string
+  path: string
+}
+
+type Props = {
+  items: Items[]
+}
+
+const props = defineProps<Props>()
+
+interface Emit {
+  (e: 'click', value: any): void
+}
+
+const emit = defineEmits<Emit>()
+
+function emitClick(path: any) {
+  emit('click', path.path)
+}
+</script>
+
 <template>
   <ol dir="ltr" class="breadcrumb m-0 px-3 py-2 bg-light border-bottom">
     <li class="breadcrumb-item">
@@ -26,28 +51,3 @@
     </li>
   </ol>
 </template>
-
-<script setup lang="ts">
-import { RLink } from '@routaa/ui-kit'
-
-type Items = {
-  name: string
-  path: string
-}
-
-type Props = {
-  items: Items[]
-}
-
-const props = defineProps<Props>()
-
-interface Emit {
-  (e: 'click', value: any): void
-}
-
-const emit = defineEmits<Emit>()
-
-function emitClick(path: any) {
-  emit('click', path.path)
-}
-</script>

@@ -1,3 +1,34 @@
+<script setup lang="ts">
+import { RButton } from '@routaa/ui-kit'
+import useTranslations from '../../composable/useTranslations'
+
+type Props = {
+  progressing: boolean
+}
+
+const props = defineProps<Props>()
+
+interface Emit {
+  (e: 'refresh'): void
+  (e: 'openCreateFolder'): void
+  (e: 'openUploader'): void
+}
+
+const emit = defineEmits<Emit>()
+
+function emitRefresh() {
+  emit('refresh')
+}
+
+function emitCreateFolder() {
+  emit('openCreateFolder')
+}
+
+function emitUpload() {
+  emit('openUploader')
+}
+</script>
+
 <template>
   <div class="p-2 bg-light border-bottom d-flex">
     <RButton size="sm" variant="secondary" :disabled="props.progressing" @click="emitCreateFolder">
@@ -27,35 +58,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { RButton } from '@routaa/ui-kit';
-import useTranslations from '../../composable/useTranslations'
-
-type Props = {
-  progressing: boolean
-}
-
-const props = defineProps<Props>()
-
-interface Emit {
-  (e: 'refresh'): void
-  (e: 'openCreateFolder'): void
-  (e: 'openUploader'): void
-}
-
-const emit = defineEmits<Emit>()
-
-function emitRefresh() {
-  emit('refresh')
-}
-
-function emitCreateFolder() {
-  emit('openCreateFolder')
-}
-
-function emitUpload() {
-  emit('openUploader')
-}
-
-</script>
