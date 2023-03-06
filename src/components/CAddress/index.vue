@@ -1,119 +1,3 @@
-<template>
-  <div class="row">
-    <div class="col-12" :class="`col-md-${props.mdCols}`">
-      <div class="form-group">
-        <AutoComplete
-          v-model="model.provinceId"
-          :prepend="$t('shared.province')"
-          :name="$t('shared.province')"
-          :search="getProvinces"
-          :select="selectProvince"
-          :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
-          no-badge
-          required
-          v-validate="'required'"
-          @select="callNextRequest('province')"
-          @change="clearAddressData('province')"
-        />
-      </div>
-
-      <div class="form-group">
-        <AutoComplete
-          v-model="model.countyId"
-          :prepend="$t('shared.county')"
-          :name="$t('shared.county')"
-          :search="getCounties"
-          :select="selectCounty"
-          :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
-          no-badge
-          :disabled="!model.provinceId"
-          :required="!!model.countyId || hasCounty"
-          v-validate="{ required: !!model.countyId || hasCounty }"
-          @select="callNextRequest('county')"
-          @change="clearAddressData('county')"
-        />
-      </div>
-
-      <div class="form-group">
-        <AutoComplete
-          v-model="model.cityId"
-          :prepend="$t('shared.city')"
-          :name="$t('shared.city')"
-          :search="getCities"
-          :select="selectCity"
-          :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
-          no-badge
-          :required="!!model.cityId || hasCity"
-          :disabled="!model.countyId"
-          v-validate="{ required: !!model.cityId || hasCity }"
-          @select="callNextRequest('city')"
-          @change="clearAddressData('city')"
-        />
-      </div>
-
-      <div class="form-group">
-        <AutoComplete
-          v-model="model.suburbId"
-          :prepend="$t('shared.suburb')"
-          :name="$t('shared.suburb')"
-          :search="getSuburbs"
-          :select="selectSuburb"
-          :required="!!model.suburbId || hasSuburb"
-          :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
-          no-badge
-          :disabled="!model.cityId"
-          v-validate="{ required: !!model.suburbId || hasSuburb }"
-          @select="callNextRequest('suburb')"
-          @change="clearAddressData('suburb')"
-        />
-      </div>
-
-      <div class="form-group">
-        <AutoComplete
-          v-model="model.neighborhoodId"
-          :prepend="$t('shared.neighborhood')"
-          :name="$t('shared.neighborhood')"
-          :search="getNeighborhoods"
-          :select="selectNeighborhood"
-          :required="!!model.neighborhoodId || hasNeighborhood"
-          :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
-          no-badge
-          :disabled="!model.suburbId"
-          v-validate="{ required: !!model.neighborhoodId || hasNeighborhood }"
-          @change="clearAddressData('neighborhood')"
-        />
-      </div>
-    </div>
-
-    <div class="col-12" :class="`col-md-${props.mdCols}`">
-      <div class="form-group">
-        <RInputGroup :prepend="$t('shared.plaque')">
-          <RFormInput v-model="plaque" dir="auto" />
-        </RInputGroup>
-      </div>
-
-      <div class="form-group">
-        <RInputGroup :prepend="$t('shared.unit')">
-          <RFormInput v-model="unit" dir="auto" />
-        </RInputGroup>
-      </div>
-
-      <div v-if="model.streetInfo && typeof model.streetInfo === 'string'" class="form-group">
-        <RInputGroup :prepend="$t('shared.streetInfo')">
-          <RFormTextarea
-            v-model="model.streetInfo"
-            :name="$t('shared.streetInfo')"
-            rows="6"
-            no-resize
-            v-validate="'required'"
-            dir="auto"
-          />
-        </RInputGroup>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { onMounted, nextTick, ref, computed } from 'vue'
 import { RFormTextarea, RInputGroup, RFormInput } from '@routaa/ui-kit'
@@ -379,3 +263,119 @@ function generateUnitInfo() {
   model.value.unitInfo = [plaque.value, unit.value].filter(Boolean).join(',')
 }
 </script>
+
+<template>
+  <div class="row">
+    <div class="col-12" :class="`col-md-${props.mdCols}`">
+      <div class="form-group">
+        <AutoComplete
+          v-model="model.provinceId"
+          :prepend="$t('shared.province')"
+          :name="$t('shared.province')"
+          :search="getProvinces"
+          :select="selectProvince"
+          :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
+          no-badge
+          required
+          v-validate="'required'"
+          @select="callNextRequest('province')"
+          @change="clearAddressData('province')"
+        />
+      </div>
+
+      <div class="form-group">
+        <AutoComplete
+          v-model="model.countyId"
+          :prepend="$t('shared.county')"
+          :name="$t('shared.county')"
+          :search="getCounties"
+          :select="selectCounty"
+          :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
+          no-badge
+          :disabled="!model.provinceId"
+          :required="!!model.countyId || hasCounty"
+          v-validate="{ required: !!model.countyId || hasCounty }"
+          @select="callNextRequest('county')"
+          @change="clearAddressData('county')"
+        />
+      </div>
+
+      <div class="form-group">
+        <AutoComplete
+          v-model="model.cityId"
+          :prepend="$t('shared.city')"
+          :name="$t('shared.city')"
+          :search="getCities"
+          :select="selectCity"
+          :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
+          no-badge
+          :required="!!model.cityId || hasCity"
+          :disabled="!model.countyId"
+          v-validate="{ required: !!model.cityId || hasCity }"
+          @select="callNextRequest('city')"
+          @change="clearAddressData('city')"
+        />
+      </div>
+
+      <div class="form-group">
+        <AutoComplete
+          v-model="model.suburbId"
+          :prepend="$t('shared.suburb')"
+          :name="$t('shared.suburb')"
+          :search="getSuburbs"
+          :select="selectSuburb"
+          :required="!!model.suburbId || hasSuburb"
+          :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
+          no-badge
+          :disabled="!model.cityId"
+          v-validate="{ required: !!model.suburbId || hasSuburb }"
+          @select="callNextRequest('suburb')"
+          @change="clearAddressData('suburb')"
+        />
+      </div>
+
+      <div class="form-group">
+        <AutoComplete
+          v-model="model.neighborhoodId"
+          :prepend="$t('shared.neighborhood')"
+          :name="$t('shared.neighborhood')"
+          :search="getNeighborhoods"
+          :select="selectNeighborhood"
+          :required="!!model.neighborhoodId || hasNeighborhood"
+          :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
+          no-badge
+          :disabled="!model.suburbId"
+          v-validate="{ required: !!model.neighborhoodId || hasNeighborhood }"
+          @change="clearAddressData('neighborhood')"
+        />
+      </div>
+    </div>
+
+    <div class="col-12" :class="`col-md-${props.mdCols}`">
+      <div class="form-group">
+        <RInputGroup :prepend="$t('shared.plaque')">
+          <RFormInput v-model="plaque" dir="auto" />
+        </RInputGroup>
+      </div>
+
+      <div class="form-group">
+        <RInputGroup :prepend="$t('shared.unit')">
+          <RFormInput v-model="unit" dir="auto" />
+        </RInputGroup>
+      </div>
+
+      <div v-if="model.streetInfo && typeof model.streetInfo === 'string'" class="form-group">
+        <RInputGroup :prepend="$t('shared.streetInfo')">
+          <RFormTextarea
+            v-model="model.streetInfo"
+            :name="$t('shared.streetInfo')"
+            rows="6"
+            no-resize
+            v-validate="'required'"
+            dir="auto"
+          />
+        </RInputGroup>
+      </div>
+    </div>
+  </div>
+</template>
