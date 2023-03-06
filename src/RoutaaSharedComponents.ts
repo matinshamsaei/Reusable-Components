@@ -3,7 +3,7 @@ import type { App, Plugin } from 'vue'
 import './assets/scss/style.scss'
 
 import * as Components from './components'
-import * as Translations from './translations'
+import type * as Translations from './translations'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
@@ -21,6 +21,22 @@ const plugin: Plugin = {
     Object.entries(Components).forEach(([name, component]) => {
       app.component(name, component)
     })
+  }
+}
+
+export interface SharedComponentOptions {
+  config: object
+  locale: string
+}
+
+export const createSharedComponents = (options: SharedComponentOptions) => {
+  const install = (app: App) => {
+    app.config.globalProperties.$config = options.config
+    app.config.globalProperties.$locale = options.locale
+  }
+
+  return {
+    install
   }
 }
 

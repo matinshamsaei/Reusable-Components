@@ -1,5 +1,36 @@
 export default {
+  add: 'Add',
+  backToHome: 'Back to home',
+  cancel: 'Cancel',
+  clickToSelect: 'Click to select',
+  clock: 'Clock',
+  email: 'Email',
   excelExport: 'Excel Export',
+  filter: 'filter',
+  lastWeekDay: '[Last] dddd',
+  loadAgain: 'Load again',
+  mobile: 'Mobile',
+  image: 'Image',
+  moreResult: 'More Result',
   noRecords: 'There are no records to show',
-  reportDate: 'report Date'
+  oopsWeHaveAProblem: 'Oops! we have a problem',
+  pageNotFound: 'Page not found!',
+  reportDate: 'report Date',
+  return: 'Return',
+  save: 'Save',
+  search: 'Search',
+  searching: 'Searching',
+  today: 'Today',
+  tomorrow: 'Tomorrow',
+  tryAgain: 'Try again',
+  week: {
+    Saturday: 'Saturday',
+    Sunday: 'Sunday',
+    Monday: 'Monday',
+    Tuesday: 'Tuesday',
+    Wednesday: 'Wednesday',
+    Thursday: 'Thursday',
+    Friday: 'Friday'
+  },
+  yesterday: 'Yesterday'
 }

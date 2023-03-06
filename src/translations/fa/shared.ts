@@ -1,5 +1,36 @@
 export default {
+  add: 'افزودن',
+  backToHome: 'بازگشت به صفحه اصلی',
+  cancel: 'انصراف',
+  clickToSelect: 'برای انتخاب کلیک کنید',
+  clock: 'ساعت',
+  email: 'ایمیل',
   excelExport: 'خروجی اکسل',
+  filter: 'فیلتر',
+  image: 'تصویر',
+  lastWeekDay: 'dddd [گذشته]',
+  loadAgain: 'بارگیری مجدد',
+  mobile: 'موبایل',
+  moreResult: 'نتایج بیشتر',
   noRecords: 'رکوردی برای نمایش وجود ندارد',
-  reportDate: 'تاریخ گزارش'
+  oopsWeHaveAProblem: 'مشکلی پیش آمده!',
+  pageNotFound: 'صفحه مورد نظر یافت نشد!',
+  reportDate: 'تاریخ گزارش',
+  return: 'بازگشت',
+  save: 'ذخیره',
+  search: 'جستجو',
+  searching: 'در حال جستجو',
+  today: 'امروز',
+  tomorrow: 'فردا',
+  tryAgain: 'دوباره امتحان کنید',
+  week: {
+    Saturday: 'شنبه',
+    Sunday: 'یکشنبه',
+    Monday: 'دوشنبه',
+    Tuesday: 'سه شنبه',
+    Wednesday: 'چهارشنبه',
+    Thursday: 'پنج شنبه',
+    Friday: 'جمعه'
+  },
+  yesterday: 'دیروز'
 }
