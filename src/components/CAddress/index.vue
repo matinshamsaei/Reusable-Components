@@ -98,7 +98,7 @@
         </RInputGroup>
       </div>
 
-      <div class="form-group">
+      <div v-if="model.streetInfo && typeof model.streetInfo === 'string'" class="form-group">
         <RInputGroup :prepend="$t('shared.streetInfo')">
           <RFormTextarea
             v-model="model.streetInfo"
@@ -147,7 +147,7 @@ type ModelValue = {
 
   unitInfo: string
   cityInfo: object
-  streetInfo: object
+  streetInfo: object | string
   countyInfo: object
   suburbInfo: object
   neighborhoodInfo: object
@@ -157,7 +157,6 @@ type ModelValue = {
 interface emit {
   (e: 'updated:modelValue', val: ModelValue): void
 }
-
 
 type Center = {
   lat: number
@@ -342,10 +341,10 @@ function clearAddressData(item: string) {
     cities.value = []
     suburbs.value = []
     neighborhoods.value = []
-    model.value.countyId = null
-    model.value.cityId = null
-    model.value.suburbId = null
-    model.value.neighborhoodId = null
+    model.value.countyId = 0
+    model.value.cityId = 0
+    model.value.suburbId = 0
+    model.value.neighborhoodId = 0
     hasCounty.value = false
     hasCity.value = false
     hasSuburb.value = false
@@ -354,9 +353,9 @@ function clearAddressData(item: string) {
     cities.value = []
     suburbs.value = []
     neighborhoods.value = []
-    model.value.cityId = null
-    model.value.suburbId = null
-    model.value.neighborhoodId = null
+    model.value.cityId = 0
+    model.value.suburbId = 0
+    model.value.neighborhoodId = 0
     hasCity.value = false
     hasSuburb.value = false
     hasNeighborhood.value = false
@@ -365,12 +364,12 @@ function clearAddressData(item: string) {
     hasNeighborhood.value = false
     suburbs.value = []
     neighborhoods.value = []
-    model.value.suburbId = null
-    model.value.neighborhoodId = null
+    model.value.suburbId = 0
+    model.value.neighborhoodId = 0
   } else if (item === 'suburb') {
     hasNeighborhood.value = false
     neighborhoods.value = []
-    model.value.neighborhoodId = null
+    model.value.neighborhoodId = 0
   }
 }
 
