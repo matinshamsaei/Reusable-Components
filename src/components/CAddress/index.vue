@@ -124,15 +124,15 @@ const globalProps = useGlobalProps()
 
 const emit = defineEmits<emit>()
 
-const plaque = ref('')
-const unit = ref('')
 const hasCounty = ref<boolean>(false)
 const hasCity = ref<boolean>(false)
 const hasSuburb = ref<boolean>(false)
 const hasNeighborhood = ref<boolean>(false)
+const plaque = ref('')
+const unit = ref('')
 const counties = ref([])
-const cities = ref([])
 const suburbs = ref([])
+const cities = ref([])
 const neighborhoods = ref([])
 
 type ModelValue = {
@@ -173,25 +173,25 @@ type Error = {
 
 type Properties = {
   country: string
-  state: string
-  county: string
   city: string
-  district: string
+  county: string
   suburb: string
+  district: string
   neighborhood: string
+  state: string
   name: string
 }
 
 type ResponseType = { id: number; properties: Properties }
 
 type CountryDivisionsApi = {
-  self: Function
   countries: Function
+  cities: Function
   provinces: Function
   counties: Function
-  cities: Function
   suburbs: Function
   neighborhoods: Function
+  self: Function
 }
 
 type Props = {
@@ -322,12 +322,12 @@ async function getStreetInfo() {
       const properties = items[0].properties
       let address = []
       if (properties.country) address.push(properties.country)
-      if (properties.state) address.push(properties.state)
-      if (properties.county) address.push(properties.county)
       if (properties.city) address.push(properties.city)
-      if (properties.district) address.push(properties.district)
+      if (properties.county) address.push(properties.county)
       if (properties.suburb) address.push(properties.suburb)
+      if (properties.district) address.push(properties.district)
       if (properties.neighborhood) address.push(properties.neighborhood)
+      if (properties.state) address.push(properties.state)
       if (properties.name) address.push(properties.name)
       model.value.streetInfo = address.join(' ')
     }
@@ -342,12 +342,12 @@ function clearAddressData(item: string) {
     cities.value = []
     suburbs.value = []
     neighborhoods.value = []
-    model.value.countyId = null
     model.value.cityId = null
+    model.value.countyId = null
     model.value.suburbId = null
     model.value.neighborhoodId = null
-    hasCounty.value = false
     hasCity.value = false
+    hasCounty.value = false
     hasSuburb.value = false
     hasNeighborhood.value = false
   } else if (item === 'county') {
