@@ -11,14 +11,38 @@
     @hide="emitClose"
     body-class="p-4"
   >
-    <RUploader :upload="uploadApi" @change="emitClose" :accept="accept" />
+    <Uploader v-model="model" :upload-req="uploadReq" :upload="uploadApi" @change="emitClose" :accept="accept" />
   </RModal>
 </template>
 
 <script setup lang="ts">
-import useTranslations from '@/composable/useTranslations';
-import { RModal, RUploader } from '@routaa/ui-kit'
-import { computed, reactive } from 'vue'
+import { RModal } from '@routaa/ui-kit'
+import Uploader from '../Uploader/index.vue'
+import useTranslations from '@/composable/useTranslations'
+import { computed, ref, reactive } from 'vue'
+
+///////////test
+
+// v-model="model" :upload-req="uploadReq"
+
+const model = ref('')
+
+async function uploadReq(files: FileList, serverType = 'userManagement', onUploadProgress: number) {
+  const formData = new FormData()
+
+  Array.from(files).forEach((file) => {
+    formData.append('files', file, file.name)
+  })
+
+  const item = await fetch('http://192.168.7.16:8082/api/pub/files/temp', {
+    method: 'POST',
+    body: formData
+  })
+
+  return item.json()
+}
+
+//////////test
 
 type ApiTypes = {
   upload: Function

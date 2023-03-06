@@ -28,7 +28,15 @@
 
     <FFooter v-if="picker" class="rounded-bottom" :selected="selected" @confirm="emitPick" @cancel="emitClose" />
     <FCreate-folder v-if="createFolderOpen" @confirm="createFolder" @cancel="closeCreateFolderDialog" />
-    <FUploader v-if="uploaderOpen" :api="api" :doc-type="docType" :path="path" @close="closeUploaderDialog" />
+    <Uploader
+      v-model="model"
+      :upload-req="uploadReq"
+      v-if="uploaderOpen"
+      :api="api"
+      :doc-type="docType"
+      :path="path"
+      @close="closeUploaderDialog"
+    />
     <FRename v-if="!!renameItem" :old-name="renameItem.name" @confirm="rename" @cancel="closeRenameDialog" />
   </div>
 </template>
@@ -41,8 +49,30 @@ import FFiles from './Files.vue'
 import FFooter from './Footer.vue'
 import FRename from './Rename.vue'
 import FToolbar from './Toolbar.vue'
-import FUploader from './Uploader.vue'
+import Uploader from '@/components/Uploader/index.vue'
 import useGlobalProps from '../../composable/useGlobalProps'
+
+//////////test
+// v-model="model" :upload-req="uploadReq"
+
+const model = ref('')
+
+async function uploadReq(files: FileList, serverType = 'userManagement', onUploadProgress: number) {
+  const formData = new FormData()
+
+  Array.from(files).forEach((file) => {
+    formData.append('files', file, file.name)
+  })
+
+  const item = await fetch('http://192.168.7.16:8082/api/pub/files/temp', {
+    method: 'POST',
+    body: formData
+  })
+
+  return item.json()
+}
+
+//////////test
 
 const globalProps = useGlobalProps()
 
@@ -85,14 +115,14 @@ const props = withDefaults(defineProps<Props>(), {
   docType: 'FILE'
 })
 
-const folderItems = ref<string[]>([])
-const selected = ref('')
+const folderItems = ref<object[]>([])
+let selected:ModelType = reactive({})
 const progressing = ref(true)
 const path = ref<string>('')
 const createFolderOpen = ref(false)
 const uploaderOpen = ref(false)
 const clipboard: ClipBoard = reactive({ item: {}, action: '' })
-const renameItem = ref('')
+let renameItem: ModelType = reactive({})
 
 type Error = {
   data?: string
@@ -210,8 +240,8 @@ function openCreateFolderDialog() {
   createFolderOpen.value = true
 }
 
-function openRenameDialog(item: string) {
-  renameItem.value = item
+function openRenameDialog(item: ModelType) {
+  renameItem = item
 }
 
 function closeCreateFolderDialog() {
@@ -219,7 +249,7 @@ function closeCreateFolderDialog() {
 }
 
 function closeRenameDialog() {
-  renameItem.value = ''
+  renameItem = {}
 }
 
 function openUploaderDialog() {
@@ -231,8 +261,8 @@ function closeUploaderDialog(docs: string) {
   uploaderOpen.value = false
 }
 
-function select(item: string) {
-  selected.value = item
+function select(item: ModelType) {
+  selected = item
 }
 
 async function getFolder(path: string) {

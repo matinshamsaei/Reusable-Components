@@ -21,17 +21,17 @@
 </template>
 
 <script setup lang="ts">
-import useTranslations from '@/composable/useTranslations';
+import useTranslations from '@/composable/useTranslations'
 import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
 import { ref, computed } from 'vue'
 
 type Props = {
-  oldName: string
+  oldName: string | undefined
 }
 
 const props = defineProps<Props>()
 
-const name = ref(props.oldName)
+const name = ref(props.oldName || '')
 
 interface Emit {
   (e: 'confirm', value: any): void

@@ -5,12 +5,7 @@
       {{ useTranslations('shared.cancel') }}
     </RButton>
 
-    <RButton
-      size="sm"
-      variant="success"
-      @click="emitConfirm"
-      v-if="selected"
-    >
+    <RButton size="sm" variant="success" @click="emitConfirm" v-if="props.selected">
       <!-- :class="{ 'ml-2': $dir.ltr, 'mr-2': $dir.rtl }" -->
       <font-awesome-icon icon="check" size="lg"></font-awesome-icon>
       <span class="ml-2"></span>
@@ -21,13 +16,15 @@
 
 <script setup lang="ts">
 import { RButton } from '@routaa/ui-kit'
-import useTranslations from '@/composable/useTranslations';
+import useTranslations from '@/composable/useTranslations'
 
 type Props = {
-  selected: [Boolean, Object]
+  selected: boolean | object | string
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  selected: false
+})
 
 interface Emit {
   (e: 'confirm'): void

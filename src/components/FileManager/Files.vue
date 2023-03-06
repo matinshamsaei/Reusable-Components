@@ -102,13 +102,13 @@ import { computed, watch, reactive, ref } from 'vue'
 import useTranslations from '@/composable/useTranslations'
 
 type ModelType = {
-  folder: boolean
-  icon: string
-  name: string
-  path: string
-  size: number
-  type: string
-  url: string
+  folder?: boolean
+  icon?: string
+  name?: string
+  path?: string
+  size?: number
+  type?: string
+  url?: string
 }
 
 type ClipBoard = {
@@ -235,8 +235,11 @@ function onEscapeKeyUp(event: { which: number }) {
 }
 
 function getType(item: ModelType) {
-  const re = /(?:\.([^.]+))?$/
-  return re.exec(item.name)[1]
+  const regex = /(?:\.([^.]+))?$/
+  if (item.name) {
+    const foundedByRegex = regex.exec(item.name)
+    if (foundedByRegex && foundedByRegex[1]) return foundedByRegex[1]
+  }
 }
 
 function getIcon(item: string | any) {
@@ -292,7 +295,7 @@ function getIcon(item: string | any) {
   }
 }
 
-function rowContextMenu(item: null, e: { preventDefault: () => void; layerX: number; layerY: number; }) {
+function rowContextMenu(item: null, e: { preventDefault: () => void; layerX: number; layerY: number }) {
   e.preventDefault()
   ctxMenu.open = true
   ctxMenu.item = item
