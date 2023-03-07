@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RTable, RListGroupItem } from '@routaa/ui-kit'
+import { RTable, RListGroupItem, RListGroup } from '@routaa/ui-kit'
 import CLoading from '../CLoading/index.vue'
 import { computed, watch, reactive, ref } from 'vue'
 import useTranslations from '@/composable/useTranslations'
