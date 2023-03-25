@@ -11,6 +11,7 @@ export default {
   firstName: 'نام',
   id: 'ID',
   lastName: 'نام خانوادگی',
+  image: 'تصویر',
   lastWeekDay: 'dddd [گذشته]',
   loadAgain: 'بارگیری مجدد',
   mobile: 'تلفن همراه',

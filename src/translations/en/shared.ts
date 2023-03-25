@@ -14,6 +14,7 @@ export default {
   lastWeekDay: '[Last] dddd',
   loadAgain: 'Load again',
   mobile: 'Mobile',
+  image: 'Image',
   moreResult: 'More Result',
   name: 'Name',
   nationalId: 'National Id',
