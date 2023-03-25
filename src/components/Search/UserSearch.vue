@@ -19,6 +19,21 @@ const props = withDefaults(defineProps<Props>(), {
 
 const titleHandler = computed(() => (props.title ? props.title : props.prepend))
 
+type Emits = {
+  (e: 'search', val: any[]): void
+}
+
+const emits = defineEmits<Emits>()
+
+const search = reactive<IObject>({
+  id: '',
+  firstName: '',
+  lastName: '',
+  mobile: '',
+  email: '',
+  nationalId: ''
+})
+
 const open = ref<boolean>(false)
 
 function show(): void {
@@ -30,17 +45,6 @@ function hide(): void {
   reset()
 }
 
-const search = reactive<IObject>({
-  id: '',
-  firstName: '',
-  lastName: '',
-  mobile: '',
-  email: '',
-  nationalId: ''
-})
-
-const progressing = ref<boolean>(false)
-
 function reset(): void {
   search.id = ''
   search.firstName = ''
@@ -51,6 +55,8 @@ function reset(): void {
   items.value = []
 }
 
+const progressing = ref<boolean>(false)
+
 async function searching(filter: IObject) {
   items.value = []
   if (filter.id === null) filter.id = ''
@@ -59,16 +65,13 @@ async function searching(filter: IObject) {
 
 function getApi(filter: IObject): Promise<IObject[]> {
   // return props.getAllInfoApi(filter)
-  return fetch(
-    `http://192.168.7.16/user-mgmt/api/admin/users/info?id=${filter.id}&page=1&size=20&sort%5B0%5D.column=id&sort%5B0%5D.type=DESCENDING`,
-    {
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        Authorization:
-          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAACWOTQ7CIBCF7zLrYpiCwLDzDl4A6JigUUynTYzGuwtx9ZLv_eR9YK8LRHs0E8ieIcKpFBY5txs_YIIq0llp90PmtbX3ypLSMPj1hIjOByTjZ9uTafsDPWsa4LrVXsUUdHA6q4wBlc35omgOiyJKyOS4K_c5GS-CN_r7A3O9vmKSAAAA.C30GYqxa4hACccofpUEeausfTViWCt2XA2ir9RUE-tYX8CsUtU1xLoX1-ucAxPt9dqDIqOogGePU8tptjfU5Dw'
-      }
+  return fetch(`http://192.168.7.16/user-mgmt/api/admin/users/info?id=${filter.id}`, {
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      Authorization:
+        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAACXOSw7CMAwE0Lt43aA2zs_d9Q5cIA2OFBAE1a2EQNydRGzfeEb-wFEuMGtncQA5VphhSYlFzvXGDxigiDRL9X5aeav1vbHE2AN-PWGenKdAlkbdLuP-B69x6nDdS68a4owuKWsCKcNpVMQ6K4sBjY5NY25z0t8I3uP3B7FQSUiTAAAA.cNacrcma5ZJdpmVA44es3DvHm_SNkI45KKpVWyNxBmrdgX9b0-Yi1taeRK7Otf1gHsV_W0xcF6LkwFMt7xvI4Q'
     }
-  )
+  })
     .then((response) => response.json())
     .then((data) => {
       return data
@@ -112,6 +115,7 @@ const selectedItems = ref<Array<IObject>>([])
 function toggleItem(item: IObject): void {
   selectedItems.value = []
   selectedItems.value.push(item)
+  emits('search', selectedItems.value)
   hide()
 }
 
@@ -123,6 +127,8 @@ const input = ref()
 
 function removeUsers(): void {
   input.value[0].textContent = ''
+  selectedItems.value = []
+  emits('search', selectedItems.value)
   reset()
 }
 </script>
@@ -135,7 +141,7 @@ function removeUsers(): void {
           <div ref="input" v-if="selectedItems.length" v-for="item in selectedItems">{{ createUserName(item) }}</div>
         </div>
 
-        <RInputGroupAppend v-if="selectedItems.length" isText class="cursor-pointer" @click="removeUsers">
+        <RInputGroupAppend v-if="selectedItems.length" isText class="cursor-pointer" @click.stop="removeUsers">
           <font-awesome-icon icon="xmark" size="sm" />
         </RInputGroupAppend>
       </RInputGroup>
