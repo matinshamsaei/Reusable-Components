@@ -7,28 +7,21 @@ import { isEmptyObj } from '../../lib/utils'
 type Props = {
   errors: string[] | IObject | object
   extraErrors?: string[]
-  show: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  show: true
-})
+const props = defineProps<Props>()
 
 const show = computed(() => {
   const hasArrayOfErrors = Array.isArray(props.errors) && props.errors.length
   const hasObjectOfErrors =
     typeof props.errors === 'object' && !Array.isArray(props.errors) && !isEmptyObj(props.errors)
 
-  if ((hasArrayOfErrors || hasObjectOfErrors) && props.show) return true
+  if (hasArrayOfErrors || hasObjectOfErrors) return true
   return false
 })
 </script>
 
 <template>
-  <div>show: {{ show }}</div>
-  <div class="mt-4">errors:</div>
-  <pre>{{ errors }}</pre>
-
   <RAlert v-model="show" id="errors" variant="danger" class="px-4">
     <ul class="m-0 px-1">
       <li v-if="$slots.first"><slot name="first"></slot></li>

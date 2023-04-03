@@ -8,6 +8,7 @@ import config from './plugins/config'
 import locale from './plugins/locale'
 import FontAwesomeIcon from './plugins/font-awesome'
 import messages from './translations'
+import './validations'
 
 const app = createApp(App)
 
