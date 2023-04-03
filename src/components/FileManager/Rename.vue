@@ -4,7 +4,7 @@ import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
 import { ref, computed } from 'vue'
 
 type Props = {
-  oldName: string | undefined
+  oldName?: string
 }
 
 const props = defineProps<Props>()
@@ -41,7 +41,6 @@ function emitCancel() {
     :title="useTranslations('fileManager.createFolder')"
     :cancel-title="useTranslations('shared.cancel')"
     :ok-title="useTranslations('shared.confirm')"
-    visible
     lazy
     @hide="emitCancel"
     @ok="emitConfirm"

@@ -10,7 +10,7 @@ import { isEmpty } from '../../utils/object'
 
 type Props = {
   modelValue: string | object
-  uploadReq: Function
+  uploadReq?: Function
   accept?: string
   aspectRatio?: number
   autoScale?: number

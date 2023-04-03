@@ -5,6 +5,7 @@ export default {
   clickToSelect: 'Click to select',
   clock: 'Clock',
   confirm: 'Confirm',
+  create:'Create',
   email: 'Email',
   excelExport: 'Excel Export',
   filter: 'filter',

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { RTable, RListGroupItem, RListGroup } from '@routaa/ui-kit'
 import CLoading from '../CLoading/index.vue'
-import { computed, watch, reactive, ref } from 'vue'
+import { computed, reactive, ref, useAttrs, watch } from 'vue'
 import useTranslations from '@/composable/useTranslations'
+
+const attrs = useAttrs()
 
 type ModelType = {
   folder?: boolean
@@ -239,7 +241,7 @@ function openCtxMenu(e: CtxMenuType) {
 
 <template>
   <div class="position-relative">
-    <div class="table-wrap text-left" dir="ltr" @contextmenu="openCtxMenu">
+    <div class="table-wrap text-left" dir="ltr" v-bind="attrs" @contextmenu="openCtxMenu">
       <RTable
         small
         stacked="sm"

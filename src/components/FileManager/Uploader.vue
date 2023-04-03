@@ -8,24 +8,9 @@ import { computed, ref, reactive } from 'vue'
 
 // v-model="model" :upload-req="uploadReq"
 
-const model = ref('')
-
-async function uploadReq(files: FileList, serverType = 'userManagement', onUploadProgress: number) {
-  const formData = new FormData()
-
-  Array.from(files).forEach((file) => {
-    formData.append('files', file, file.name)
-  })
-
-  const item = await fetch('http://192.168.7.16:8082/api/pub/files/temp', {
-    method: 'POST',
-    body: formData
-  })
-
-  return item.json()
-}
-
 //////////test
+
+const model = ref('')
 
 type ApiTypes = {
   upload: Function
@@ -66,7 +51,7 @@ function uploadApi(files: object, onProgress: object) {
   })
 }
 
-function emitClose(uploadedDocs: Object) {
+function emitClose(uploadedDocs: string | object | null) {
   emit('close', uploadedDocs)
 }
 </script>
@@ -79,11 +64,10 @@ function emitClose(uploadedDocs: Object) {
     no-close-on-esc
     hide-footer
     :title="useTranslations('fileManager.upload')"
-    visible
-    lazy
     @hide="emitClose"
     body-class="p-4"
   >
-    <Uploader v-model="model" :upload-req="uploadReq" :upload="uploadApi" @change="emitClose" :accept="accept" />
+    <!-- visible-->
+    <Uploader v-model="model" :upload="uploadApi" @update:model-value="emitClose" :accept="accept" />
   </RModal>
 </template>

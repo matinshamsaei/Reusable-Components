@@ -5,6 +5,8 @@ import useTranslations from '@/composable/useTranslations'
 
 const name = ref('')
 
+const show = ref(true)
+
 interface Emit {
   (e: 'confirm', value: any): void
   (e: 'cancel'): void
@@ -14,7 +16,7 @@ const emit = defineEmits<Emit>()
 
 const okDisabled = computed(() => {
   const okDisabledName = name.value || ''
-  return okDisabledName.trim().length ? false : true
+  return okDisabledName.trim().length ? true : false
 })
 
 function emitConfirm() {
@@ -28,6 +30,7 @@ function emitCancel() {
 
 <template>
   <RModal
+    v-model="show"
     size="sm"
     centered
     no-fade
@@ -35,7 +38,6 @@ function emitCancel() {
     :title="useTranslations('fileManager.createFolder')"
     :cancel-title="useTranslations('shared.cancel')"
     :ok-title="useTranslations('shared.create')"
-    visible
     lazy
     @hide="emitCancel"
     @ok="emitConfirm"

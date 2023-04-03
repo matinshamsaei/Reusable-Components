@@ -6,30 +6,10 @@ import FFiles from './Files.vue'
 import FFooter from './Footer.vue'
 import FRename from './Rename.vue'
 import FToolbar from './Toolbar.vue'
-import Uploader from '@/components/Uploader/index.vue'
+import Uploader from './Uploader.vue'
 import useGlobalProps from '../../composable/useGlobalProps'
 
-//////////test
-// v-model="model" :upload-req="uploadReq"
-
 const model = ref('')
-
-async function uploadReq(files: FileList, serverType = 'userManagement', onUploadProgress: number) {
-  const formData = new FormData()
-
-  Array.from(files).forEach((file) => {
-    formData.append('files', file, file.name)
-  })
-
-  const item = await fetch('http://192.168.7.16:8082/api/pub/files/temp', {
-    method: 'POST',
-    body: formData
-  })
-
-  return item.json()
-}
-
-//////////test
 
 const globalProps = useGlobalProps()
 
@@ -44,6 +24,7 @@ type ApiTypes = {
   copyFolder: Function
   renameDoc: Function
   renameFolder: Function
+  upload: Function
 }
 
 type ModelType = {
@@ -54,6 +35,23 @@ type ModelType = {
   size?: number
   type?: string
   url?: string
+}
+
+// http://192.168.7.16/routaa-app/api/admin/article/docs/FILE?path=
+
+function getApi() {
+  // return props.getAllInfoApi(filter)
+  return fetch(`http://192.168.7.16/routaa-app/api/admin/article/docs/FILE?path=`, {
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      Authorization:
+        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAACWOSQ7CMBAE_zLnGHkZb7nlD3zAdgbJIDDKJBIC8Xdsca3uavUHjrrCrJ03E_CRYYalFGI-txs9YILK3Flp91OmrbX3RpzSCOj1hFm5IJ1Hr2Jvpv0PrFRxgOteu-qtKRFRCWclCXSuiGSKFnrFHIzVSuVLn-NxIwQ03x9VLrLtkwAAAA.FH4XYDSJCw3PxJwzvCaikE_8TuiPIKR-HXP_w-LsPRgLDM8HG51Gh0Ci2oJAM65G4HAMFiE15dh5S7k7FsCfqw'
+    }
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      return data
+    })
 }
 
 type ClipBoard = {
@@ -173,8 +171,7 @@ async function paste() {
   }
 }
 
-function remove(item: string) {
-  console.log(item)
+function remove(item: any) {
   // this.$confirm().then(() => {
   //   let promise
   //   if (item.folder) promise = props.api.deleteFolder(props.docType, item.path)
@@ -187,6 +184,17 @@ function remove(item: string) {
   //       this.refresh()
   //     })
   // })
+
+  let promise
+  if (item.folder) promise = props.api.deleteFolder(props.docType, item.path)
+  else promise = props.api.deleteDoc(props.docType, item.path)
+  promise
+    .catch((err: any) => {
+      console.log(err)
+    })
+    .then(() => {
+      refresh()
+    })
 }
 
 function refresh() {
@@ -323,16 +331,20 @@ function emitClose() {
     />
 
     <FFooter v-if="picker" class="rounded-bottom" :selected="selected" @confirm="emitPick" @cancel="emitClose" />
-    <FCreate-folder v-if="createFolderOpen" @confirm="createFolder" @cancel="closeCreateFolderDialog" />
+    <FCreateFolder v-if="createFolderOpen" @confirm="createFolder" @cancel="closeCreateFolderDialog" />
     <Uploader
       v-model="model"
-      :upload-req="uploadReq"
       v-if="uploaderOpen"
       :api="api"
       :doc-type="docType"
       :path="path"
       @close="closeUploaderDialog"
     />
-    <FRename v-if="!!renameItem" :old-name="renameItem.name" @confirm="rename" @cancel="closeRenameDialog" />
+    <FRename
+      v-if="!!renameItem"
+      :old-name="renameItem.name ? renameItem.name : ''"
+      @confirm="rename"
+      @cancel="closeRenameDialog"
+    />
   </div>
 </template>

@@ -5,6 +5,7 @@ export default {
   clickToSelect: 'برای انتخاب کلیک کنید',
   clock: 'ساعت',
   confirm: 'تایید',
+  create:'ایجاد',
   email: 'ایمیل',
   excelExport: 'خروجی اکسل',
   filter: 'فیلتر',

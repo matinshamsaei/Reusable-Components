@@ -6,8 +6,13 @@ import { createI18n } from 'vue-i18n'
 import './assets/scss/style.scss'
 import config from './plugins/config'
 import locale from './plugins/locale'
-import FontAwesomeIcon from './plugins/font-awesome'
 import messages from './translations'
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import {fas as solid} from '@fortawesome/free-solid-svg-icons'
+
+
+library.add(solid)
 
 const app = createApp(App)
 
