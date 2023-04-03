@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import FileManager from '@/components/FileManager/index.vue'
-</script>
+<script setup lang="ts"></script>
 
-<template>
-  <div class="container my-5">
-    <FileManager />
-  </div>
-</template>
+<template>welcome to shared components</template>
