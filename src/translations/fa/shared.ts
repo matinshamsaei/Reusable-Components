@@ -8,6 +8,7 @@ export default {
   excelExport: 'خروجی اکسل',
   filter: 'فیلتر',
   fromDate: 'از تاریخ',
+  image: 'تصویر',
   lastWeekDay: 'dddd [گذشته]',
   loadAgain: 'بارگیری مجدد',
   mobile: 'موبایل',
