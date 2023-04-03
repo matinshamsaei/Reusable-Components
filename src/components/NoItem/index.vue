@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import useTranslations from '@/composable/useTranslations'
 
-const { t } = useI18n()
 type Props = {
   title?: string
 }
@@ -10,7 +9,7 @@ type Props = {
 const props = defineProps<Props>()
 
 const title = computed(() => {
-  return props.title ? props.title : t('shared.noRecords')
+  return props.title ? props.title : useTranslations('shared.noRecords')
 })
 </script>
 

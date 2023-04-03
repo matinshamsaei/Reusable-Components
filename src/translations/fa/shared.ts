@@ -7,6 +7,7 @@ export default {
   email: 'ایمیل',
   excelExport: 'خروجی اکسل',
   filter: 'فیلتر',
+  image: 'تصویر',
   lastWeekDay: 'dddd [گذشته]',
   loadAgain: 'بارگیری مجدد',
   mobile: 'موبایل',
