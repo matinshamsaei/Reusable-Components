@@ -1,22 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
-import 'tinymce/tinymce'
-import 'tinymce/themes/silver/theme'
-import 'tinymce/plugins/paste'
-import 'tinymce/plugins/link'
-import 'tinymce/plugins/directionality'
-import 'tinymce/plugins/lists'
-import 'tinymce/plugins/autoresize'
-import 'tinymce/plugins/advlist'
-import 'tinymce/plugins/code'
-import 'tinymce/plugins/image'
-import 'tinymce/plugins/media'
-import 'tinymce/plugins/hr'
-import 'tinymce/plugins/fullscreen'
-import 'tinymce/plugins/table'
-import 'tinymce/plugins/wordcount'
-import 'tinymce/plugins/searchreplace'
-import 'tinymce/icons/default'
+import { ref, reactive, computed } from 'vue'
 import Editor from '@tinymce/tinymce-vue'
 import { RModal } from '@routaa/ui-kit'
 import useTranslations from '@/composable/useTranslations'
@@ -31,7 +14,7 @@ type Props = {
   height?: number
   maxHeight?: number
   resize?: boolean
-  docsApi: object
+  // docsApi: object
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -41,9 +24,19 @@ const props = withDefaults(defineProps<Props>(), {
 
 type Emits = {
   (e: 'input', id: any): void
+  (e: 'update:modelValue', val: any): void
 }
 
 const emits = defineEmits<Emits>()
+
+const model = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    emits('update:modelValue', value)
+  }
+})
 
 function emitInput(val: any) {
   emits('input', val)
@@ -132,13 +125,16 @@ const fileManager = reactive({
 })
 
 const tinymceConfig = reactive({
-  extended_valid_elements: '*[*]',
+  // extended_valid_elements: '*[*]',
   skin_url: '/tinymce/ui/oxide',
-  directionality: useTranslations('direction'),
-  language_url: `/tinymce/langs/${language}.js`,
+  // directionality: useTranslations('direction'),
+  // language_url: `/tinymce/langs/${language}.js`,
   language,
-  content_css,
+  // content_css,
   plugins: [
+    'table',
+    'fullscreen',
+    'code',
     'paste',
     'link',
     'directionality',
@@ -154,60 +150,60 @@ const tinymceConfig = reactive({
     'wordcount',
     'searchreplace'
   ],
-  menubar: simple ? '' : 'edit view insert format tools table',
+  // menubar: simple ? '' : 'edit view insert format tools table',
   toolbar,
   min_height: props.height,
   max_height: props.maxHeight,
   autoresize_bottom_margin: 30,
   resize: props.resize,
   branding: false,
-  table_default_attributes: { class: 'table' },
-  table_default_styles: {},
-  table_class_list: [
-    { title: 'None', value: 'table' },
-    { title: 'Striped Rows', value: 'table table-striped' },
-    { title: 'Bordered', value: 'table table-bordered' },
-    { title: 'Bordered Striped Rows', value: 'table table-bordered table-striped' },
-    { title: 'Borderless', value: 'table table-borderless' },
-    { title: 'Hoverable', value: 'table table-hover' },
-    { title: 'Small', value: 'table table-sm' },
-    { title: 'Small Striped Rows', value: 'table table-sm table-striped' },
-    { title: 'Small Bordered', value: 'table table-sm table-bordered' },
-    { title: 'Small Bordered Striped Rows', value: 'table table-sm table-bordered table-striped' },
-    { title: 'Small Borderless', value: 'table table-sm table-borderless' },
-    { title: 'Small Hoverable', value: 'table table-sm table-hover' }
-  ],
-  table_row_class_list: [
-    { title: 'None', value: '' },
-    { title: 'Primary', value: 'table-primary' },
-    { title: 'Success', value: 'table-success' },
-    { title: 'Danger', value: 'table-danger' },
-    { title: 'Info', value: 'table-info' },
-    { title: 'Warning', value: 'table-warning' },
-    { title: 'Active', value: 'table-active' },
-    { title: 'Secondary', value: 'table-secondary' },
-    { title: 'Light', value: 'table-light' },
-    { title: 'Dark', value: 'table-dark' }
-  ],
-  table_cell_class_list: [
-    { title: 'None', value: '' },
-    { title: 'Primary', value: 'table-primary' },
-    { title: 'Success', value: 'table-success' },
-    { title: 'Danger', value: 'table-danger' },
-    { title: 'Info', value: 'table-info' },
-    { title: 'Warning', value: 'table-warning' },
-    { title: 'Active', value: 'table-active' },
-    { title: 'Secondary', value: 'table-secondary' },
-    { title: 'Light', value: 'table-light' },
-    { title: 'Dark', value: 'table-dark' }
-  ],
-  file_picker_callback(callback: any, value: any, meta: any) {
-    fileManager.callback = callback
-    fileManager.value = value
-    fileManager.docType = meta.filetype.toUpperCase() // image | file | media
+  // table_default_attributes: { class: 'table' },
+  // table_default_styles: {},
+  // table_class_list: [
+  //   { title: 'None', value: 'table' },
+  //   { title: 'Striped Rows', value: 'table table-striped' },
+  //   { title: 'Bordered', value: 'table table-bordered' },
+  //   { title: 'Bordered Striped Rows', value: 'table table-bordered table-striped' },
+  //   { title: 'Borderless', value: 'table table-borderless' },
+  //   { title: 'Hoverable', value: 'table table-hover' },
+  //   { title: 'Small', value: 'table table-sm' },
+  //   { title: 'Small Striped Rows', value: 'table table-sm table-striped' },
+  //   { title: 'Small Bordered', value: 'table table-sm table-bordered' },
+  //   { title: 'Small Bordered Striped Rows', value: 'table table-sm table-bordered table-striped' },
+  //   { title: 'Small Borderless', value: 'table table-sm table-borderless' },
+  //   { title: 'Small Hoverable', value: 'table table-sm table-hover' }
+  // ],
+  // table_row_class_list: [
+  //   { title: 'None', value: '' },
+  //   { title: 'Primary', value: 'table-primary' },
+  //   { title: 'Success', value: 'table-success' },
+  //   { title: 'Danger', value: 'table-danger' },
+  //   { title: 'Info', value: 'table-info' },
+  //   { title: 'Warning', value: 'table-warning' },
+  //   { title: 'Active', value: 'table-active' },
+  //   { title: 'Secondary', value: 'table-secondary' },
+  //   { title: 'Light', value: 'table-light' },
+  //   { title: 'Dark', value: 'table-dark' }
+  // ],
+  // table_cell_class_list: [
+  //   { title: 'None', value: '' },
+  //   { title: 'Primary', value: 'table-primary' },
+  //   { title: 'Success', value: 'table-success' },
+  //   { title: 'Danger', value: 'table-danger' },
+  //   { title: 'Info', value: 'table-info' },
+  //   { title: 'Warning', value: 'table-warning' },
+  //   { title: 'Active', value: 'table-active' },
+  //   { title: 'Secondary', value: 'table-secondary' },
+  //   { title: 'Light', value: 'table-light' },
+  //   { title: 'Dark', value: 'table-dark' }
+  // ]
+  // file_picker_callback(callback: any, value: any, meta: any) {
+  //   fileManager.callback = callback
+  //   fileManager.value = value
+  //   fileManager.docType = meta.filetype.toUpperCase() // image | file | media
 
-    openFileManager()
-  }
+  //   openFileManager()
+  // }
 })
 
 function openFileManager() {
@@ -218,14 +214,14 @@ function openFileManager() {
   End Tinymce Config
 */
 
-function closeFileManager() {
-  fileManager.open = false
-  fmodal.value.hide()
-}
+// function closeFileManager() {
+//   fileManager.open = false
+//   fmodal.value.hide()
+// }
 
-function pick(fileUrl: any, fileMeta: any) {
-  if(fileManager.callback) fileManager.callback(fileUrl, fileMeta)
-}
+// function pick(fileUrl: any, fileMeta: any) {
+//   if(fileManager.callback) fileManager.callback(fileUrl, fileMeta)
+// }
 </script>
 
 <template>
@@ -233,13 +229,13 @@ function pick(fileUrl: any, fileMeta: any) {
 
   <editor
     :disabled="disabled"
-    :initial-value="modelValue"
-    :value="modelValue"
+    :initial-value="model"
+    v-model="model"
     @input="emitInput"
     :init="tinymceConfig"
   />
 
-  <RModal
+  <!-- <RModal
     ref="fmodal"
     size="xl"
     body-class="p-0"
@@ -252,6 +248,6 @@ function pick(fileUrl: any, fileMeta: any) {
     @hide="closeFileManager"
     :title="useTranslations('fileManager.mediaGallery')"
   >
-    <!-- <file-manager picker :doc-type="fileManager.docType" @pick="pick" @close="closeFileManager" :api="props.docsApi" /> -->
-  </RModal>
+    <file-manager picker :doc-type="fileManager.docType" @pick="pick" @close="closeFileManager" :api="props.docsApi" />
+  </RModal> -->
 </template>

@@ -19,6 +19,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@popperjs/core": "^2.11.6",
     "@routaa/ui-kit": "1.1.1",
+    "@tinymce/tinymce-vue": "^4.0.7",
     "@types/moment-jalaali": "^0.7.5",
     "@types/moment-locales-webpack-plugin": "^1.2.3",
     "@types/vue-cropperjs": "^4.1.2",
@@ -29,14 +30,13 @@
     "moment-jalaali": "^0.9.6",
     "moment-locales-webpack-plugin": "^1.2.0",
     "moment-timezone": "^0.5.40",
+    "tinymce": "^5.8.0",
     "vue": "^3.2.45",
     "vue-cropperjs": "^5.0.0",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.1.6",
     "vue3-colorpicker": "^2.1.2",
-    "vuedraggable": "^4.1.0",
-    "@tinymce/tinymce-vue": "^2.0.0",
-    "tinymce": "^5.8.0"
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@types/downloadjs": "^1.4.3",

@@ -13,14 +13,14 @@
       content: '*';
       color: $danger;
       transform: translateY(-3px);
-      padding-right: .4rem !important;
+      padding-right: 0.4rem !important;
     }
 
     .input-group-text::after {
       content: '*';
       color: $danger;
       transform: translateY(-3px);
-      padding-right: .4rem !important;
+      padding-right: 0.4rem !important;
     }
 
     .card-header::after {
@@ -32,13 +32,13 @@
       content: '*';
       color: $danger;
       transform: translateY(-3px);
-      padding-right: .4rem !important;
+      padding-right: 0.4rem !important;
     }
     .range-input::after {
       content: '*';
       color: $danger;
       transform: translateY(-3px);
-      padding-right: .4rem !important;
+      padding-right: 0.4rem !important;
     }
   }
 }
@@ -57,14 +57,14 @@
       content: '*';
       color: $danger;
       transform: translateY(-3px);
-      padding-right: .4rem !important;
+      padding-right: 0.4rem !important;
     }
 
     .input-group-text::after {
       content: '*';
       color: $danger;
       transform: translateY(-3px);
-      padding-right: .4rem !important;
+      padding-right: 0.4rem !important;
     }
 
     .card-header::after {
@@ -77,7 +77,7 @@
       content: '*';
       color: $danger;
       transform: translateY(-3px);
-      padding-right: .4rem !important;
+      padding-right: 0.4rem !important;
     }
   }
 }
@@ -124,15 +124,14 @@
 .vertical-center {
   position: absolute;
   top: 50%;
-  right: .8rem;
+  right: 0.8rem;
   transform: translateY(-50%);
   z-index: 20;
 }
 
-
 *[dir='rtl'] {
   .vertical-center {
-    left: .8rem !important;
+    left: 0.8rem !important;
     right: unset !important;
   }
 }
@@ -219,12 +218,16 @@
 }
 
 // colorPicker btn
-.btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
+.btn-check:checked + .btn,
+:not(.btn-check) + .btn:active,
+.btn:first-child:active,
+.btn.active,
+.btn.show {
   border: none !important;
   border-color: transparent !important;
 }
 
-//tinymce 
+//tinymce
 .tinymce-title {
   background: $input-group-addon-bg;
   color: $input-group-addon-color;
@@ -233,4 +236,16 @@
   border: 1px solid #ccc;
   border-width: 1px 1px 0;
   @extend .rounded-top;
+}
+
+.tox {
+  .tox-menubar,
+  .tox-statusbar {
+    background-color: $input-group-addon-bg !important;
+  }
+}
+
+.tox-listbox__select-chevron {
+  @extend .me-2;
+  display: inline-block;
 }
