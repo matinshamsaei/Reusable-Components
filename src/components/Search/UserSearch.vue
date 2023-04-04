@@ -8,6 +8,7 @@ import CModal from '@/components/CModal/index.vue'
 import NumericInput from '@/components/NumericInput/index.vue'
 
 type Props = {
+  modelValue?: IObject[]
   size?: string
   prepend?: string
   title?: string
@@ -21,6 +22,7 @@ const titleHandler = computed(() => (props.title ? props.title : props.prepend))
 
 type Emits = {
   (e: 'search', val: any[]): void
+  (e: 'update:modelValue', val: IObject[] | string): void
 }
 
 const emits = defineEmits<Emits>()
@@ -69,7 +71,7 @@ function getApi(filter: IObject): Promise<IObject[]> {
     headers: {
       Accept: 'application/json, text/plain, */*',
       Authorization:
-        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAACXOSw7CMAwE0Lt43aA2zs_d9Q5cIA2OFBAE1a2EQNydRGzfeEb-wFEuMGtncQA5VphhSYlFzvXGDxigiDRL9X5aeav1vbHE2AN-PWGenKdAlkbdLuP-B69x6nDdS68a4owuKWsCKcNpVMQ6K4sBjY5NY25z0t8I3uP3B7FQSUiTAAAA.cNacrcma5ZJdpmVA44es3DvHm_SNkI45KKpVWyNxBmrdgX9b0-Yi1taeRK7Otf1gHsV_W0xcF6LkwFMt7xvI4Q'
+        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAACWOUQ7CIBBE77LfxVBodxf-vIMXoBQSNIrptonReHch_r6ZN5kPHGUFb3C2A8ixgIdzjEnkUm_pAQMUkcZivZ-WtNX63pKE0IP0eoIfkTWRY8etGfY_QE26g-temorZjmF1pFgbVpMlq9hhVmwoYzJuoqzbnPQbzDN-f9dhxoKTAAAA.RCpsVs0_LMz4-WZH2qXRPo6gKOmBTShDyX3TCVDIjDG7VW2xtGkuC6K2rHmNK1ka7lDdtmhbcKjvQR0_571GAQ'
     }
   })
     .then((response) => response.json())
@@ -116,6 +118,7 @@ function toggleItem(item: IObject): void {
   selectedItems.value = []
   selectedItems.value.push(item)
   emits('search', selectedItems.value)
+  emits('update:modelValue', selectedItems.value)
   hide()
 }
 
@@ -129,6 +132,7 @@ function removeUsers(): void {
   input.value[0].textContent = ''
   selectedItems.value = []
   emits('search', selectedItems.value)
+  emits('update:modelValue', selectedItems.value)
   reset()
 }
 </script>
