@@ -1,6 +1,6 @@
 import type { SetupContext } from 'vue'
 
-export function convertNumbers2English(str: string): string | number {
+export function convertNumbers2English(str: string): string | number | null {
   if (!str) return null
   return str.replace(/[\u0660-\u0669\u06f0-\u06f9]/g, function (c) {
     return c.charCodeAt(0) & 0xf
@@ -35,4 +35,8 @@ export function attrsPartitioner(attrs: SetupContext['attrs']) {
   }
 
   return { attributes, listeners }
+}
+
+export function isEmptyObj(data: IObject) {
+  return Object.values(data).every((x) => x === null || x === '')
 }
