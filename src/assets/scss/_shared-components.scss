@@ -145,6 +145,38 @@
   vertical-align: middle;
 }
 
+.none-prepend {
+  .custom-input, .form-control {
+    border-radius: 0.375rem !important;
+  }
+}
+
+.vpd-content{
+  .vpd-header {
+    .vpd-year-label, .vpd-date {
+      text-align: center;
+    }
+  }
+  .vpd-body {
+    .vpd-controls {
+      .vpd-month-label{
+        width: 120px !important;
+        span {
+        &::hover{
+          border-width: none !important
+        }
+          border-width: none !important
+        }
+        border: none !important;
+      }
+    }
+    .vpd-actions{
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
 // Uploader
 .image-editor {
   .cropper-view-box {

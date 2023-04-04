@@ -1,13 +1,11 @@
 <template>
   <div>
-    <RInputGroup :size="size" :prepend="prepend" class="flex-nowrap">
-      <input type="text" class="custom-input form-control" :placeholder="`${props.placeholder}`" :label="props.label" />
-
+    <RInputGroup :size="size" :prepend="prepend" class="flex-nowrap" :class="{ 'none-prepend': !props.prepend }">
       <DatePicker
         v-model="model"
         :auto-submit="props.autoSubmit"
-        :custom-input="props.customInput"
         :input-class="props.inputClass"
+        :custom-input="`.custom-input`"
         :input-format="props.inputFormat"
         :display-format="ShowDateAndTime"
         :view="props.view"
@@ -17,6 +15,8 @@
         :disable="props.disable"
         :clearable="props.clearable"
       />
+
+      <input type="text" class="custom-input form-control" :placeholder="`${props.placeholder}`" :label="props.label" />
     </RInputGroup>
   </div>
 </template>
@@ -34,8 +34,14 @@ type Props = {
   prepend?: string
   size?: string
   append?: string
-  displayFormat?:string | 'dddd jDD jMMMM jYYYY HH:mm:ss' | 'dddd jDD jMMMM jYYYY '
-  inputFormat?: string | 'jYYYY/jMM/jDD HH:mm' | 'YYYY/MM/DD HH:mm' | 'YYYY/MM/DD HH:mm:ss' | 'YYYY-MM-DD HH:mm:ss' | 'HH:mm'
+  displayFormat?: string | 'dddd jDD jMMMM jYYYY HH:mm:ss' | 'dddd jDD jMMMM jYYYY '
+  inputFormat?:
+    | string
+    | 'jYYYY/jMM/jDD HH:mm'
+    | 'YYYY/MM/DD HH:mm'
+    | 'YYYY/MM/DD HH:mm:ss'
+    | 'YYYY-MM-DD HH:mm:ss'
+    | 'HH:mm'
   format?: string | 'jYYYY/jMM/jDD HH:mm' | 'YYYY/MM/DD HH:mm' | 'YYYY/MM/DD HH:mm:ss' | 'YYYY-MM-DD HH:mm:ss' | 'HH:mm'
   view?: string | 'day' | 'month' | 'year' | 'time'
   type?: string | 'date' | 'datetime' | 'year' | 'month' | 'time'
@@ -78,7 +84,6 @@ const model = computed({
 })
 
 const ShowDateAndTime = computed(() => {
-  return props.displayFormat ? props.displayFormat : `dddd jDD jMMMM jYYYY ${t('shared.clock')} HH:mm` 
+  return props.displayFormat ? props.displayFormat : `dddd jDD jMMMM jYYYY ${t('shared.clock')} HH:mm`
 })
-
 </script>
