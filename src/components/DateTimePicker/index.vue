@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import DatePicker from 'vue3-persian-datetime-picker' //https://talkhabi.github.io/vue-persian-datetime-picker/guide
+import DatePicker from 'vue3-persian-datetime-picker' // https://talkhabi.github.io/vue-persian-datetime-picker/guide
 import { RInputGroup } from '@routaa/ui-kit'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -48,7 +48,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 type Props = {
-  modelValue: string
+  modelValue: string | string[]
   placeholder?: string
   prepend?: string
   size?: string
@@ -99,8 +99,8 @@ const model = computed({
   get() {
     return props.modelValue
   },
-  set(val: string) {
-    if (val) emit('update:modelValue', val.replace(' ', 'T'))
+  set(val: string | string[]) {
+    if (val?.length && typeof val === 'string') emit('update:modelValue', val.replace(' ', 'T'))
     else emit('update:modelValue', val)
   }
 })
