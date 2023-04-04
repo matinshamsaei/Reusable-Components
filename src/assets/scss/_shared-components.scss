@@ -137,6 +137,18 @@
 }
 
 // Date Time Picker
+.date-time-picker {
+  .vpd-input-group input {
+    border: 1px solid #dadada !important;
+    border-top-left-radius:0 !important;
+    border-bottom-left-radius: 0 !important;
+  }
+  .vpd-input-group{
+    border-radius: 0.375rem !important;
+    overflow: hidden;
+  }
+}
+
 .custom-input {
   border: 1px solid #dadada;
   background: #fff;
@@ -152,6 +164,9 @@
 }
 
 .vpd-content{
+  border-radius: 0.375rem !important;
+  overflow: hidden;
+
   .vpd-header {
     .vpd-year-label, .vpd-date {
       text-align: center;

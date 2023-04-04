@@ -1,27 +1,46 @@
 <template>
   <div>
-    <RInputGroup :size="size" :prepend="prepend" class="flex-nowrap" :class="{ 'none-prepend': !props.prepend }">
+    <RInputGroup
+      :size="size"
+      :prepend="prepend"
+      class="date-time-picker flex-nowrap"
+      :class="{ 'none-prepend': !props.prepend }"
+    >
       <DatePicker
         v-model="model"
         :auto-submit="props.autoSubmit"
+        :editable="props.editable"
         :input-class="props.inputClass"
-        :custom-input="`.custom-input`"
+        :custom-input="customInput"
         :input-format="props.inputFormat"
-        :display-format="ShowDateAndTime"
+        :display-format="showDateAndTime"
         :view="props.view"
         :type="props.type"
         :format="props.format"
         :disabled="props.disabled"
         :disable="props.disable"
         :clearable="props.clearable"
+        :multiple="props.multiple"
+        :simple="props.simple"
+        :placeholder="`${props.placeholder}`"
+        :label="props.label"
+        :compact-time="props.compactTime"
       />
 
-      <input type="text" class="custom-input form-control" :placeholder="`${props.placeholder}`" :label="props.label" />
+      <input
+        v-if="customInput"
+        type="text"
+        :placeholder="`${props.placeholder}`"
+        :label="props.label"
+        class="custom-input form-control"
+        :class="{ 'custom-input': customInput }"
+      />
     </RInputGroup>
   </div>
 </template>
+
 <script setup lang="ts">
-import DatePicker from 'vue3-persian-datetime-picker'
+import DatePicker from 'vue3-persian-datetime-picker' //https://talkhabi.github.io/vue-persian-datetime-picker/guide
 import { RInputGroup } from '@routaa/ui-kit'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -34,30 +53,28 @@ type Props = {
   prepend?: string
   size?: string
   append?: string
-  displayFormat?: string | 'dddd jDD jMMMM jYYYY HH:mm:ss' | 'dddd jDD jMMMM jYYYY '
-  inputFormat?:
-    | string
-    | 'jYYYY/jMM/jDD HH:mm'
-    | 'YYYY/MM/DD HH:mm'
-    | 'YYYY/MM/DD HH:mm:ss'
-    | 'YYYY-MM-DD HH:mm:ss'
-    | 'HH:mm'
-  format?: string | 'jYYYY/jMM/jDD HH:mm' | 'YYYY/MM/DD HH:mm' | 'YYYY/MM/DD HH:mm:ss' | 'YYYY-MM-DD HH:mm:ss' | 'HH:mm'
-  view?: string | 'day' | 'month' | 'year' | 'time'
-  type?: string | 'date' | 'datetime' | 'year' | 'month' | 'time'
-  min?: string
-  max?: string
+  displayFormat?: string //'dddd jDD jMMMM jYYYY HH:mm:ss' | 'dddd jDD jMMMM jYYYY '
+  inputFormat?: string //'jYYYY/jMM/jDD HH:mm'| 'YYYY/MM/DD HH:mm'| 'YYYY/MM/DD HH:mm:ss'| 'YYYY-MM-DD HH:mm:ss'| 'HH:mm'
+  format?: string //'jYYYY/jMM/jDD HH:mm' | 'YYYY/MM/DD HH:mm' | 'YYYY/MM/DD HH:mm:ss' | 'YYYY-MM-DD HH:mm:ss' | 'HH:mm'
+  view?: string // Show a specific section at startup => 'day' | 'month' | 'year' | 'time'
+  type?: string // 'date' | 'datetime' | 'year' | 'month' | 'time'
+  min?: string // Limit datetime picker minimum and maximum
+  max?: string // Limit datetime picker minimum and maximum
   editable?: boolean
-  customInput?: string
+  customInput?: string | boolean // For change design input
   inputClass?: string
   autoSubmit?: boolean
-  disabled?: boolean
-  disable?: [string] | string | Function
+  disabled?: boolean // for Disable datepicker
+  disable?: [string] | string | Function // for Disable dates for example certain days in week or specific date 1402/03/14
   label?: string
-  clearable?: false
+  clearable?: boolean
+  multiple?: boolean
+  simple?: boolean // Show simple card For select date
+  compactTime?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  placeholder: '',
   format: 'YYYY-MM-DD HH:mm:ss',
   view: 'day',
   type: 'date',
@@ -65,7 +82,11 @@ const props = withDefaults(defineProps<Props>(), {
   inputClass: 'form-control',
   autoSubmit: false,
   disabled: false,
-  clearable: false
+  clearable: false,
+  multiple: false,
+  simple: false,
+  customInput: false,
+  compactTime: false
 })
 
 interface Emits {
@@ -79,11 +100,16 @@ const model = computed({
     return props.modelValue
   },
   set(val: string) {
-    emit('update:modelValue', val.replace(' ', 'T'))
+    if (val) emit('update:modelValue', val.replace(' ', 'T'))
+    else emit('update:modelValue', val)
   }
 })
 
-const ShowDateAndTime = computed(() => {
+const showDateAndTime = computed(() => {
   return props.displayFormat ? props.displayFormat : `dddd jDD jMMMM jYYYY ${t('shared.clock')} HH:mm`
+})
+
+const customInput = computed(() => {
+  return props.customInput ? `.custom-input` : ``
 })
 </script>
