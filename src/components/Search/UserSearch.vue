@@ -12,6 +12,7 @@ type Props = {
   size?: string
   prepend?: string
   title?: string
+  getAllInfo: Function
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -21,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 const titleHandler = computed(() => (props.title ? props.title : props.prepend))
 
 type Emits = {
-  (e: 'update:modelValue', val: IObject): void
+  (e: 'update:modelValue', val: string | number): void
 }
 
 const emits = defineEmits<Emits>()
@@ -65,7 +66,7 @@ async function searching(filter: IObject) {
 }
 
 function getApi(filter: IObject): Promise<IObject[]> {
-  return $api.users.getAllInfo(filter)
+  return props.getAllInfo(filter)
 }
 
 const fields = ref<Array<IObject>>([
