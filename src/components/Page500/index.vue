@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import useTranslations from '@/composable/useTranslations'
 import { RImg, RButton } from '@routaa/ui-kit'
 
 type Props = {
@@ -11,10 +11,8 @@ type Props = {
 
 const props = defineProps<Props>()
 
-const { t } = useI18n()
-
 const pageTitle = computed(() => {
-  return props.title || t('shared.oopsWeHaveAProblem')
+  return props.title || useTranslations('shared.oopsWeHaveAProblem')
 })
 </script>
 
