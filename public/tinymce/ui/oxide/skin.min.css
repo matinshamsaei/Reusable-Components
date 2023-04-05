@@ -13,7 +13,7 @@
   cursor: auto;
   direction: ltr;
   float: none;
-  font-family: vazir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+  font-family: Vazirmatn, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     'Helvetica Neue', sans-serif;
   font-size: 16px;
   font-style: normal;
@@ -46,7 +46,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  font-family: vazir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+  font-family: Vazirmatn, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     'Helvetica Neue', sans-serif;
   overflow: hidden;
   visibility: inherit !important;
@@ -61,7 +61,7 @@
   border-top: none !important;
 }
 .tox-tinymce-aux {
-  font-family: vazir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+  font-family: Vazirmatn, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     'Helvetica Neue', sans-serif;
 }
 .tox-tinymce *:focus,
@@ -145,7 +145,7 @@ button::-moz-focus-inner {
   color: #fff;
   cursor: pointer;
   display: inline-block;
-  font-family: vazir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+  font-family: Vazirmatn, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     'Helvetica Neue', sans-serif;
   font-size: 14px;
   font-weight: bold;
@@ -249,7 +249,7 @@ button::-moz-focus-inner {
   box-sizing: border-box;
   cursor: pointer;
   display: inline-block;
-  font-family: vazir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+  font-family: Vazirmatn, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     'Helvetica Neue', sans-serif;
   font-size: 16px;
   font-weight: normal;
@@ -898,7 +898,7 @@ button::-moz-focus-inner {
   margin-left: auto;
 }
 .tox .tox-dialog__title {
-  font-family: vazir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+  font-family: Vazirmatn, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     'Helvetica Neue', sans-serif;
   font-size: 20px;
   font-style: normal;
@@ -1253,7 +1253,7 @@ body.tox-dialog__disable-scroll {
   box-shadow: none;
   box-sizing: border-box;
   color: #222f3e;
-  font-family: vazir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+  font-family: Vazirmatn, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     'Helvetica Neue', sans-serif;
   font-size: 16px;
   line-height: 24px;

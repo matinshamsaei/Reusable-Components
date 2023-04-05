@@ -4,6 +4,23 @@ import Editor from '@tinymce/tinymce-vue'
 import { RModal } from '@routaa/ui-kit'
 import useTranslations from '@/composable/useTranslations'
 import useGlobalProps from '@/composable/useGlobalProps'
+import 'tinymce/tinymce'
+import 'tinymce/themes/silver/theme'
+import 'tinymce/plugins/paste'
+import 'tinymce/plugins/link'
+import 'tinymce/plugins/directionality'
+import 'tinymce/plugins/lists'
+import 'tinymce/plugins/autoresize'
+import 'tinymce/plugins/advlist'
+import 'tinymce/plugins/code'
+import 'tinymce/plugins/image'
+import 'tinymce/plugins/media'
+import 'tinymce/plugins/hr'
+import 'tinymce/plugins/fullscreen'
+import 'tinymce/plugins/table'
+import 'tinymce/plugins/wordcount'
+import 'tinymce/plugins/searchreplace'
+import 'tinymce/icons/default'
 
 type Props = {
   title?: string
@@ -11,15 +28,17 @@ type Props = {
   disabled?: boolean
   modelValue?: string
   cssUrl?: string
-  height?: number
-  maxHeight?: number
+  height?: number | string
+  maxHeight?: number | string
   resize?: boolean
+  elementpath?: boolean
   // docsApi: object
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
-  resize: false
+  resize: false,
+  elementpath: true
 })
 
 type Emits = {
@@ -128,9 +147,9 @@ const tinymceConfig = reactive({
   // extended_valid_elements: '*[*]',
   skin_url: '/tinymce/ui/oxide',
   // directionality: useTranslations('direction'),
-  // language_url: `/tinymce/langs/${language}.js`,
+  language_url: `/tinymce/langs/${language}.js`,
   language,
-  // content_css,
+  content_css,
   plugins: [
     'table',
     'fullscreen',
@@ -157,6 +176,7 @@ const tinymceConfig = reactive({
   autoresize_bottom_margin: 30,
   resize: props.resize,
   branding: false,
+  elementpath: props.elementpath
   // table_default_attributes: { class: 'table' },
   // table_default_styles: {},
   // table_class_list: [
@@ -227,13 +247,7 @@ function openFileManager() {
 <template>
   <h6 v-if="props.title" class="tinymce-title" :class="props.titleClass">{{ props.title }}</h6>
 
-  <editor
-    :disabled="disabled"
-    :initial-value="model"
-    v-model="model"
-    @input="emitInput"
-    :init="tinymceConfig"
-  />
+  <editor :disabled="disabled" :initial-value="model" v-model="model" @input="emitInput" :init="tinymceConfig" />
 
   <!-- <RModal
     ref="fmodal"
