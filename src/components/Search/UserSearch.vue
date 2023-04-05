@@ -8,7 +8,7 @@ import CModal from '@/components/CModal/index.vue'
 import NumericInput from '@/components/NumericInput/index.vue'
 
 type Props = {
-  modelValue?: IObject[]
+  modelValue?: string | number
   size?: string
   prepend?: string
   title?: string
@@ -21,8 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 const titleHandler = computed(() => (props.title ? props.title : props.prepend))
 
 type Emits = {
-  (e: 'search', val: any[]): void
-  (e: 'update:modelValue', val: IObject[] | string): void
+  (e: 'update:modelValue', val: IObject): void
 }
 
 const emits = defineEmits<Emits>()
@@ -66,18 +65,7 @@ async function searching(filter: IObject) {
 }
 
 function getApi(filter: IObject): Promise<IObject[]> {
-  // return props.getAllInfoApi(filter)
-  return fetch(`http://192.168.7.16/user-mgmt/api/admin/users/info?id=${filter.id}`, {
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-      Authorization:
-        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAACWOUQ7CIBBE77LfxVBodxf-vIMXoBQSNIrptonReHch_r6ZN5kPHGUFb3C2A8ixgIdzjEnkUm_pAQMUkcZivZ-WtNX63pKE0IP0eoIfkTWRY8etGfY_QE26g-temorZjmF1pFgbVpMlq9hhVmwoYzJuoqzbnPQbzDN-f9dhxoKTAAAA.RCpsVs0_LMz4-WZH2qXRPo6gKOmBTShDyX3TCVDIjDG7VW2xtGkuC6K2rHmNK1ka7lDdtmhbcKjvQR0_571GAQ'
-    }
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      return data
-    })
+  return $api.users.getAllInfo(filter)
 }
 
 const fields = ref<Array<IObject>>([
@@ -112,13 +100,12 @@ const fields = ref<Array<IObject>>([
 
 const items = ref<Array<IObject>>([])
 
-const selectedItems = ref<Array<IObject>>([])
+let selectedItems = reactive<IObject>({})
 
-function toggleItem(item: IObject): void {
-  selectedItems.value = []
-  selectedItems.value.push(item)
-  emits('search', selectedItems.value)
-  emits('update:modelValue', selectedItems.value)
+function selectItem(item: IObject): void {
+  selectedItems = {}
+  selectedItems = { ...item }
+  emits('update:modelValue', selectedItems.id)
   hide()
 }
 
@@ -130,9 +117,8 @@ const input = ref()
 
 function removeUsers(): void {
   input.value[0].textContent = ''
-  selectedItems.value = []
-  emits('search', selectedItems.value)
-  emits('update:modelValue', selectedItems.value)
+  selectedItems = {}
+  emits('update:modelValue', selectedItems.id)
   reset()
 }
 </script>
@@ -217,7 +203,7 @@ function removeUsers(): void {
       </template>
 
       <template #actions="{ item }">
-        <RButton class="px-3" size="sm" variant="success" @click="toggleItem(item)">
+        <RButton class="px-3" size="sm" variant="success" @click="selectItem(item)">
           {{ useTranslations('shared.select') }}
         </RButton>
       </template>
