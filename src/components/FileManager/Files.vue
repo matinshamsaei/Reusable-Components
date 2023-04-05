@@ -46,7 +46,7 @@ const fields = ref([
 type CtxMenuType = {
   [x: string]: any
   open?: boolean
-  item?: string
+  item?: object
   x?: number
   y?: number
 }
@@ -200,12 +200,18 @@ function getIcon(item: string | any) {
   }
 }
 
-function rowContextMenu(item: null, e: { preventDefault: () => void; layerX: number; layerY: number }) {
-  // e.preventDefault()
+type Proxy = {
+  item: object
+  index: number
+  $event: { preventDefault: () => void; layerX: number; layerY: number } 
+}
+
+function rowContextMenu(proxy: Proxy) {
+  proxy.$event.preventDefault()
   ctxMenu.open = true
-  ctxMenu.item = item
-  ctxMenu.x = e.layerX
-  ctxMenu.y = e.layerY
+  ctxMenu.item = proxy.item
+  ctxMenu.x = proxy.$event.layerX
+  ctxMenu.y = proxy.$event.layerY
 }
 
 function getIconClass(item: ModelType) {

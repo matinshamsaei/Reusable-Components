@@ -7,6 +7,8 @@ type Props = {
   oldName?: string
 }
 
+const show = ref(true)
+
 const props = defineProps<Props>()
 
 const name = ref(props.oldName || '')
@@ -29,11 +31,13 @@ function emitConfirm() {
 
 function emitCancel() {
   emit('cancel')
+  show.value = true
 }
 </script>
 
 <template>
   <RModal
+    v-model="show"
     size="sm"
     centered
     no-fade

@@ -16,7 +16,7 @@ const emit = defineEmits<Emit>()
 
 const okDisabled = computed(() => {
   const okDisabledName = name.value || ''
-  return okDisabledName.trim().length ? true : false
+  return okDisabledName.trim().length ? false : true
 })
 
 function emitConfirm() {

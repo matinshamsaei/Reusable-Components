@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, reactive, onMounted, computed, toRef } from 'vue'
 import FBreadcrumb from './Breadcrumb.vue'
 import FCreateFolder from './CreateFolder.vue'
 import FFiles from './Files.vue'
@@ -61,7 +61,7 @@ const path = ref<string>('')
 const createFolderOpen = ref(false)
 const uploaderOpen = ref(false)
 const clipboard: ClipBoard = reactive({ item: {}, action: '' })
-let renameItem: ModelType = reactive({})
+let renameItem = ref<ModelType>({})
 
 type Error = {
   data?: string
@@ -120,7 +120,7 @@ function cut(item: ModelType) {
 
 async function paste() {
   let promise = null
-  if (`${path}/${clipboard.item.name}` === clipboard.item.path) {
+  if (`${path.value}/${clipboard.item.name}` === clipboard.item.path) {
     clipboard.item = {}
     clipboard.action = ''
   } else if (clipboard.item.folder) {
@@ -129,17 +129,17 @@ async function paste() {
         throw new Error(useTranslations('fileManager.cantMoveFolderToItself'))
       } else {
         progressing.value = true
-        promise = props.api.moveFolder(props.docType, clipboard.item.path, path)
+        promise = props.api.moveFolder(props.docType, clipboard.item.path, path.value)
       }
     } else {
       progressing.value = true
-      promise = props.api.copyFolder(props.docType, clipboard.item.path, path)
+      promise = props.api.copyFolder(props.docType, clipboard.item.path, path.value)
     }
   } else {
     if (clipboard.action === 'cut') {
-      promise = props.api.moveDoc(props.docType, clipboard.item.path, `${path}/${clipboard.item.name}`)
+      promise = props.api.moveDoc(props.docType, clipboard.item.path, `${path.value}/${clipboard.item.name}`)
     } else {
-      promise = props.api.copyDoc(props.docType, clipboard.item.path, `${path}/${clipboard.item.name}`)
+      promise = props.api.copyDoc(props.docType, clipboard.item.path, `${path.value}/${clipboard.item.name}`)
     }
   }
   if (!promise) return
@@ -169,7 +169,7 @@ async function remove(item: any) {
 }
 
 function refresh() {
-  getFolder(path.value)
+  return getFolder(path.value)
 }
 
 function openCreateFolderDialog() {
@@ -177,7 +177,7 @@ function openCreateFolderDialog() {
 }
 
 function openRenameDialog(item: ModelType) {
-  renameItem = item
+  renameItem.value = item
 }
 
 function closeCreateFolderDialog() {
@@ -185,7 +185,7 @@ function closeCreateFolderDialog() {
 }
 
 function closeRenameDialog() {
-  renameItem = {}
+  renameItem.value = {}
 }
 
 function openUploaderDialog() {
@@ -201,11 +201,11 @@ function select(item: ModelType) {
   selected = item
 }
 
-async function getFolder(path: string) {
+async function getFolder(folderPath: string) {
   try {
     progressing.value = true
-    path = path
-    const res = await props.api.getFolderByPath(props.docType, path)
+    path.value = folderPath
+    const res = await props.api.getFolderByPath(props.docType, path.value)
     folderItems.value = res.folders.map((f: any) => ({
       url: f.url,
       path: f.path,
@@ -230,7 +230,7 @@ async function getFolder(path: string) {
 
 async function createFolder(name: string) {
   try {
-    const createPathFolder: string = `${path}/${name}`
+    const createPathFolder: string = `${path.value}/${name}`
     await props.api.createFolder(props.docType, createPathFolder)
     refresh()
   } catch (err) {
@@ -239,12 +239,13 @@ async function createFolder(name: string) {
 }
 
 async function rename(newName: string) {
+  console.log(newName)
   try {
     let promise: Function
-    if (renameItem.folder) {
-      promise = props.api.renameFolder(props.docType, path, renameItem.name, newName)
+    if (renameItem.value.folder) {
+      promise = props.api.renameFolder(props.docType, path.value, renameItem.value.name, newName)
     } else {
-      promise = props.api.renameDoc(props.docType, path, renameItem.name, newName)
+      promise = props.api.renameDoc(props.docType, path.value, renameItem.value.name, newName)
     }
     await promise()
     refresh()
@@ -302,7 +303,9 @@ function emitClose() {
     />
 
     <FFooter v-if="picker" class="rounded-bottom" :selected="selected" @confirm="emitPick" @cancel="emitClose" />
+
     <FCreateFolder v-if="createFolderOpen" @confirm="createFolder" @cancel="closeCreateFolderDialog" />
+
     <Uploader
       v-model="model"
       v-if="uploaderOpen"
@@ -311,8 +314,9 @@ function emitClose() {
       :path="path"
       @close="closeUploaderDialog"
     />
+
     <FRename
-      v-if="!!renameItem"
+      v-if="!!renameItem && !!Object.keys(renameItem).length"
       :old-name="renameItem.name ? renameItem.name : ''"
       @confirm="rename"
       @cancel="closeRenameDialog"
