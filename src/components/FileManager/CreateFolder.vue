@@ -38,7 +38,6 @@ function emitCancel() {
     :title="useTranslations('fileManager.createFolder')"
     :cancel-title="useTranslations('shared.cancel')"
     :ok-title="useTranslations('shared.create')"
-    lazy
     @hide="emitCancel"
     @ok="emitConfirm"
     :ok-disabled="okDisabled"

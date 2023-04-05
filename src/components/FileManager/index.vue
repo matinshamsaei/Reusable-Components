@@ -8,6 +8,7 @@ import FRename from './Rename.vue'
 import FToolbar from './Toolbar.vue'
 import Uploader from './Uploader.vue'
 import useGlobalProps from '../../composable/useGlobalProps'
+import useTranslations from '../../composable/useTranslations'
 
 const model = ref('')
 
@@ -35,23 +36,6 @@ type ModelType = {
   size?: number
   type?: string
   url?: string
-}
-
-// http://192.168.7.16/routaa-app/api/admin/article/docs/FILE?path=
-
-function getApi() {
-  // return props.getAllInfoApi(filter)
-  return fetch(`http://192.168.7.16/routaa-app/api/admin/article/docs/FILE?path=`, {
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-      Authorization:
-        'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAACWOSQ7CMBAE_zLnGHkZb7nlD3zAdgbJIDDKJBIC8Xdsca3uavUHjrrCrJ03E_CRYYalFGI-txs9YILK3Flp91OmrbX3RpzSCOj1hFm5IJ1Hr2Jvpv0PrFRxgOteu-qtKRFRCWclCXSuiGSKFnrFHIzVSuVLn-NxIwQ03x9VLrLtkwAAAA.FH4XYDSJCw3PxJwzvCaikE_8TuiPIKR-HXP_w-LsPRgLDM8HG51Gh0Ci2oJAM65G4HAMFiE15dh5S7k7FsCfqw'
-    }
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      return data
-    })
 }
 
 type ClipBoard = {
@@ -142,7 +126,7 @@ async function paste() {
   } else if (clipboard.item.folder) {
     if (clipboard.action === 'cut') {
       if (clipboard.item.path && path.value.startsWith(clipboard.item.path)) {
-        // this.$showError(this.$t('fileManager.cantMoveFolderToItself'))
+        throw new Error(useTranslations('fileManager.cantMoveFolderToItself'))
       } else {
         progressing.value = true
         promise = props.api.moveFolder(props.docType, clipboard.item.path, path)
@@ -166,35 +150,22 @@ async function paste() {
     clipboard.action = ''
     refresh()
   } catch (err) {
-    // this.$showError(this.$getLocaleErrorMessage(err, 'fileManager'))
     if (typeof err === 'object') errorHandler(err)
   }
 }
 
-function remove(item: any) {
-  // this.$confirm().then(() => {
-  //   let promise
-  //   if (item.folder) promise = props.api.deleteFolder(props.docType, item.path)
-  //   else promise = props.api.deleteDoc(props.docType, item.path)
-  //   promise
-  //     .catch((err) => {
-  //       this.$showError(this.$getLocaleErrorMessage(err, 'fileManager'))
-  //     })
-  //     .then(() => {
-  //       this.refresh()
-  //     })
-  // })
+async function remove(item: any) {
+  try {
+    let promise
+    if (item.folder) promise = props.api.deleteFolder(props.docType, item.path)
+    else promise = props.api.deleteDoc(props.docType, item.path)
 
-  let promise
-  if (item.folder) promise = props.api.deleteFolder(props.docType, item.path)
-  else promise = props.api.deleteDoc(props.docType, item.path)
-  promise
-    .catch((err: any) => {
-      console.log(err)
-    })
-    .then(() => {
-      refresh()
-    })
+    await promise
+
+    refresh()
+  } catch (err) {
+    if (typeof err === 'object') errorHandler(err)
+  }
 }
 
 function refresh() {

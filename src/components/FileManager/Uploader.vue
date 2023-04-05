@@ -4,12 +4,6 @@ import Uploader from '../Uploader/index.vue'
 import useTranslations from '@/composable/useTranslations'
 import { computed, ref, reactive } from 'vue'
 
-///////////test
-
-// v-model="model" :upload-req="uploadReq"
-
-//////////test
-
 const model = ref('')
 
 type ApiTypes = {
@@ -23,8 +17,6 @@ type Props = {
 }
 
 const props = withDefaults(defineProps<Props>(), {})
-
-const uploadModel = reactive({ api: props.api, type: props.docType, path: props.path })
 
 interface Emit {
   (e: 'close', value: any): void

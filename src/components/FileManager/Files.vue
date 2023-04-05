@@ -201,7 +201,7 @@ function getIcon(item: string | any) {
 }
 
 function rowContextMenu(item: null, e: { preventDefault: () => void; layerX: number; layerY: number }) {
-  e.preventDefault()
+  // e.preventDefault()
   ctxMenu.open = true
   ctxMenu.item = item
   ctxMenu.x = e.layerX
@@ -260,12 +260,13 @@ function openCtxMenu(e: CtxMenuType) {
         @row-selected="rowSelected"
         @row-contextmenu="rowContextMenu"
       >
-        <template #cell(name)="data">
+        <template #name="data">
           <font-awesome-icon size="lg" class="mx-2" :icon="data.item.icon" :class="getIconClass(data.item)" />
+
           <span> {{ data.item.name }} </span>
         </template>
 
-        <template #cell(type)="data">
+        <template #type="data">
           <strong v-if="data.item.folder">{{ data.item.type }}</strong>
 
           <span class="small" v-else>{{ data.item.type }}</span>
@@ -280,23 +281,26 @@ function openCtxMenu(e: CtxMenuType) {
     </div>
 
     <RListGroup v-if="ctxMenu.open" class="ctx-menu shadow-sm" :style="ctxMenuPosStyle">
-      <RListGroupItem class="py-2 px-1" button @click="emitOpen" v-if="ctxMenu.item">
+      <RListGroupItem class="py-2 px-1 list-group-item-action" button @click="emitOpen" v-if="ctxMenu.item">
         <font-awesome-icon icon="eye" fixed-width class="text-muted align-middle mx-1" />
+
         {{ useTranslations('forms.open') }}
       </RListGroupItem>
 
-      <RListGroupItem class="py-2 px-1" button @click="emitCopy" v-if="ctxMenu.item">
+      <RListGroupItem class="py-2 px-1 list-group-item-action" button @click="emitCopy" v-if="ctxMenu.item">
         <font-awesome-icon icon="copy" fixed-width class="text-muted align-middle mx-1" />
+
         {{ useTranslations('fileManager.copy') }}
       </RListGroupItem>
 
-      <RListGroupItem class="py-2 px-1" button @click="emitCut" v-if="ctxMenu.item">
+      <RListGroupItem class="py-2 px-1 list-group-item-action" button @click="emitCut" v-if="ctxMenu.item">
         <font-awesome-icon icon="scissors" fixed-width class="text-muted align-middle mx-1" />
+
         {{ useTranslations('fileManager.cut') }}
       </RListGroupItem>
 
       <RListGroupItem
-        class="py-2 px-1"
+        class="py-2 px-1 list-group-item-action"
         :class="{ 'bg-light': !clipboard?.item }"
         button
         :disabled="!clipboard?.item"
@@ -312,13 +316,13 @@ function openCtxMenu(e: CtxMenuType) {
         {{ useTranslations('fileManager.paste') }}
       </RListGroupItem>
 
-      <RListGroupItem class="py-2 px-1" button @click="emitRename" v-if="ctxMenu.item">
+      <RListGroupItem class="py-2 px-1 list-group-item-action" button @click="emitRename" v-if="ctxMenu.item">
         <font-awesome-icon icon="italic" fixed-width class="text-muted align-middle mx-1" />
 
         {{ useTranslations('fileManager.rename') }}
       </RListGroupItem>
 
-      <RListGroupItem class="py-2 px-1" button @click="emitRemove" v-if="ctxMenu.item">
+      <RListGroupItem class="py-2 px-1 list-group-item-action" button @click="emitRemove" v-if="ctxMenu.item">
         <font-awesome-icon icon="trash" fixed-width class="text-muted align-middle mx-1" />
 
         {{ useTranslations('fileManager.remove') }}
@@ -328,10 +332,10 @@ function openCtxMenu(e: CtxMenuType) {
 
   <div
     v-if="ctxMenu.open"
+    tabindex="0"
     class="ctx-menu-backdrop"
     @contextmenu.prevent="removeCtxMenuItem"
     @keyup.esc="removeCtxMenuItem"
     @click="removeCtxMenuItem"
-    tabindex="0"
   />
 </template>
