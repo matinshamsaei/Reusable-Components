@@ -7,6 +7,7 @@ import FFooter from './Footer.vue'
 import FRename from './Rename.vue'
 import FToolbar from './Toolbar.vue'
 import Uploader from './Uploader.vue'
+import useErrors from '../../composable/useErrors'
 import useGlobalProps from '../../composable/useGlobalProps'
 import useTranslations from '../../composable/useTranslations'
 import { isObject } from '../../utils/object'
@@ -47,11 +48,13 @@ type ClipBoard = {
 type Props = {
   api: ApiTypes
   picker?: boolean
+  isMember?: boolean
   docType?: 'IMAGE' | 'FILE' | 'MEDIA'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   picker: false,
+  isMember: false,
   docType: 'FILE'
 })
 
@@ -63,25 +66,6 @@ const createFolderOpen = ref(false)
 const uploaderOpen = ref(false)
 const clipboard: ClipBoard = reactive({ item: {}, action: '' })
 let renameItem = ref<ModelType>({})
-
-type Error = {
-  data?: string
-  errorCode?: number
-  status?: number
-  code?: number
-}
-
-function errorHandler(errors: Error | Error[] | null) {
-  if (errors && Array.isArray(errors)) {
-    errors.forEach((error) => {
-      if (typeof error === 'object') throwError(error)
-    })
-  } else throwError(errors)
-}
-
-const throwError = (error: Error | null): void => {
-  if (error && error.data) throw new Error(error.data)
-}
 
 onMounted(() => {
   refresh()
@@ -108,7 +92,7 @@ function copy(item: ModelType) {
 }
 
 function open(item: ModelType) {
-  if (item.folder && item.path) return getFolder(item.path)
+  if (item.folder && item.path && !props.isMember) return getFolder(item.path)
   let schema = globalProps.$config.ssl ? 'https://' : 'http://'
   const url = `${schema}${globalProps.$config.files.thumbServer}/${globalProps.$config.prefixUrl}${item.url}`
   window.open(url, '_blank')
@@ -124,7 +108,7 @@ async function paste() {
   if (`${path.value}/${clipboard.item.name}` === clipboard.item.path) {
     clipboard.item = {}
     clipboard.action = ''
-  } else if (clipboard.item.folder) {
+  } else if (clipboard.item.folder && !props.isMember) {
     if (clipboard.action === 'cut') {
       if (clipboard.item.path && path.value.startsWith(clipboard.item.path))
         throw new Error(useTranslations('fileManager.cantMoveFolderToItself'))
@@ -148,22 +132,22 @@ async function paste() {
     clipboard.item = {}
     clipboard.action = ''
     refresh()
-  } catch (err) {
-    if (typeof err === 'object') errorHandler(err)
+  } catch (err: any) {
+    if (typeof err === 'object') useErrors(err)
   }
 }
 
 async function remove(item: any) {
   try {
     let promise
-    if (item.folder) promise = props.api.deleteFolder(props.docType, item.path)
+    if (item.folder && !props.isMember) promise = props.api.deleteFolder(props.docType, item.path)
     else promise = props.api.deleteDoc(props.docType, item.path)
 
     await promise
 
     refresh()
   } catch (err) {
-    if (typeof err === 'object') errorHandler(err)
+    if (typeof err === 'object') useErrors(err)
   }
 }
 
@@ -222,32 +206,34 @@ async function getFolder(folderPath: string) {
     )
     progressing.value = false
   } catch (err) {
-    if (typeof err === 'object') errorHandler(err)
+    if (typeof err === 'object') useErrors(err)
     progressing.value = false
   }
 }
 
 async function createFolder(name: string) {
   try {
-    const createPathFolder: string = `${path.value}/${name}`
-    await props.api.createFolder(props.docType, createPathFolder)
+    if (!props.isMember) {
+      const createPathFolder: string = `${path.value}/${name}`
+      await props.api.createFolder(props.docType, createPathFolder)
+    }
     refresh()
   } catch (err) {
-    if (typeof err === 'object') errorHandler(err)
+    if (typeof err === 'object') useErrors(err)
   }
 }
 
 async function rename(newName: string) {
   try {
     let promise: Function
-    if (renameItem.value.folder)
+    if (renameItem.value.folder && !props.isMember)
       promise = props.api.renameFolder(props.docType, path.value, renameItem.value.name, newName)
     else promise = props.api.renameDoc(props.docType, path.value, renameItem.value.name, newName)
 
     await promise
     refresh()
   } catch (err) {
-    if (typeof err === 'object') errorHandler(err)
+    if (typeof err === 'object') useErrors(err)
   }
 }
 
@@ -272,51 +258,51 @@ function emitClose() {
 </script>
 
 <template>
-  <div>
-    <FToolbar
-      :progressing="progressing"
-      @openCreateFolder="openCreateFolderDialog"
-      @openUploader="openUploaderDialog"
-      @refresh="refresh"
-    />
+  <FToolbar
+    :progressing="progressing"
+    :isMember="props.isMember"
+    @openCreateFolder="openCreateFolderDialog"
+    @openUploader="openUploaderDialog"
+    @refresh="refresh"
+  />
 
-    <FBreadcrumb :items="breadcrumbItems" @click="getFolder" />
+  <FBreadcrumb :items="breadcrumbItems" @click="getFolder" />
 
-    <FFiles
-      :items="folderItems"
-      :class="{ 'rounded-bottom': !picker }"
-      :progressing="progressing"
-      :picker="picker"
-      :selected="selected"
-      @select="select"
-      @folder="getFolder"
-      @copy="copy"
-      @open="open"
-      @cut="cut"
-      @paste="paste"
-      @remove="remove"
-      @rename="openRenameDialog"
-      :clipboard="clipboard"
-    />
+  <FFiles
+    :items="folderItems"
+    :class="{ 'rounded-bottom': !picker }"
+    :progressing="progressing"
+    :picker="picker"
+    :selected="selected"
+    :clipboard="clipboard"
+    :isMember="props.isMember"
+    @select="select"
+    @folder="getFolder"
+    @copy="copy"
+    @open="open"
+    @cut="cut"
+    @paste="paste"
+    @remove="remove"
+    @rename="openRenameDialog"
+  />
 
-    <FFooter v-if="picker" class="rounded-bottom" :selected="selected" @confirm="emitPick" @cancel="emitClose" />
+  <FFooter v-if="picker" class="rounded-bottom" :selected="selected" @confirm="emitPick" @cancel="emitClose" />
 
-    <FCreateFolder v-if="createFolderOpen" @confirm="createFolder" @cancel="closeCreateFolderDialog" />
+  <FCreateFolder v-if="createFolderOpen && !props.isMember" @confirm="createFolder" @cancel="closeCreateFolderDialog" />
 
-    <Uploader
-      v-if="uploaderOpen"
-      v-model="model"
-      :path="path"
-      :api="props.api"
-      :doc-type="docType"
-      @close="closeUploaderDialog"
-    />
+  <Uploader
+    v-if="uploaderOpen"
+    v-model="model"
+    :path="path"
+    :api="props.api"
+    :doc-type="docType"
+    @close="closeUploaderDialog"
+  />
 
-    <FRename
-      v-if="!!isObject(renameItem)"
-      :old-name="renameItem.name ? renameItem.name : ''"
-      @confirm="rename"
-      @cancel="closeRenameDialog"
-    />
-  </div>
+  <FRename
+    v-if="!!isObject(renameItem)"
+    :old-name="renameItem.name ? renameItem.name : ''"
+    @confirm="rename"
+    @cancel="closeRenameDialog"
+  />
 </template>

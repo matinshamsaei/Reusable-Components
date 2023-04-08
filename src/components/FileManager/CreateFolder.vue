@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
 import { ref, computed } from 'vue'
+import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
 import useTranslations from '@/composable/useTranslations'
 
 const name = ref('')

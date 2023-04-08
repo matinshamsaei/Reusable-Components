@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import { RModal } from '@routaa/ui-kit'
 import Uploader from '../Uploader/index.vue'
 import useTranslations from '@/composable/useTranslations'
-import { computed, ref } from 'vue'
 
 const model = ref('')
 
@@ -38,9 +38,7 @@ const accept = computed(() => {
 })
 
 function uploadApi(files: object, onProgress: object) {
-  return props.api.upload(props.docType, props.path, files, onProgress).then((res: any) => {
-    return res[0].url
-  })
+  return props.api.upload(props.docType, props.path, files, onProgress).then((res: any) => res[0].url)
 }
 
 function emitClose(uploadedDocs: string | object | null) {
@@ -50,14 +48,14 @@ function emitClose(uploadedDocs: string | object | null) {
 
 <template>
   <RModal
-    centered
     no-fade
-    no-close-on-backdrop
-    no-close-on-esc
+    centered
     hide-footer
+    no-close-on-esc
+    no-close-on-backdrop
+    body-class="p-4"
     :title="useTranslations('fileManager.upload')"
     @hide="emitClose"
-    body-class="p-4"
   >
     <Uploader v-model="model" :upload="uploadApi" @update:model-value="emitClose" :accept="accept" />
   </RModal>

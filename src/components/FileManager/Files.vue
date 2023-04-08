@@ -2,10 +2,18 @@
 import { RTable, RListGroupItem, RListGroup } from '@routaa/ui-kit'
 import CLoading from '../CLoading/index.vue'
 import { computed, reactive, ref, useAttrs, watch } from 'vue'
-import useTranslations from '@/composable/useTranslations'
 import { isObject } from '../../utils/object'
+import useTranslations from '@/composable/useTranslations'
 
 const attrs = useAttrs()
+
+type Props = {
+  items?: object[]
+  picker?: boolean
+  progressing: boolean
+  clipboard?: ClipBoard
+  isMember?: boolean
+}
 
 type ModelType = {
   folder?: boolean
@@ -20,13 +28,6 @@ type ModelType = {
 type ClipBoard = {
   item: ModelType
   action: string
-}
-
-type Props = {
-  items?: object[]
-  picker?: boolean
-  progressing: boolean
-  clipboard?: ClipBoard
 }
 
 type CtxMenuType = {
@@ -44,7 +45,8 @@ type Proxy = {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  picker: false
+  picker: false,
+  isMember: false
 })
 
 const fields = ref([
@@ -79,7 +81,12 @@ interface Emit {
 const emit = defineEmits<Emit>()
 
 const files = computed(() => {
-  return (props.items as any[]).map((i: ModelType) => {
+  let items: object[] = []
+  if (props.isMember && props.items && props.items.length)
+    items = props.items?.filter((item: ModelType) => !item.folder)
+  else items = props.items && props.items.length ? props.items : []
+
+  return (items as any[]).map((i: ModelType) => {
     i.type = i.folder ? 'folder' : getType(i)
     i.icon = getIcon(i)
     return i
@@ -203,7 +210,7 @@ function getRowClass(item: ModelType) {
 function rowSelected(items: any[]) {
   const item = items[0]
   emit('select', item && !item.folder ? item : null)
-  if (item && item.folder) emit('folder', item.path)
+  if (item && item.folder && !props.isMember) emit('folder', item.path)
 }
 
 function openCtxMenu(e: CtxMenuType) {
@@ -281,10 +288,10 @@ function emitPaste() {
 
     <RListGroup v-if="ctxMenu.open" class="ctx-menu shadow-sm" :style="ctxMenuPosStyle">
       <RListGroupItem
-        class="py-2 px-1 list-group-item-action cursor-pointer"
-        button
-        @click="emitOpen"
         v-if="ctxMenu.item"
+        button
+        class="py-2 px-1 list-group-item-action cursor-pointer"
+        @click="emitOpen"
       >
         <font-awesome-icon icon="eye" fixed-width class="text-muted align-middle mx-1" />
 
@@ -292,10 +299,10 @@ function emitPaste() {
       </RListGroupItem>
 
       <RListGroupItem
-        class="py-2 px-1 list-group-item-action cursor-pointer"
+        v-if="ctxMenu.item && !props.isMember"
         button
+        class="py-2 px-1 list-group-item-action cursor-pointer"
         @click="emitCopy"
-        v-if="ctxMenu.item"
       >
         <font-awesome-icon icon="copy" fixed-width class="text-muted align-middle mx-1" />
 
@@ -303,10 +310,10 @@ function emitPaste() {
       </RListGroupItem>
 
       <RListGroupItem
-        class="py-2 px-1 list-group-item-action cursor-pointer"
+        v-if="ctxMenu.item && !props.isMember"
         button
+        class="py-2 px-1 list-group-item-action cursor-pointer"
         @click="emitCut"
-        v-if="ctxMenu.item"
       >
         <font-awesome-icon icon="scissors" fixed-width class="text-muted align-middle mx-1" />
 
@@ -314,10 +321,11 @@ function emitPaste() {
       </RListGroupItem>
 
       <RListGroupItem
-        class="py-2 px-1 list-group-item-action cursor-pointer"
-        :class="{ 'bg-light': !isObject(clipboard?.item) }"
+        v-if="!props.isMember"
         button
+        class="py-2 px-1 list-group-item-action cursor-pointer"
         :disabled="!isObject(clipboard?.item)"
+        :class="{ 'bg-light': !isObject(clipboard?.item) }"
         @click="emitPaste"
       >
         <font-awesome-icon

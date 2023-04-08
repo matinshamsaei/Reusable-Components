@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { RButton } from '@routaa/ui-kit'
-import useTranslations from '../../composable/useTranslations'
 import { FontAwesomeLayers } from '@fortawesome/vue-fontawesome'
+import useTranslations from '../../composable/useTranslations'
 
 type Props = {
   progressing: boolean
+  isMember?: boolean
 }
 
 const props = defineProps<Props>()
@@ -33,9 +34,10 @@ function emitUpload() {
 <template>
   <div class="p-2 bg-light border-bottom d-flex justify-content-between">
     <div>
-      <RButton size="sm" :disabled="props.progressing" variant="secondary" @click="emitCreateFolder">
+      <RButton v-if="!isMember" size="sm" :disabled="props.progressing" variant="secondary" @click="emitCreateFolder">
         <font-awesome-layers class="align-middle" fixed-width>
           <font-awesome-icon icon="folder" size="lg" class="text-dark" />
+
           <font-awesome-icon icon="plus" transform="shrink-7 down-1 left-1" />
         </font-awesome-layers>
 
@@ -46,6 +48,7 @@ function emitUpload() {
       <RButton size="sm" :disabled="props.progressing" variant="secondary" class="mx-2" @click="emitUpload">
         <font-awesome-layers class="align-middle" fixed-width>
           <font-awesome-icon icon="cloud" size="lg" class="text-dark" />
+
           <font-awesome-icon icon="arrow-up" transform="shrink-7 down-1 right-2" />
         </font-awesome-layers>
 

@@ -42,13 +42,13 @@ function emitCancel() {
     centered
     no-fade
     no-close-on-backdrop
+    ok-variant="success"
+    :ok-disabled="okDisabled"
     :title="useTranslations('fileManager.createFolder')"
     :cancel-title="useTranslations('shared.cancel')"
     :ok-title="useTranslations('shared.confirm')"
-    @hide="emitCancel"
     @ok="emitConfirm"
-    :ok-disabled="okDisabled"
-    ok-variant="success"
+    @hide="emitCancel"
   >
     <RInputGroup :prepend="useTranslations('fileManager.newName')">
       <RFormInput v-model="name" dir="auto" />
