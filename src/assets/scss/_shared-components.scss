@@ -327,3 +327,26 @@
   border: none !important;
   border-color: transparent !important;
 }
+
+//tinymce
+.tinymce-title {
+  background: $input-group-addon-bg;
+  color: $input-group-addon-color;
+  padding: 10px;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-width: 1px 1px 0;
+  @extend .rounded-top;
+}
+
+.tox {
+  .tox-menubar,
+  .tox-statusbar {
+    background-color: $input-group-addon-bg !important;
+  }
+}
+
+.tox-listbox__select-chevron {
+  @extend .me-2;
+  display: inline-block;
+}

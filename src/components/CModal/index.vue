@@ -74,7 +74,7 @@ function hide() {
 </script>
 
 <template>
-  <span :class="{ 'd-inline-block': tag }">
+  <div>
     <slot v-if="!props.notActivator" name="activator" :show="show" :hide="hide" :attrs="props.tagAttrs">
       <component id="c-modal-component" :is="props.tag" v-bind="props.tagAttrs" @click.stop="show">
         <font-awesome-icon v-if="icon" id="c-modal-icon" :icon="icon" :class="[iconClass, 'align-middle me-1']" />
@@ -104,5 +104,5 @@ function hide() {
         </slot>
       </template>
     </RModal>
-  </span>
+  </div>
 </template>
