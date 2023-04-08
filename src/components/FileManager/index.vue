@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed, toRef } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import FBreadcrumb from './Breadcrumb.vue'
 import FCreateFolder from './CreateFolder.vue'
 import FFiles from './Files.vue'
@@ -9,6 +9,7 @@ import FToolbar from './Toolbar.vue'
 import Uploader from './Uploader.vue'
 import useGlobalProps from '../../composable/useGlobalProps'
 import useTranslations from '../../composable/useTranslations'
+import { isObject } from '../../utils/object'
 
 const model = ref('')
 
@@ -109,7 +110,7 @@ function copy(item: ModelType) {
 function open(item: ModelType) {
   if (item.folder && item.path) return getFolder(item.path)
   let schema = globalProps.$config.ssl ? 'https://' : 'http://'
-  const url = `${schema}${globalProps.$config.files.thumbServer}/${globalProps.$config.files.prefixUrl}${item.url}`
+  const url = `${schema}${globalProps.$config.files.thumbServer}/${globalProps.$config.prefixUrl}${item.url}`
   window.open(url, '_blank')
 }
 
@@ -125,9 +126,9 @@ async function paste() {
     clipboard.action = ''
   } else if (clipboard.item.folder) {
     if (clipboard.action === 'cut') {
-      if (clipboard.item.path && path.value.startsWith(clipboard.item.path)) {
+      if (clipboard.item.path && path.value.startsWith(clipboard.item.path))
         throw new Error(useTranslations('fileManager.cantMoveFolderToItself'))
-      } else {
+      else {
         progressing.value = true
         promise = props.api.moveFolder(props.docType, clipboard.item.path, path.value)
       }
@@ -136,11 +137,9 @@ async function paste() {
       promise = props.api.copyFolder(props.docType, clipboard.item.path, path.value)
     }
   } else {
-    if (clipboard.action === 'cut') {
+    if (clipboard.action === 'cut')
       promise = props.api.moveDoc(props.docType, clipboard.item.path, `${path.value}/${clipboard.item.name}`)
-    } else {
-      promise = props.api.copyDoc(props.docType, clipboard.item.path, `${path.value}/${clipboard.item.name}`)
-    }
+    else promise = props.api.copyDoc(props.docType, clipboard.item.path, `${path.value}/${clipboard.item.name}`)
   }
   if (!promise) return
 
@@ -198,7 +197,7 @@ function closeUploaderDialog(docs: string) {
 }
 
 function select(item: ModelType) {
-  selected = item
+  Object.assign(selected, item)
 }
 
 async function getFolder(folderPath: string) {
@@ -239,15 +238,13 @@ async function createFolder(name: string) {
 }
 
 async function rename(newName: string) {
-  console.log(newName)
   try {
     let promise: Function
-    if (renameItem.value.folder) {
+    if (renameItem.value.folder)
       promise = props.api.renameFolder(props.docType, path.value, renameItem.value.name, newName)
-    } else {
-      promise = props.api.renameDoc(props.docType, path.value, renameItem.value.name, newName)
-    }
-    await promise()
+    else promise = props.api.renameDoc(props.docType, path.value, renameItem.value.name, newName)
+
+    await promise
     refresh()
   } catch (err) {
     if (typeof err === 'object') errorHandler(err)
@@ -307,16 +304,16 @@ function emitClose() {
     <FCreateFolder v-if="createFolderOpen" @confirm="createFolder" @cancel="closeCreateFolderDialog" />
 
     <Uploader
-      v-model="model"
       v-if="uploaderOpen"
-      :api="api"
-      :doc-type="docType"
+      v-model="model"
       :path="path"
+      :api="props.api"
+      :doc-type="docType"
       @close="closeUploaderDialog"
     />
 
     <FRename
-      v-if="!!renameItem && !!Object.keys(renameItem).length"
+      v-if="!!isObject(renameItem)"
       :old-name="renameItem.name ? renameItem.name : ''"
       @confirm="rename"
       @cancel="closeRenameDialog"

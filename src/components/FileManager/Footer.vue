@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RButton } from '@routaa/ui-kit'
 import useTranslations from '@/composable/useTranslations'
+import { isObject } from '../../utils/object'
 
 type Props = {
   selected: boolean | object | string
@@ -33,10 +34,12 @@ function emitCancel() {
       {{ useTranslations('shared.cancel') }}
     </RButton>
 
-    <RButton size="sm" variant="success" @click="emitConfirm" v-if="props.selected">
+    <RButton v-if="isObject(props.selected)" size="sm" variant="success" @click="emitConfirm">
       <!-- :class="{ 'ml-2': $dir.ltr, 'mr-2': $dir.rtl }" -->
-      <font-awesome-icon icon="check" size="lg"></font-awesome-icon>
+      <font-awesome-icon icon="check" size="lg" />
+
       <span class="ml-2"></span>
+
       {{ useTranslations('shared.select') }}
     </RButton>
   </div>

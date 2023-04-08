@@ -3,6 +3,7 @@ import { RTable, RListGroupItem, RListGroup } from '@routaa/ui-kit'
 import CLoading from '../CLoading/index.vue'
 import { computed, reactive, ref, useAttrs, watch } from 'vue'
 import useTranslations from '@/composable/useTranslations'
+import { isObject } from '../../utils/object'
 
 const attrs = useAttrs()
 
@@ -28,6 +29,20 @@ type Props = {
   clipboard?: ClipBoard
 }
 
+type CtxMenuType = {
+  [x: string]: any
+  open?: boolean
+  item?: object | null
+  x?: number
+  y?: number
+}
+
+type Proxy = {
+  item: object
+  index: number
+  $event: { preventDefault: () => void; layerX: number; layerY: number }
+}
+
 const props = withDefaults(defineProps<Props>(), {
   picker: false
 })
@@ -43,17 +58,9 @@ const fields = ref([
   }
 ])
 
-type CtxMenuType = {
-  [x: string]: any
-  open?: boolean
-  item?: object
-  x?: number
-  y?: number
-}
-
-const ctxMenu = reactive({
+const ctxMenu: CtxMenuType = reactive({
   open: false,
-  item: null,
+  item: {},
   x: 0,
   y: 0
 })
@@ -82,11 +89,8 @@ const files = computed(() => {
 watch(
   () => ctxMenu.item,
   (val) => {
-    if (!val) {
-      window.removeEventListener('keyup', onEscapeKeyUp)
-    } else {
-      window.addEventListener('keyup', onEscapeKeyUp)
-    }
+    if (!val) window.removeEventListener('keyup', onEscapeKeyUp)
+    else window.addEventListener('keyup', onEscapeKeyUp)
   }
 )
 
@@ -96,36 +100,6 @@ const ctxMenuPosStyle = computed(() => {
     top: `${ctxMenu.y}px`
   }
 })
-
-function emitCopy() {
-  emit('copy', ctxMenu.item)
-  removeCtxMenuItem()
-}
-
-function emitOpen() {
-  emit('open', ctxMenu.item)
-  removeCtxMenuItem()
-}
-
-function emitCut() {
-  emit('cut', ctxMenu.item)
-  removeCtxMenuItem()
-}
-
-function emitRename() {
-  emit('rename', ctxMenu.item)
-  removeCtxMenuItem()
-}
-
-function emitRemove() {
-  emit('remove', ctxMenu.item)
-  removeCtxMenuItem()
-}
-
-function emitPaste() {
-  emit('paste')
-  removeCtxMenuItem()
-}
 
 function removeCtxMenuItem() {
   ctxMenu.item = null
@@ -200,12 +174,6 @@ function getIcon(item: string | any) {
   }
 }
 
-type Proxy = {
-  item: object
-  index: number
-  $event: { preventDefault: () => void; layerX: number; layerY: number } 
-}
-
 function rowContextMenu(proxy: Proxy) {
   proxy.$event.preventDefault()
   ctxMenu.open = true
@@ -228,6 +196,7 @@ function getRowClass(item: ModelType) {
     if (props.clipboard.action === 'copy') cls += ' table-warning'
     else if (props.clipboard.action === 'cut') cls += ' table-warning text-muted'
   }
+
   return cls
 }
 
@@ -243,6 +212,36 @@ function openCtxMenu(e: CtxMenuType) {
   ctxMenu.x = e.layerX
   ctxMenu.y = e.layerY
 }
+
+function emitCopy() {
+  emit('copy', ctxMenu.item)
+  removeCtxMenuItem()
+}
+
+function emitOpen() {
+  emit('open', ctxMenu.item)
+  removeCtxMenuItem()
+}
+
+function emitCut() {
+  emit('cut', ctxMenu.item)
+  removeCtxMenuItem()
+}
+
+function emitRename() {
+  emit('rename', ctxMenu.item)
+  removeCtxMenuItem()
+}
+
+function emitRemove() {
+  emit('remove', ctxMenu.item)
+  removeCtxMenuItem()
+}
+
+function emitPaste() {
+  emit('paste')
+  removeCtxMenuItem()
+}
 </script>
 
 <template>
@@ -250,19 +249,13 @@ function openCtxMenu(e: CtxMenuType) {
     <div class="table-wrap text-left" dir="ltr" v-bind="attrs" @contextmenu="openCtxMenu">
       <RTable
         small
-        stacked="sm"
         hover
         bordered
         :empty-text="useTranslations('shared.noRecords')"
-        :empty-filtered-text="useTranslations('shared.noMatchingRecords')"
-        show-empty
         :fields="fields"
         :items="files"
-        :busy="progressing"
         class="mb-0"
-        selectable
-        select-mode="single"
-        :tbody-tr-class="getRowClass"
+        :row-Variant="getRowClass"
         @row-selected="rowSelected"
         @row-contextmenu="rowContextMenu"
       >
@@ -287,48 +280,73 @@ function openCtxMenu(e: CtxMenuType) {
     </div>
 
     <RListGroup v-if="ctxMenu.open" class="ctx-menu shadow-sm" :style="ctxMenuPosStyle">
-      <RListGroupItem class="py-2 px-1 list-group-item-action" button @click="emitOpen" v-if="ctxMenu.item">
+      <RListGroupItem
+        class="py-2 px-1 list-group-item-action cursor-pointer"
+        button
+        @click="emitOpen"
+        v-if="ctxMenu.item"
+      >
         <font-awesome-icon icon="eye" fixed-width class="text-muted align-middle mx-1" />
 
         {{ useTranslations('forms.open') }}
       </RListGroupItem>
 
-      <RListGroupItem class="py-2 px-1 list-group-item-action" button @click="emitCopy" v-if="ctxMenu.item">
+      <RListGroupItem
+        class="py-2 px-1 list-group-item-action cursor-pointer"
+        button
+        @click="emitCopy"
+        v-if="ctxMenu.item"
+      >
         <font-awesome-icon icon="copy" fixed-width class="text-muted align-middle mx-1" />
 
         {{ useTranslations('fileManager.copy') }}
       </RListGroupItem>
 
-      <RListGroupItem class="py-2 px-1 list-group-item-action" button @click="emitCut" v-if="ctxMenu.item">
+      <RListGroupItem
+        class="py-2 px-1 list-group-item-action cursor-pointer"
+        button
+        @click="emitCut"
+        v-if="ctxMenu.item"
+      >
         <font-awesome-icon icon="scissors" fixed-width class="text-muted align-middle mx-1" />
 
         {{ useTranslations('fileManager.cut') }}
       </RListGroupItem>
 
       <RListGroupItem
-        class="py-2 px-1 list-group-item-action"
-        :class="{ 'bg-light': !clipboard?.item }"
+        class="py-2 px-1 list-group-item-action cursor-pointer"
+        :class="{ 'bg-light': !isObject(clipboard?.item) }"
         button
-        :disabled="!clipboard?.item"
+        :disabled="!isObject(clipboard?.item)"
         @click="emitPaste"
       >
         <font-awesome-icon
           icon="paste"
           fixed-width
           class="align-middle mx-1"
-          :class="{ 'text-muted': clipboard?.item, 'text-moremuted': !clipboard?.item }"
+          :class="{ 'text-muted': isObject(clipboard?.item), 'text-moremuted': !isObject(clipboard?.item) }"
         />
 
         {{ useTranslations('fileManager.paste') }}
       </RListGroupItem>
 
-      <RListGroupItem class="py-2 px-1 list-group-item-action" button @click="emitRename" v-if="ctxMenu.item">
+      <RListGroupItem
+        class="py-2 px-1 list-group-item-action cursor-pointer"
+        button
+        @click="emitRename"
+        v-if="ctxMenu.item"
+      >
         <font-awesome-icon icon="italic" fixed-width class="text-muted align-middle mx-1" />
 
         {{ useTranslations('fileManager.rename') }}
       </RListGroupItem>
 
-      <RListGroupItem class="py-2 px-1 list-group-item-action" button @click="emitRemove" v-if="ctxMenu.item">
+      <RListGroupItem
+        class="py-2 px-1 list-group-item-action cursor-pointer"
+        button
+        @click="emitRemove"
+        v-if="ctxMenu.item"
+      >
         <font-awesome-icon icon="trash" fixed-width class="text-muted align-middle mx-1" />
 
         {{ useTranslations('fileManager.remove') }}

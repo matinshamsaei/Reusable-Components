@@ -13,7 +13,7 @@ export interface IObject {
  * @return {Boolean} Whether or not @item is an object
  */
 export const isObject: IIsObject = (item: any): boolean => {
-  return item === Object(item) && !Array.isArray(item)
+  return item === Object(item) && !Array.isArray(item) && !!Object.keys(item).length
 }
 
 /** Deep Merge */
