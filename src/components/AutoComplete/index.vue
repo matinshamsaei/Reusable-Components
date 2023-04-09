@@ -15,7 +15,7 @@ import {
 } from '@routaa/ui-kit'
 
 type Props = {
-  modelValue: string | number
+  modelValue: string | number | null
   prepend?: string
   dir?: string
   valueField?: string | Function | boolean
@@ -42,6 +42,7 @@ type Props = {
   clearIconVariant?: string
   loadingIcon?: string
   loadingIconVariant?: string
+  name?: string
 }
 
 type Error = {
@@ -100,7 +101,7 @@ const model = computed({
   },
   set(val) {
     emit('update:modelValue', val)
-    emitChange(val)
+    if (val) emitChange(val)
   }
 })
 
@@ -290,6 +291,7 @@ const emitChange = (item: string | number): void => {
         v-model="text"
         readonly
         class="auto-complete"
+        :name="props.name"
         :dir="props.dir"
         :size="props.size"
         :disabled="props.disabled"
