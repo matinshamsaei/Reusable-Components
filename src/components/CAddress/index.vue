@@ -12,20 +12,19 @@ const hasCounty = ref<boolean>(false)
 const hasCity = ref<boolean>(false)
 const hasSuburb = ref<boolean>(false)
 const hasNeighborhood = ref<boolean>(false)
-const plaque = ref('')
-const unit = ref('')
 const counties = ref([])
 const suburbs = ref([])
 const cities = ref([])
 const neighborhoods = ref([])
+const unit = ref('')
+const plaque = ref('')
 
 type DivisionClasses = {
-  countryClasses?: HTMLAttributes['class']
+  provinceClasses?: HTMLAttributes['class']
   countyClasses?: HTMLAttributes['class']
   cityClasses?: HTMLAttributes['class']
   suburbClasses?: HTMLAttributes['class']
   neighborhoodClasses?: HTMLAttributes['class']
-  provinceClasses?: HTMLAttributes['class']
   addressClasses?: HTMLAttributes['class']
   plaqueClasses?: HTMLAttributes['class']
   unitClasses?: HTMLAttributes['class']
@@ -33,22 +32,22 @@ type DivisionClasses = {
 }
 
 type ModelValue = {
-  countryId: number
-  countyId: number
-  cityId: number
-  suburbId: number
-  neighborhoodId: number
-  provinceId: number
-  lat: number
-  lng: number
+  provinceId: number | null
+  countryId: number | null
+  countyId: number | null
+  cityId: number | null
+  suburbId: number | null
+  neighborhoodId: number | null
+  lat: number | null
+  lng: number | null
 
-  unitInfo: string
-  cityInfo: object
-  streetInfo: object | string
-  countyInfo: object
-  suburbInfo: object
-  neighborhoodInfo: object
-  provinceInfo: object
+  provinceInfo: object | null
+  countyInfo: object | null
+  cityInfo: object | null
+  suburbInfo: object | null
+  neighborhoodInfo: object | null
+  unitInfo: string | null
+  streetInfo: object | string | null
 }
 
 interface emit {
@@ -82,12 +81,11 @@ type ResponseType = { id: number; properties: Properties }
 
 type CountryDivisionsApi = {
   countries: Function
-  cities: Function
   provinces: Function
   counties: Function
+  cities: Function
   suburbs: Function
   neighborhoods: Function
-  self: Function
 }
 
 type Props = {
@@ -98,15 +96,14 @@ type Props = {
   reverseSearchApi: Function
   divisionClasses?: DivisionClasses
   extraField?: boolean
+  dir?: 'ltr' | 'rtl' | 'auto'
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  mdCols: '12'
+  mdCols: '12',
+  extraField: false,
+  dir: 'rtl'
 })
-
-// created() {
-//   this.$validator = this.$parent.$validator
-// }
 
 onMounted(() => {
   getCountries()
@@ -123,11 +120,11 @@ const model = computed({
   }
 })
 
-const divisionClasses = computed((division: keyof DivisionClasses) => {
+const divisionClasses = (division: keyof DivisionClasses) => {
   return props.divisionClasses && props.divisionClasses[division]
     ? props.divisionClasses[division]
     : `col-md-${props.mdCols}`
-})
+}
 
 function getCountries() {
   return props.countryDivisionsApi.countries().then((res: ResponseType[]) => (props.modelValue.countryId = res[0]?.id))
@@ -226,8 +223,8 @@ async function getStreetInfo() {
       const properties = items[0].properties
       let address = []
       if (properties.country) address.push(properties.country)
-      if (properties.city) address.push(properties.city)
       if (properties.county) address.push(properties.county)
+      if (properties.city) address.push(properties.city)
       if (properties.suburb) address.push(properties.suburb)
       if (properties.district) address.push(properties.district)
       if (properties.neighborhood) address.push(properties.neighborhood)
@@ -297,17 +294,17 @@ defineExpose({ generateUnitInfo })
           :name="$t('shared.province')"
           :search="getProvinces"
           :select="selectProvince"
+          :dir="props.dir"
           :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
           no-badge
           required
-          v-validate="'required'"
           @select="callNextRequest('province')"
           @change="clearAddressData('province')"
         />
       </div>
     </div>
 
-    <div class="col-12" :class="divisionClasses('countyId')">
+    <div class="col-12" :class="divisionClasses('countyClasses')">
       <div class="form-group">
         <AutoComplete
           v-model="model.countyId"
@@ -315,11 +312,11 @@ defineExpose({ generateUnitInfo })
           :name="$t('shared.county')"
           :search="getCounties"
           :select="selectCounty"
+          :dir="props.dir"
           :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
           no-badge
           :disabled="!model.provinceId"
           :required="!!model.countyId || hasCounty"
-          v-validate="{ required: !!model.countyId || hasCounty }"
           @select="callNextRequest('county')"
           @change="clearAddressData('county')"
         />
@@ -334,11 +331,11 @@ defineExpose({ generateUnitInfo })
           :name="$t('shared.city')"
           :search="getCities"
           :select="selectCity"
+          :dir="props.dir"
           :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
           no-badge
           :required="!!model.cityId || hasCity"
           :disabled="!model.countyId"
-          v-validate="{ required: !!model.cityId || hasCity }"
           @select="callNextRequest('city')"
           @change="clearAddressData('city')"
         />
@@ -353,11 +350,11 @@ defineExpose({ generateUnitInfo })
           :name="$t('shared.suburb')"
           :search="getSuburbs"
           :select="selectSuburb"
+          :dir="props.dir"
           :required="!!model.suburbId || hasSuburb"
           :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
           no-badge
           :disabled="!model.cityId"
-          v-validate="{ required: !!model.suburbId || hasSuburb }"
           @select="callNextRequest('suburb')"
           @change="clearAddressData('suburb')"
         />
@@ -372,11 +369,11 @@ defineExpose({ generateUnitInfo })
           :name="$t('shared.neighborhood')"
           :search="getNeighborhoods"
           :select="selectNeighborhood"
+          :dir="props.dir"
           :required="!!model.neighborhoodId || hasNeighborhood"
           :extendFilter="{ 'sort[0].column': 'name', 'sort[0].type': 'ASCENDING' }"
           no-badge
           :disabled="!model.suburbId"
-          v-validate="{ required: !!model.neighborhoodId || hasNeighborhood }"
           @change="clearAddressData('neighborhood')"
         />
       </div>
@@ -400,16 +397,9 @@ defineExpose({ generateUnitInfo })
     </template>
 
     <div class="col-12" :class="divisionClasses('streetClasses')">
-      <div v-if="model.streetInfo && typeof model.streetInfo === 'string'" class="form-group">
+      <div v-if="model.streetInfo !== null && typeof model.streetInfo === 'string'" class="form-group">
         <RInputGroup :prepend="$t('shared.streetInfo')">
-          <RFormTextarea
-            v-model="model.streetInfo"
-            :name="$t('shared.streetInfo')"
-            rows="6"
-            no-resize
-            v-validate="'required'"
-            dir="auto"
-          />
+          <RFormTextarea v-model="model.streetInfo" :name="$t('shared.streetInfo')" rows="6" no-resize dir="auto" />
         </RInputGroup>
       </div>
     </div>
