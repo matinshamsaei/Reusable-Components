@@ -1,6 +1,8 @@
-@import 'bootstrap/scss/bootstrap.scss';
-@import '@routaa/ui-kit/routaa-ui-kit.css';
+// Comment Bs Fix For Production
+// @import 'bootstrap';
+// @import '@routaa/ui-kit/routaa-ui-kit.css';
 
 @import 'cropperjs/dist/cropper.css';
 
+@import 'utils';
 @import 'shared-components';
