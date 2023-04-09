@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, nextTick, ref, computed } from 'vue'
+import { onMounted, nextTick, ref, computed, type HTMLAttributes } from 'vue'
 import { RFormTextarea, RInputGroup, RFormInput } from '@routaa/ui-kit'
 import useGlobalProps from '../../composable/useGlobalProps'
 import AutoComplete from '../AutoComplete/index.vue'
@@ -18,6 +18,19 @@ const counties = ref([])
 const suburbs = ref([])
 const cities = ref([])
 const neighborhoods = ref([])
+
+type DivisionClasses = {
+  countryClasses?: HTMLAttributes['class']
+  countyClasses?: HTMLAttributes['class']
+  cityClasses?: HTMLAttributes['class']
+  suburbClasses?: HTMLAttributes['class']
+  neighborhoodClasses?: HTMLAttributes['class']
+  provinceClasses?: HTMLAttributes['class']
+  addressClasses?: HTMLAttributes['class']
+  plaqueClasses?: HTMLAttributes['class']
+  unitClasses?: HTMLAttributes['class']
+  streetClasses?: HTMLAttributes['class']
+}
 
 type ModelValue = {
   countryId: number
@@ -83,10 +96,12 @@ type Props = {
   mdCols?: string
   countryDivisionsApi: CountryDivisionsApi
   reverseSearchApi: Function
+  divisionClasses?: DivisionClasses
+  extraField?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  mdCols: '6'
+  mdCols: '12'
 })
 
 // created() {
@@ -106,6 +121,12 @@ const model = computed({
   set(val: ModelValue) {
     emit('updated:modelValue', val)
   }
+})
+
+const divisionClasses = computed((division: keyof DivisionClasses) => {
+  return props.divisionClasses && props.divisionClasses[division]
+    ? props.divisionClasses[division]
+    : `col-md-${props.mdCols}`
 })
 
 function getCountries() {
@@ -262,11 +283,13 @@ function generateUnitInfo() {
   // Call from parent
   model.value.unitInfo = [plaque.value, unit.value].filter(Boolean).join(',')
 }
+
+defineExpose({ generateUnitInfo })
 </script>
 
 <template>
   <div class="row">
-    <div class="col-12" :class="`col-md-${props.mdCols}`">
+    <div class="col-12" :class="divisionClasses('provinceClasses')">
       <div class="form-group">
         <AutoComplete
           v-model="model.provinceId"
@@ -282,7 +305,9 @@ function generateUnitInfo() {
           @change="clearAddressData('province')"
         />
       </div>
+    </div>
 
+    <div class="col-12" :class="divisionClasses('countyId')">
       <div class="form-group">
         <AutoComplete
           v-model="model.countyId"
@@ -299,7 +324,9 @@ function generateUnitInfo() {
           @change="clearAddressData('county')"
         />
       </div>
+    </div>
 
+    <div class="col-12" :class="divisionClasses('cityClasses')">
       <div class="form-group">
         <AutoComplete
           v-model="model.cityId"
@@ -316,7 +343,9 @@ function generateUnitInfo() {
           @change="clearAddressData('city')"
         />
       </div>
+    </div>
 
+    <div class="col-12" :class="divisionClasses('suburbClasses')">
       <div class="form-group">
         <AutoComplete
           v-model="model.suburbId"
@@ -333,7 +362,9 @@ function generateUnitInfo() {
           @change="clearAddressData('suburb')"
         />
       </div>
+    </div>
 
+    <div class="col-12" :class="divisionClasses('neighborhoodClasses')">
       <div class="form-group">
         <AutoComplete
           v-model="model.neighborhoodId"
@@ -350,20 +381,25 @@ function generateUnitInfo() {
         />
       </div>
     </div>
-
-    <div class="col-12" :class="`col-md-${props.mdCols}`">
-      <div class="form-group">
-        <RInputGroup :prepend="$t('shared.plaque')">
-          <RFormInput v-model="plaque" dir="auto" />
-        </RInputGroup>
+    <template v-if="props.extraField">
+      <div class="col-12" :class="divisionClasses('plaqueClasses')">
+        <div class="form-group">
+          <RInputGroup :prepend="$t('shared.plaque')">
+            <RFormInput v-model="plaque" dir="auto" />
+          </RInputGroup>
+        </div>
       </div>
 
-      <div class="form-group">
-        <RInputGroup :prepend="$t('shared.unit')">
-          <RFormInput v-model="unit" dir="auto" />
-        </RInputGroup>
+      <div class="col-12" :class="divisionClasses('unitClasses')">
+        <div class="form-group">
+          <RInputGroup :prepend="$t('shared.unit')">
+            <RFormInput v-model="unit" dir="auto" />
+          </RInputGroup>
+        </div>
       </div>
+    </template>
 
+    <div class="col-12" :class="divisionClasses('streetClasses')">
       <div v-if="model.streetInfo && typeof model.streetInfo === 'string'" class="form-group">
         <RInputGroup :prepend="$t('shared.streetInfo')">
           <RFormTextarea
@@ -378,4 +414,5 @@ function generateUnitInfo() {
       </div>
     </div>
   </div>
+  <slot name="extra-fields" />
 </template>
