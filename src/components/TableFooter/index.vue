@@ -116,7 +116,7 @@ function checkPagination(perPage: number) {
       </div>
 
       <div v-if="props.showPerPage" class="d-flex me-1 my-2 col-sm col-12">
-        <div class="d-flex align-items-center font-md ms-auto">
+        <div class="d-flex align-items-center font-md mx-auto me-md-0 ms-md-auto">
           <div class="text-nowrap text-dark px-2">
             {{ t('shared.count') }}
           </div>
