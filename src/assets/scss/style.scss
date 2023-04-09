@@ -1,6 +1,7 @@
-@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
-@import '../../../node_modules/@routaa/ui-kit/routaa-ui-kit.css';
+@import 'bootstrap/scss/bootstrap.scss';
+@import '@routaa/ui-kit/routaa-ui-kit.css';
+
+@import 'cropperjs/dist/cropper.css';
 
 @import 'utils';
-
 @import 'shared-components';

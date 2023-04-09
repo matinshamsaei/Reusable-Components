@@ -3,7 +3,7 @@ import type { App, Plugin } from 'vue'
 import './assets/scss/style.scss'
 
 import * as Components from './components'
-import * as Translations from './translations'
+import type * as Translations from './translations'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
