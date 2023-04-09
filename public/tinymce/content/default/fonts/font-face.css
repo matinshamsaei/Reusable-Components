@@ -1,0 +1,17 @@
+@font-face {
+  font-family: Vazirmatn;
+  src: url('fonts/Vazirmatn-Regular.woff2') format('woff2'), url('fonts/Vazirmatn-Regular.ttf') format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: Vazirmatn;
+  src: url('fonts/Vazirmatn-Black.woff2') format('woff2'), url('fonts/Vazirmatn-Black.ttf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: Vazirmatn;
+  src: url('fonts/Vazirmatn-Medium.woff2') format('woff2'), url('fonts/Vazirmatn-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
