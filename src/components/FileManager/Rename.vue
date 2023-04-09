@@ -6,12 +6,11 @@ import { ref, computed } from 'vue'
 type Props = {
   oldName?: string
 }
-
-const show = ref(true)
-
 const props = defineProps<Props>()
 
+const show = ref(true)
 const name = ref(props.oldName || '')
+
 
 interface Emit {
   (e: 'confirm', value: any): void

@@ -4,7 +4,6 @@ import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
 import useTranslations from '@/composable/useTranslations'
 
 const name = ref('')
-
 const show = ref(true)
 
 interface Emit {

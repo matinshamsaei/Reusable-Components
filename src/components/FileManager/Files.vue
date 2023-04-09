@@ -279,7 +279,7 @@ function emitPaste() {
         </template>
 
         <div slot="table-busy" class="text-center text-danger my-5" :dir="useTranslations('direction')">
-          <CLoading class="align-middle"></CLoading>
+          <CLoading class="align-middle" />
 
           <strong class="mx-3">{{ useTranslations('fileManager.loading') }} ...</strong>
         </div>

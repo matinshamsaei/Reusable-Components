@@ -30,7 +30,7 @@ function emitClick(path: any) {
         <font-awesome-icon icon="house" class="align-middle" />
       </span>
 
-      <RLink @click="emitClick({ path: '/' })" v-else>
+      <RLink v-else @click="emitClick({ path: '/' })">
         <font-awesome-icon icon="house" class="align-middle" />
       </RLink>
     </li>
@@ -45,7 +45,7 @@ function emitClick(path: any) {
         {{ path.name }}
       </span>
 
-      <RLink @click="emitClick(path)" v-else>
+      <RLink v-else @click="emitClick(path)">
         {{ path.name }}
       </RLink>
     </li>
