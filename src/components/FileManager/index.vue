@@ -59,7 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const folderItems = ref<object[]>([])
-let selected: ModelType = reactive({})
+let selected = ref<ModelType>({})
 const progressing = ref(true)
 const path = ref<string>('')
 const createFolderOpen = ref(false)
@@ -181,7 +181,7 @@ function closeUploaderDialog(docs: string) {
 }
 
 function select(item: ModelType) {
-  Object.assign(selected, item)
+  selected.value = item
 }
 
 async function getFolder(folderPath: string) {
@@ -246,7 +246,7 @@ const emit = defineEmits<Emit>()
 
 function emitPick() {
   let schema = globalProps.$config.ssl ? 'https://' : 'http://'
-  const url = `${schema}${globalProps.$config.files.thumbServer}/${globalProps.$config.files.prefixUrl}${selected.url}`
+  const url = `${schema}${globalProps.$config.files.thumbServer}/${globalProps.$config.files.prefixUrl}${selected.value.url}`
 
   emit('pick', url)
   emitClose()

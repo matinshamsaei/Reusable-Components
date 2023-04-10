@@ -4,7 +4,7 @@ import { isObject } from '../../utils/object'
 import useTranslations from '@/composable/useTranslations'
 
 type Props = {
-  selected: boolean | object | string
+  selected: boolean | object | string | null
 }
 
 const props = withDefaults(defineProps<Props>(), {

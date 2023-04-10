@@ -80,6 +80,8 @@ interface Emit {
 
 const emit = defineEmits<Emit>()
 
+const selectedItem = ref()
+
 const files = computed(() => {
   let items: object[] = []
   if (props.isMember && props.items && props.items.length)
@@ -202,14 +204,16 @@ function getRowClass(item: ModelType) {
   if (props.clipboard?.item && props.clipboard.item.path === item.path) {
     if (props.clipboard.action === 'copy') cls += ' table-warning'
     else if (props.clipboard.action === 'cut') cls += ' table-warning text-muted'
-  }
+  } else if (selectedItem.value && selectedItem.value.path === item.path) cls += ' table-active'
 
   return cls
 }
 
 function rowSelected(items: any[]) {
   const item = items[0]
-  emit('select', item && !item.folder ? item : null)
+  const selectItem = item && !item.folder ? item : null
+  emit('select', selectItem)
+  selectedItem.value = selectItem
   if (item && item.folder && !props.isMember) emit('folder', item.path)
 }
 
@@ -258,11 +262,12 @@ function emitPaste() {
         small
         hover
         bordered
-        :empty-text="useTranslations('shared.noRecords')"
-        :fields="fields"
-        :items="files"
         class="mb-0"
-        :row-Variant="getRowClass"
+        :items="files"
+        :striped="false"
+        :fields="fields"
+        :tbody-tr-class="getRowClass"
+        :empty-text="useTranslations('shared.noRecords')"
         @row-selected="rowSelected"
         @row-contextmenu="rowContextMenu"
       >
