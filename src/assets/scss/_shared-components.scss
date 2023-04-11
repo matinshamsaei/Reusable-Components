@@ -1,105 +1,24 @@
 // Required
 *[dir='rtl'] {
-  .card-header-required {
-    .card-header::after {
-      @extend .text-danger, .position-absolute;
-      content: '*';
-      right: 8px;
-    }
-  }
-
-  .required {
-    .input-group-prepend .input-group-text::after {
-      @extend .text-danger;
-      content: '*';
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
-    }
-
-    .input-group-text::after {
-      @extend .text-danger;
-      content: '*';
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
-    }
-
-    .card-header::after {
-      @extend .text-danger;
-      content: '*';
-      transform: translateY(-3px);
-    }
-
-    .static-card::after {
-      @extend .text-danger;
-      content: '*';
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
-    }
-
-    .range-input::after {
-      @extend .text-danger;
-      content: '*';
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
-    }
-  }
-
   .auto-complete-multi {
     .wrapper {
       @extend .rounded-start, .ps-5;
     }
 
     .selected-item {
-      @extend .ms-1; 
+      @extend .ms-1;
     }
   }
 }
 
 *[dir='ltr'] {
-  .card-header-required {
-    .card-header::after {
-      @extend .text-danger, .position-absolute;
-      content: '*';
-      left: 8px;
-    }
-  }
-
-  .required {
-    .input-group-prepend .input-group-text::after {
-      @extend .text-danger;
-      content: '*';
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
-    }
-
-    .input-group-text::after {
-      @extend .text-danger;
-      content: '*';
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
-    }
-
-    .card-header::after {
-      @extend .text-danger;
-      content: '*';
-      transform: translateY(-3px);
-    }
-
-    .static-card::after {
-      @extend .text-danger;
-      content: '*';
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
-    }
-  }
-
   .auto-complete-multi {
     .wrapper {
       @extend .rounded-end, .pe-5;
     }
 
     .selected-item {
-      @extend .me-1; 
+      @extend .me-1;
     }
   }
 }
@@ -160,7 +79,17 @@
     border: 1px solid var(--bs-gray-400);
 
     .selected-item {
-      @extend .font-90, .mt-1, .padding-chips, .px-1, .bg-light, .rounded, .d-flex, .flex-nowrap, .align-items-center, .border, .align-self-center;
+      @extend .font-90,
+        .mt-1,
+        .padding-chips,
+        .px-1,
+        .bg-light,
+        .rounded,
+        .d-flex,
+        .flex-nowrap,
+        .align-items-center,
+        .border,
+        .align-self-center;
     }
 
     .form-control {

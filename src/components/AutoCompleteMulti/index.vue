@@ -86,6 +86,7 @@ const timer = ref<number>(0)
 const results = ref<object[]>([])
 const keyword = ref<string>('')
 const keywordSearch = ref<string>('')
+const modalSelectedItems = ref<IObject[]>([])
 const resultClasses = ref<string[]>([props.resultClass, 'cursor-pointer list-group-item-action'])
 
 onMounted(() => {
@@ -123,12 +124,18 @@ const hideModal = () => {
   isVisible.value = false
   page.value = 1
   setTimeout(() => {
+    modalSelectedItems.value = [...selected.value]
     progressing.value = true
     keywordSearch.value = ''
   }, 400)
 }
 
-const update = (items: object[]): void => {
+const updateModalSelected = (items: object[]): void => {
+  items = items || []
+  modalSelectedItems.value = items
+}
+
+const updateSelected = (items: object[]): void => {
   items = items || []
   selected.value = items
   emitInput(items)
@@ -138,7 +145,8 @@ const update = (items: object[]): void => {
 const remove = (item: IObject) => {
   emitRemove(item)
   const items = selected.value.filter((i) => getValue(i) !== getValue(item))
-  update(items)
+  updateSelected(items)
+  updateModalSelected(items)
 }
 
 const searchKeyword = (keyword: string) => {
@@ -149,16 +157,14 @@ const searchKeyword = (keyword: string) => {
 }
 
 const isSelected = (item: object) => {
-  return selected.value.find((i) => getValue(i) === getValue(item))
+  return modalSelectedItems.value.find((i) => getValue(i) === getValue(item))
 }
 
 const add = (item: IObject): void => {
   if (!isSelected(item)) {
     emitSelect(item)
-    selected.value.push(item)
-    emitChange(selected.value)
-    emitInput(selected.value)
-  } else remove(item)
+    modalSelectedItems.value.push(item)
+  } else modalSelectedItems.value = modalSelectedItems.value.filter((i) => getValue(i) !== getValue(item))
 }
 
 const getResults = async (keyword: string) => {
@@ -194,7 +200,8 @@ const setSelected = async () => {
   try {
     const response = await props.select(props.modelValue)
     emitInitialize(response)
-    update(response || [])
+    updateModalSelected(response || [])
+    updateSelected(response || [])
   } catch (err: any) {
     useErrors(err)
   }
@@ -220,6 +227,13 @@ const emitInitialize = (items: object[]): void => {
 
 const emitSelect = (item: object): void => {
   emit('select', item)
+}
+
+const submit = () => {
+  selected.value = [...modalSelectedItems.value]
+  emitInput(selected.value)
+  emitChange(selected.value)
+  hideModal()
 }
 </script>
 
@@ -339,7 +353,7 @@ const emitSelect = (item: object): void => {
     </RListGroup>
 
     <template #modal-footer>
-      <RButton variant="success" size="sm" @click="hideModal">
+      <RButton variant="success" size="sm" class="px-4" :disabled="!modalSelectedItems?.length" @click="submit">
         {{ useTranslations('shared.save') }}
       </RButton>
     </template>
