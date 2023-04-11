@@ -209,8 +209,7 @@ function getRowClass(item: ModelType) {
   return cls
 }
 
-function rowSelected(items: any[]) {
-  const item = items[0]
+function rowSelected(item: any) {
   const selectItem = item && !item.folder ? item : null
   emit('select', selectItem)
   selectedItem.value = selectItem
@@ -246,7 +245,7 @@ function emits(type: any) {
         :busy="progressing"
         :tbody-tr-class="getRowClass"
         :empty-text="$t('shared.noRecords')"
-        @row-selected="rowSelected"
+        @row-clicked="rowSelected"
         @row-contextmenu="rowContextMenu"
       >
         <template #name="data">
