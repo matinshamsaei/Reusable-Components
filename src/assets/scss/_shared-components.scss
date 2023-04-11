@@ -1,83 +1,24 @@
 // Required
 *[dir='rtl'] {
-  .card-header-required {
-    .card-header::after {
-      content: '*';
-      color: $danger;
-      position: absolute;
-      right: 8px;
-    }
-  }
-  .required {
-    .input-group-prepend .input-group-text::after {
-      content: '*';
-      color: $danger;
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
+  .auto-complete-multi {
+    .wrapper {
+      @extend .rounded-start, .ps-5;
     }
 
-    .input-group-text::after {
-      content: '*';
-      color: $danger;
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
-    }
-
-    .card-header::after {
-      content: '*';
-      color: $danger;
-      transform: translateY(-3px);
-    }
-    .static-card::after {
-      content: '*';
-      color: $danger;
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
-    }
-    .range-input::after {
-      content: '*';
-      color: $danger;
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
+    .selected-item {
+      @extend .ms-1;
     }
   }
 }
 
 *[dir='ltr'] {
-  .card-header-required {
-    .card-header::after {
-      content: '*';
-      color: $danger;
-      position: absolute;
-      left: 8px;
-    }
-  }
-  .required {
-    .input-group-prepend .input-group-text::after {
-      content: '*';
-      color: $danger;
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
+  .auto-complete-multi {
+    .wrapper {
+      @extend .rounded-end, .pe-5;
     }
 
-    .input-group-text::after {
-      content: '*';
-      color: $danger;
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
-    }
-
-    .card-header::after {
-      content: '*';
-      color: $danger;
-      transform: translateY(-3px);
-    }
-
-    .static-card::after {
-      content: '*';
-      color: $danger;
-      transform: translateY(-3px);
-      padding-right: 0.4rem !important;
+    .selected-item {
+      @extend .me-1;
     }
   }
 }
@@ -88,17 +29,23 @@
     width: 100px;
     height: 100px;
   }
+
   .items {
     @extend .d-inline-flex, .flex-wrap;
+
     .item {
       @extend .me-2, .d-flex, .align-items-stretch;
+
       .file {
         @extend .h5, .mb-0, .text-dark, .w-100, .d-flex, .flex-wrap, .align-items-center, .justify-content-center;
       }
+
       .image {
         @extend .d-flex, .align-items-center, .justify-content-center, .w-100;
       }
+
       @extend .border, .rounded, .overflow-hidden, .position-relative;
+
       .remove-btn {
         @extend .position-absolute, .text-white, .d-none, .rounded-circle;
         background-color: rgba(126, 126, 126, 0.7);
@@ -107,6 +54,7 @@
         width: 1.5rem;
         height: 1.5rem;
       }
+
       &:hover {
         .remove-btn {
           @extend .d-flex, .align-items-center, .justify-content-center;
@@ -116,13 +64,46 @@
   }
 }
 
-// Auto Complete
+.padding-chips {
+  padding: 0.15rem;
+}
+
 .auto-complete {
-  width: 100% !important;
+  @extend .w-100;
+}
+
+.auto-complete-multi {
+  @extend .flex-nowrap;
+  .wrapper {
+    @extend .d-flex, .w-100, .flex-wrap, .px-1, .pb-1;
+    border: 1px solid var(--bs-gray-400);
+
+    .selected-item {
+      @extend .font-90,
+        .mt-1,
+        .padding-chips,
+        .px-1,
+        .bg-light,
+        .rounded,
+        .d-flex,
+        .flex-nowrap,
+        .align-items-center,
+        .border,
+        .align-self-center;
+    }
+
+    .form-control {
+      @extend .auto-complete, .border-0, .p-0, .p-0;
+
+      &:focus {
+        @extend .shadow-none;
+      }
+    }
+  }
 }
 
 .vertical-center {
-  position: absolute;
+  @extend .position-absolute;
   top: 50%;
   right: 0.8rem;
   transform: translateY(-50%);
@@ -140,10 +121,11 @@
 .date-time-picker {
   .vpd-input-group input {
     border: 1px solid #dadada !important;
-    border-top-left-radius:0 !important;
+    border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
   }
-  .vpd-input-group{
+
+  .vpd-input-group {
     border-radius: 0.375rem !important;
     overflow: hidden;
   }
@@ -158,34 +140,39 @@
 }
 
 .none-prepend {
-  .custom-input, .form-control {
+  .custom-input,
+  .form-control {
     border-radius: 0.375rem !important;
   }
 }
 
-.vpd-content{
+.vpd-content {
   border-radius: 0.375rem !important;
   overflow: hidden;
 
   .vpd-header {
-    .vpd-year-label, .vpd-date {
+    .vpd-year-label,
+    .vpd-date {
       text-align: center;
     }
   }
+
   .vpd-body {
     .vpd-controls {
-      .vpd-month-label{
+      .vpd-month-label {
         width: 120px !important;
+
         span {
-        &::hover{
-          border-width: none !important
+          &::hover {
+            border-width: none !important
+          }
         }
-          border-width: none !important
-        }
+
         border: none !important;
       }
     }
-    .vpd-actions{
+
+    .vpd-actions {
       display: flex;
       justify-content: center;
     }
@@ -197,10 +184,12 @@
   .cropper-view-box {
     outline: 1px solid var(--secondary) !important;
   }
+
   .cropper-dashed.dashed-v,
   .cropper-dashed.dashed-h {
     border: 1px solid var(--light) !important;
   }
+
   .cropper-point {
     background-color: var(--secondary) !important;
     border-radius: 50% !important;
@@ -208,37 +197,46 @@
     width: 10px !important;
     height: 10px !important;
   }
+
   .cropper-line {
     background: none !important;
   }
+
   .point-e {
     margin-top: -5px !important;
     right: -5px !important;
   }
+
   .point-n {
     margin-left: -5px !important;
     top: -5px !important;
   }
+
   .point-w {
     margin-top: -5px !important;
     left: -5px !important;
   }
+
   .point-s {
     margin-left: -5px !important;
     bottom: -5px !important;
   }
+
   .point-ne {
     right: -5px !important;
     top: -5px !important;
   }
+
   .point-nw {
     left: -5px !important;
     top: -5px !important;
   }
+
   .point-sw {
     bottom: -5px !important;
     left: -5px !important;
   }
+
   .point-se {
     bottom: -5px !important;
     right: -5px !important;
@@ -246,10 +244,7 @@
 }
 
 .remove-btn {
-  color: $white;
-  display: none;
-  position: absolute;
-  border-radius: 50%;
+  @extend .text-white, .d-none, .position-absolute, .rounded-circle;
   background-color: rgba(126, 126, 126, 0.7);
   left: -86px;
   top: -14px;
@@ -258,13 +253,13 @@
 .file-uploader {
   .card {
     .caption {
-      margin: 0;
-      position: absolute;
+      @extend .m-0, .position-absolute;
       top: 50%;
       transform: translate(0, -50%);
     }
   }
 }
+
 // dropDown-caret
 
 .no-caret {
@@ -274,13 +269,39 @@
 }
 
 // colorPicker btn
-.btn-check:checked + .btn,
-:not(.btn-check) + .btn:active,
+.btn-check:checked+.btn,
+:not(.btn-check)+.btn:active,
 .btn:first-child:active,
 .btn.active,
 .btn.show {
   border: none !important;
   border-color: transparent !important;
+}
+
+// file manager
+
+.table-wrap {
+  height: 300px;
+  overflow-y: auto;
+}
+
+.ctx-menu {
+  @extend .position-absolute;
+  z-index: 1;
+  min-width: 150px;
+}
+
+.ctx-menu-backdrop {
+  @extend .position-absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 0;
+}
+
+.text-moremuted {
+  color: $gray-300;
 }
 
 //tinymce
@@ -295,6 +316,7 @@
 }
 
 .tox {
+
   .tox-menubar,
   .tox-statusbar {
     background-color: $input-group-addon-bg !important;

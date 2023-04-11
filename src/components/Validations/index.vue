@@ -1,37 +1,66 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+import { reactive, computed } from 'vue'
 import { RFormInput, RButton } from '@routaa/ui-kit'
+import { required } from '@vuelidate/validators'
+import Address from './address.vue'
+import $t from '@/composable/useTranslations'
+import { $v, $vMsg } from '../../utils/validator'
 import ErrorsDisplay from '../ErrorsDisplay/index.vue'
-import FieldsToValidate from './FieldsToValidate.vue'
-import { useForm, useField } from 'vee-validate'
-import { reactive, ref } from 'vue'
-import { useValidationAggregator } from '@/lib/formAggregator'
 
-const { errors, validate } = useForm()
-const emailField = reactive(useField('email', 'email|required'))
-const passwordField = reactive(useField('password', 'password'))
+const model = reactive({
+  firstName: '',
+  lastName: '',
+  password: '',
+  address: {
+    zipCode: '',
+    streetInfo: {
+      province: ''
+    }
+  }
+})
 
-const { validateAll, register } = useValidationAggregator()
+const rules = computed(() => {
+  return {
+    firstName: { required: $vMsg('required', required, $t('shared.firstName')) },
+    lastName: { required: $vMsg('required', required, $t('shared.lastName')) },
+    password: { required: $vMsg('required', required, $t('shared.pageNotFound')) },
+    address: {
+      zipCode: { required: $vMsg('required', required, $t('shared.name')) },
+      streetInfo: {
+        province: { required: $vMsg('required', required, $t('shared.name')) }
+      }
+    }
+  }
+})
+
+const v = $v(rules, model)
 
 const submit = async () => {
-  register(validate) // to validate this component validations
-  const results = await validateAll() // validate nested validations
-  if (results.some((r) => !r.valid)) return
+  const proceed = await v.value.$validate()
 
-  // todo: post form or whatever you need after validation passes
-  // ex: post api request
+  if (proceed) console.log('proceed true')
+  else console.log('proceed true')
 }
 </script>
 
 <template>
-  <div class="container my-5">
-    <ErrorsDisplay :errors="errors" class="mb-3" />
+  <ErrorsDisplay :errors="v.$errors" class="mb-3" />
 
-    <RFormInput v-model="emailField.value.value" name="email" placeholder="email" />
+  <div>
+    <div class="form-group">
+      <label for="firstName">firstName</label>
 
-    <RFormInput v-model="passwordField.value.value" name="password" placeholder="password" class="my-3" />
+      <RFormInput id="firstName" name="test" v-model="model.firstName" />
+    </div>
 
-    <FieldsToValidate />
+    <div class="form-group">
+      <label for="lastName">lastName</label>
 
-    <RButton @click="submit" type="submit" block class="mt-3">submit</RButton>
+      <RFormInput id="lastName" name="test" v-model="model.lastName" />
+    </div>
+
+    <Address v-model="model.address" />
+
+    <RButton class="mt-3" @click="submit">submit</RButton>
   </div>
 </template>

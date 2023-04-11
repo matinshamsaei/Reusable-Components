@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch, type HTMLAttributes } from 'vue'
+import { computed, onMounted, ref, type HTMLAttributes } from 'vue'
 import type { IObject } from '../../utils/object'
+import useErrors from '../../composable/useErrors'
 import useTranslations from '../../composable/useTranslations'
 import {
   RBadge,
   RModal,
   RListGroup,
+  RButton,
   RFormInput,
   RInputGroup,
   RListGroupItem,
@@ -15,25 +17,26 @@ import {
 } from '@routaa/ui-kit'
 
 type Props = {
-  modelValue: string | number | null
+  modelValue: number[]
+  valueField?: string
+  textField?: string
+  modelField?: string | boolean | Function
   prepend?: string
   dir?: string
-  valueField?: string | Function | boolean
-  textField?: string | Function
-  altTextField?: string | Function
-  modelField?: string | Function | boolean
-  disabled?: boolean
   extendFilter?: object
-  size?: 'sm' | 'md' | 'lg'
-  placeholder?: string
+  disabled?: boolean
+  size?: string
   debounce?: number
   perPage?: number
+  default?: boolean
+  filterName?: string
+  taggable?: boolean
   select?: Function
   search?: Function
   noBadge?: boolean
   noDetails?: boolean
-  filterName?: string
   required?: boolean
+  placeholder?: string
   resultClass?: HTMLAttributes['class']
   noBadgeVariant?: string
   searchIcon?: string
@@ -42,36 +45,24 @@ type Props = {
   clearIconVariant?: string
   loadingIcon?: string
   loadingIconVariant?: string
-  name?: string
-}
-
-type Error = {
-  data?: string
-  errorCode?: number
-  status?: number
-  code?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
   valueField: 'id',
   textField: 'name',
-  altTextField: 'altText',
-  extendFilter: () => ({}),
-  size: 'md',
+  disabled: false,
   debounce: 400,
   perPage: 30,
   noBadge: false,
   noDetails: false,
-  filterName: 'keyword',
   required: false,
-  dir: 'auto',
-  noBadgeVariant: 'secondary',
+  filterName: 'keyword',
   searchIcon: 'magnifying-glass',
   searchIconVariant: 'muted',
-  clearIcon: 'xmark',
   clearIconVariant: 'muted',
   loadingIcon: 'circle-notch',
-  loadingIconVariant: 'muted'
+  loadingIconVariant: 'muted',
+  noBadgeVariant: 'secondary'
 })
 
 interface Emits {
@@ -81,57 +72,34 @@ interface Emits {
   (e: 'select', val: any): void
   (e: 'clear', val: any): void
   (e: 'input', val: any): void
+  (e: 'remove', val: any): void
 }
 
 const emit = defineEmits<Emits>()
 
-const progressing = ref<boolean>(true)
-const keywordSearch = ref<string>('')
+const progressing = ref<boolean>(false)
 const page = ref<number>(1)
-const timer = ref<number>(0)
-const isVisible = ref(false)
-const results = ref<object[]>([])
 const text = ref<string>('')
-const changeKeyword = ref<boolean>(false)
-const resultClasses = ref([props.resultClass, 'cursor-pointer list-group-item-action'])
+const isVisible = ref<boolean>(false)
+const selected = ref<IObject[]>([])
+const timer = ref<number>(0)
+const results = ref<object[]>([])
+const keyword = ref<string>('')
+const keywordSearch = ref<string>('')
+const modalSelectedItems = ref<IObject[]>([])
+const resultClasses = ref<string[]>([props.resultClass, 'cursor-pointer list-group-item-action'])
 
-const model = computed({
-  get() {
-    return props.modelValue
-  },
-  set(val) {
-    emit('update:modelValue', val)
-    if (val) emitChange(val)
-  }
-})
-
-const placeholder = computed<string>(() => {
-  return !!props.placeholder ? props.placeholder : useTranslations('shared.clickToSelect')
+onMounted(() => {
+  setSelected()
 })
 
 const modelField = computed(() => {
   return props.modelField ? props.modelField : props.valueField
 })
 
-onMounted(() => {
-  if (props.select) setSelected()
-  else if (model.value) getResults()
-})
-
-watch(
-  () => keywordSearch.value,
-  () => (changeKeyword.value = true)
-)
-
 const getText = (item: IObject): string | null => {
   if (!item) return null
   const label = (typeof props.textField === 'string' && props.textField) || 'name'
-  return item[label]
-}
-
-const getAltText = (item: IObject): string | null => {
-  if (!item) return null
-  const label = (typeof props.altTextField === 'string' && props.altTextField) || 'altText'
   return item[label]
 }
 
@@ -156,83 +124,60 @@ const hideModal = () => {
   isVisible.value = false
   page.value = 1
   setTimeout(() => {
+    modalSelectedItems.value = [...selected.value]
     progressing.value = true
     keywordSearch.value = ''
   }, 400)
 }
 
-const updateValue = (item: object | null) => {
-  const value = (item && typeof item === 'object' && getModel(item)) || null
-  text.value = (item && typeof item === 'object' && getText(item)) || ''
-  emit('input', value)
-  model.value = value
+const updateModalSelected = (items: object[]): void => {
+  items = items || []
+  modalSelectedItems.value = items
 }
 
-const choose = (item: object) => {
-  if (item && typeof item === 'object') update(item)
-
-  hideModal()
+const updateSelected = (items: object[]): void => {
+  items = items || []
+  selected.value = items
+  emitInput(items)
+  emitChange(items)
 }
 
-const update = (item: object) => {
-  emitSelect(item)
-  updateValue(item)
-}
-
-const clear = () => {
-  if (!props.disabled) {
-    updateValue(null)
-    emitClear()
-  }
+const remove = (item: IObject) => {
+  emitRemove(item)
+  const items = selected.value.filter((i) => getValue(i) !== getValue(item))
+  updateSelected(items)
+  updateModalSelected(items)
 }
 
 const searchKeyword = (keyword: string) => {
-  if (!keyword && typeof keyword !== 'string') return
-
-  progressing.value = true
   clearTimeout(timer.value)
   timer.value = setTimeout(() => {
     getResults(keyword)
   }, props.debounce)
 }
 
-const isSelect = (item: IObject) => {
-  if (item && typeof item === 'object')
-    return typeof props.valueField === 'string' && model.value === item[props.valueField]
-  else return false
+const isSelected = (item: object) => {
+  return modalSelectedItems.value.find((i) => getValue(i) === getValue(item))
 }
 
-const setSelected = async () => {
-  if (!props.select && typeof props.select !== 'function') return updateValue(null)
-
-  try {
-    const item = await props.select()
-
-    emitInitialize(item)
-    updateValue(item || null)
-  } catch (err) {
-    if (typeof err === 'object') errorHandler(err)
-    updateValue(null)
-  }
+const add = (item: IObject): void => {
+  if (!isSelected(item)) {
+    emitSelect(item)
+    modalSelectedItems.value.push(item)
+  } else modalSelectedItems.value = modalSelectedItems.value.filter((i) => getValue(i) !== getValue(item))
 }
 
-const getResults = async (keyword: string = keywordSearch.value) => {
-  const filter = setFilter(keyword)
-
+const getResults = async (keyword: string) => {
   try {
+    const filters = setFilter(keyword)
     if (props.search && typeof props.search === 'function') {
-      const items = await props.search(filter)
-      if (items && items.length) {
-        results.value = items
+      const items: object[] = await props.search(filters)
+      results.value = items
 
-        if (model.value && !keyword && !changeKeyword.value) updateValue(items[0])
-      } else results.value = []
+      progressing.value = false
     }
-
-    progressing.value = false
-  } catch (err) {
-    results.value = []
-    if (typeof err === 'object') errorHandler(err)
+  } catch (err: any) {
+    useErrors(err)
   }
 }
 
@@ -242,69 +187,91 @@ const setFilter = (keyword: string): object => {
     page: page.value
   }
 
-  if (model.value && !keyword && !changeKeyword.value) filter[props.filterName] = model.value
-  if (props.filterName && typeof props.filterName === 'string' && keyword && typeof keyword === 'string')
-    filter[props.filterName] = keyword
+  if (keyword && typeof keyword === 'string') filter[props.filterName] = keyword
 
   if (props.extendFilter && typeof props.extendFilter === 'object') filter = { ...filter, ...props.extendFilter }
 
   return filter
 }
 
-const errorHandler = (errors: Error | Error[] | null) => {
-  if (errors && Array.isArray(errors)) {
-    errors.forEach((error) => {
-      if (typeof error === 'object') throwError(error)
-    })
-  } else throwError(errors)
+const setSelected = async () => {
+  if (!props.select && typeof props.select !== 'function') return
+
+  try {
+    const response = await props.select(props.modelValue)
+    emitInitialize(response)
+    updateModalSelected(response || [])
+    updateSelected(response || [])
+  } catch (err: any) {
+    useErrors(err)
+  }
 }
 
-const throwError = (error: Error | null): void => {
-  if (error && error.data) throw new Error(error.data)
+const emitRemove = (item: object) => {
+  emit('remove', item)
 }
 
-const emitInitialize = (item: object[]): void => {
-  emit('initialize', item)
+const emitInput = (val: object[]): void => {
+  const items = val.map((item) => getModel(item))
+  emit('input', items)
+  emit('update:modelValue', items)
+}
+
+const emitChange = (val: object[]): void => {
+  emit('change', val)
+}
+
+const emitInitialize = (items: object[]): void => {
+  emit('initialize', items)
 }
 
 const emitSelect = (item: object): void => {
   emit('select', item)
 }
 
-const emitClear = (): void => {
-  emit('clear', null)
-}
-
-const emitChange = (item: string | number): void => {
-  emit('change', item)
+const submit = () => {
+  selected.value = [...modalSelectedItems.value]
+  emitInput(selected.value)
+  emitChange(selected.value)
+  hideModal()
 }
 </script>
 
 <template>
-  <RInputGroup :prepend="props.prepend" :size="props.size" :class="props.required ? 'required' : ''">
+  <RInputGroup
+    class="auto-complete-multi"
+    :size="props.size"
+    :prepend="props.prepend"
+    :class="{ required: props.required }"
+  >
     <RInputGroupPrepend v-if="$slots.prepend" is-text>
-      <slot v-if="$slots.prepend" />
+      <slot v-if="$slots.prepend" name="prepend" />
     </RInputGroupPrepend>
 
-    <div class="flex-grow-1">
-      <RFormInput
-        v-model="text"
-        readonly
-        class="auto-complete"
-        :name="props.name"
-        :dir="props.dir"
-        :size="props.size"
-        :disabled="props.disabled"
-        :placeholder="placeholder"
-        @click="showModal"
-      />
+    <div class="wrapper" @click="showModal">
+      <div v-for="item in selected" :key="getValue(item)" class="selected-item">
+        <slot name="selected-item" :item="item" :items="selected">
+          <slot name="selected-item-text" :getText="getText" :item="item">
+            {{ getText(item) }}
+          </slot>
 
-      <div v-if="model" class="h-100 d-flex align-items-center vertical-center">
-        <font-awesome-icon
-          :icon="props.clearIcon"
-          class="cursor-pointer"
-          :class="[props.size === 'sm' ? null : `fa-${props.size}`, `text-${props.clearIconVariant}`]"
-          @click="clear"
+          <font-awesome-icon
+            size="sm"
+            icon="xmark"
+            class="align-middle cursor-pointer text-muted me-2"
+            @click.stop="remove(item)"
+          />
+        </slot>
+      </div>
+
+      <div class="col align-self-stretch">
+        <RFormInput
+          v-model="text"
+          readonly
+          :dir="props.dir"
+          :size="props.size"
+          :disabled="props.disabled"
+          :placeholder="placeholder"
         />
       </div>
     </div>
@@ -318,9 +285,10 @@ const emitChange = (item: string | number): void => {
     v-model="isVisible"
     scrollable
     centered
-    hide-footer
     header-class="p-2"
+    footer-class="p-2 d-flex align-items-center justify-content-start"
     header-bg-variant="light"
+    footer-bg-variant="light"
     :body-class="['px-0', progressing ? 'py-2' : 'pb-1 pt-0']"
     @hide="hideModal"
     @shown="getResults"
@@ -343,7 +311,7 @@ const emitChange = (item: string | number): void => {
             :icon="props.searchIcon"
             class="cursor-pointer"
             :class="`text-${props.searchIconVariant}`"
-            @click="searchKeyword(keywordSearch)"
+            @click="searchKeyword(keyword)"
           />
         </div>
       </div>
@@ -358,18 +326,14 @@ const emitChange = (item: string | number): void => {
         <RListGroupItem
           v-for="(item, index) in results"
           :key="getValue(item)"
-          :class="[{ active: isSelect(item) }, resultClasses]"
-          @click="choose(item)"
+          :class="[{ active: isSelected(item) }, resultClasses]"
+          @click="add(item)"
         >
           <slot name="item" :item="item">
             <div :id="`item-${index}`" class="row">
               <div v-if="getText(item)" :id="`item-text-${index}`" class="flex-grow-1 col-auto small">
                 <slot name="item-text" :item="item">
                   {{ getText(item) }}
-
-                  <slot v-if="getAltText(item) && !props.noDetails" name="details" :item="item">
-                    <span class="text-muted small"> ({{ getAltText(item) }}) </span>
-                  </slot>
                 </slot>
               </div>
 
@@ -387,5 +351,11 @@ const emitChange = (item: string | number): void => {
         {{ $t('shared.noRecords') }}
       </RListGroupItem>
     </RListGroup>
+
+    <template #modal-footer>
+      <RButton variant="success" size="sm" class="px-4" :disabled="!modalSelectedItems?.length" @click="submit">
+        {{ useTranslations('shared.save') }}
+      </RButton>
+    </template>
   </RModal>
 </template>

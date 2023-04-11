@@ -1,0 +1,17 @@
+export default {
+  cantMoveFolderToItself: 'You can\'t move a folder inside itself.',
+  copy: 'Copy',
+  createFolder: 'Create folder',
+  cut: 'Cut',
+  fileName: 'File name',
+  folder: 'Folder',
+  folderName: 'Folder name',
+  loading: 'Loading',
+  mediaGallery: 'Media Gallery',
+  newName: 'New name',
+  paste: 'Paste',
+  remove: 'Remove',
+  rename: 'Rename',
+  type: 'Type',
+  upload: 'Upload',
+}
