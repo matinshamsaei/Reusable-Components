@@ -29,17 +29,23 @@
     width: 100px;
     height: 100px;
   }
+
   .items {
     @extend .d-inline-flex, .flex-wrap;
+
     .item {
       @extend .me-2, .d-flex, .align-items-stretch;
+
       .file {
         @extend .h5, .mb-0, .text-dark, .w-100, .d-flex, .flex-wrap, .align-items-center, .justify-content-center;
       }
+
       .image {
         @extend .d-flex, .align-items-center, .justify-content-center, .w-100;
       }
+
       @extend .border, .rounded, .overflow-hidden, .position-relative;
+
       .remove-btn {
         @extend .position-absolute, .text-white, .d-none, .rounded-circle;
         background-color: rgba(126, 126, 126, 0.7);
@@ -48,6 +54,7 @@
         width: 1.5rem;
         height: 1.5rem;
       }
+
       &:hover {
         .remove-btn {
           @extend .d-flex, .align-items-center, .justify-content-center;
@@ -96,7 +103,7 @@
 }
 
 .vertical-center {
-  position: absolute;
+  @extend .position-absolute;
   top: 50%;
   right: 0.8rem;
   transform: translateY(-50%);
@@ -117,6 +124,7 @@
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
   }
+
   .vpd-input-group {
     border-radius: 0.375rem !important;
     overflow: hidden;
@@ -148,19 +156,22 @@
       text-align: center;
     }
   }
+
   .vpd-body {
     .vpd-controls {
       .vpd-month-label {
         width: 120px !important;
+
         span {
           &::hover {
-            border-width: none !important;
+            border-width: none !important
           }
-          border-width: none !important;
         }
+
         border: none !important;
       }
     }
+
     .vpd-actions {
       display: flex;
       justify-content: center;
@@ -173,10 +184,12 @@
   .cropper-view-box {
     outline: 1px solid var(--secondary) !important;
   }
+
   .cropper-dashed.dashed-v,
   .cropper-dashed.dashed-h {
     border: 1px solid var(--light) !important;
   }
+
   .cropper-point {
     background-color: var(--secondary) !important;
     border-radius: 50% !important;
@@ -184,37 +197,46 @@
     width: 10px !important;
     height: 10px !important;
   }
+
   .cropper-line {
     background: none !important;
   }
+
   .point-e {
     margin-top: -5px !important;
     right: -5px !important;
   }
+
   .point-n {
     margin-left: -5px !important;
     top: -5px !important;
   }
+
   .point-w {
     margin-top: -5px !important;
     left: -5px !important;
   }
+
   .point-s {
     margin-left: -5px !important;
     bottom: -5px !important;
   }
+
   .point-ne {
     right: -5px !important;
     top: -5px !important;
   }
+
   .point-nw {
     left: -5px !important;
     top: -5px !important;
   }
+
   .point-sw {
     bottom: -5px !important;
     left: -5px !important;
   }
+
   .point-se {
     bottom: -5px !important;
     right: -5px !important;
@@ -222,10 +244,7 @@
 }
 
 .remove-btn {
-  color: $white;
-  display: none;
-  position: absolute;
-  border-radius: 50%;
+  @extend .text-white, .d-none, .position-absolute, .rounded-circle;
   background-color: rgba(126, 126, 126, 0.7);
   left: -86px;
   top: -14px;
@@ -234,13 +253,13 @@
 .file-uploader {
   .card {
     .caption {
-      margin: 0;
-      position: absolute;
+      @extend .m-0, .position-absolute;
       top: 50%;
       transform: translate(0, -50%);
     }
   }
 }
+
 // dropDown-caret
 
 .no-caret {
@@ -250,13 +269,39 @@
 }
 
 // colorPicker btn
-.btn-check:checked + .btn,
-:not(.btn-check) + .btn:active,
+.btn-check:checked+.btn,
+:not(.btn-check)+.btn:active,
 .btn:first-child:active,
 .btn.active,
 .btn.show {
   border: none !important;
   border-color: transparent !important;
+}
+
+// file manager
+
+.table-wrap {
+  height: 300px;
+  overflow-y: auto;
+}
+
+.ctx-menu {
+  @extend .position-absolute;
+  z-index: 1;
+  min-width: 150px;
+}
+
+.ctx-menu-backdrop {
+  @extend .position-absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 0;
+}
+
+.text-moremuted {
+  color: $gray-300;
 }
 
 //tinymce
@@ -271,6 +316,7 @@
 }
 
 .tox {
+
   .tox-menubar,
   .tox-statusbar {
     background-color: $input-group-addon-bg !important;
