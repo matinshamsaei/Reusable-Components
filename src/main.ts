@@ -7,7 +7,6 @@ import './assets/scss/style.scss'
 import config from './plugins/config'
 import FontAwesomeIcon from './plugins/font-awesome'
 import locale from './plugins/locale'
-import './plugins/validations'
 import messages from './translations'
 
 const app = createApp(App)
