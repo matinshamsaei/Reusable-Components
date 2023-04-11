@@ -353,13 +353,7 @@ const submit = () => {
     </RListGroup>
 
     <template #modal-footer>
-      <RButton
-        variant="success"
-        size="sm"
-        class="px-4"
-        :disabled="modalSelectedItems && !modalSelectedItems?.length"
-        @click="submit"
-      >
+      <RButton variant="success" size="sm" class="px-4" :disabled="!modalSelectedItems?.length" @click="submit">
         {{ useTranslations('shared.save') }}
       </RButton>
     </template>
