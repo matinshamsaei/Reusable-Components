@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import { RModal } from '@routaa/ui-kit'
 import Uploader from '../Uploader/index.vue'
-import useTranslations from '@/composable/useTranslations'
+import $t from '@/composable/useTranslations'
 
 const model = ref('')
 
@@ -54,7 +54,7 @@ function emitClose(uploadedDocs: string | object | null) {
     no-close-on-esc
     no-close-on-backdrop
     body-class="p-4"
-    :title="useTranslations('fileManager.upload')"
+    :title="$t('fileManager.upload')"
     @hide="emitClose"
   >
     <Uploader v-model="model" :upload="uploadApi" @update:model-value="emitClose" :accept="accept" />
