@@ -261,11 +261,14 @@ function emitPaste() {
       <RTable
         small
         hover
+        stacked
         bordered
+        show-empty
         class="mb-0"
         :items="files"
         :striped="false"
         :fields="fields"
+        :busy="progressing"
         :tbody-tr-class="getRowClass"
         :empty-text="useTranslations('shared.noRecords')"
         @row-selected="rowSelected"
