@@ -4,5 +4,6 @@ export default {
   fileMaxSizeExceeded:
     'حجم فایل {fileName} بیشتر از حد مجاز است. فایل هایی با حجمی کمتر از {maxSize} کیلو بایت آپلود کنید.',
   filesNumberExceedsTheLimit: 'تعداد فایل ها بیشتر از {max} است',
+  open: 'باز کردن',
   uploading: 'در حال آپلود'
 }
