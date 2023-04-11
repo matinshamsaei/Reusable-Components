@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import useTranslations from '@/composable/useTranslations'
+import $t from '@/composable/useTranslations'
 
 type Props = {
   title?: string
@@ -9,7 +9,7 @@ type Props = {
 const props = defineProps<Props>()
 
 const title = computed(() => {
-  return props.title ? props.title : useTranslations('shared.noRecords')
+  return props.title ? props.title : $t('shared.noRecords')
 })
 </script>
 

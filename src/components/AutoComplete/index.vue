@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch, type HTMLAttributes } from 'vue'
 import type { IObject } from '../../utils/object'
-import useTranslations from '../../composable/useTranslations'
+import $t from '../../composable/useTranslations'
 import {
   RBadge,
   RModal,
@@ -106,7 +106,7 @@ const model = computed({
 })
 
 const placeholder = computed<string>(() => {
-  return !!props.placeholder ? props.placeholder : useTranslations('shared.clickToSelect')
+  return !!props.placeholder ? props.placeholder : $t('shared.clickToSelect')
 })
 
 const modelField = computed(() => {

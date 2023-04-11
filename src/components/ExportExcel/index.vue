@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 import { computed } from 'vue'
-import useTranslations from '@/composable/useTranslations'
+import $t from '@/composable/useTranslations'
 import { RButton } from '@routaa/ui-kit'
 import CExcel from '../CExcel/index.vue'
 import Download from '../Icons/Download.vue'
@@ -45,7 +45,7 @@ const date = computed<string>(() => {
 
 const excelHeader = computed<string>(() => {
   const header = props.header ? props.header : ''
-  return `${useTranslations(header)} - ${useTranslations('shared.reportDate')}: ${date.value}`
+  return `${$t(header)} - ${$t('shared.reportDate')}: ${date.value}`
 })
 
 function getItems() {

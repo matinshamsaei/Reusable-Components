@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import useTranslations from '@/composable/useTranslations'
+import $t from '@/composable/useTranslations'
 import { RImg, RButton } from '@routaa/ui-kit'
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 const props = defineProps<Props>()
 
 const pageTitle = computed(() => {
-  return props.title || useTranslations('shared.oopsWeHaveAProblem')
+  return props.title || $t('shared.oopsWeHaveAProblem')
 })
 </script>
 

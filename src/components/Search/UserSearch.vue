@@ -2,7 +2,7 @@
 import { ref, reactive, computed } from 'vue'
 import type { IObject } from '@/utils/object'
 import { mobileNormalizer } from '@/utils/shared'
-import useTranslations from '@/composable/useTranslations'
+import $t from '@/composable/useTranslations'
 import { RInputGroup, RFormInput, RInputGroupAppend, RButton, RTable } from '@routaa/ui-kit'
 import CModal from '@/components/CModal/index.vue'
 import NumericInput from '@/components/NumericInput/index.vue'
@@ -72,25 +72,25 @@ function getApi(filter: IObject): Promise<IObject[]> {
 const fields = ref<Array<IObject>>([
   {
     key: 'id',
-    label: useTranslations('shared.id'),
+    label: $t('shared.id'),
     thStyle: 'width: 100px'
   },
   {
     key: 'firstName',
-    label: useTranslations('shared.name')
+    label: $t('shared.name')
   },
   {
     key: 'lastName',
-    label: useTranslations('shared.lastName'),
+    label: $t('shared.lastName'),
     thStyle: 'width: 100px'
   },
   {
     key: 'mobile',
-    label: useTranslations('shared.mobile')
+    label: $t('shared.mobile')
   },
   {
     key: 'nationalId',
-    label: useTranslations('shared.nationalId')
+    label: $t('shared.nationalId')
   },
   {
     key: 'actions',
@@ -146,43 +146,43 @@ function removeUsers(): void {
       </div>
 
       <div class="col-lg-4 mb-3">
-        <RInputGroup :prepend="useTranslations('shared.firstName')">
+        <RInputGroup :prepend="$t('shared.firstName')">
           <RFormInput v-model="search.firstName" />
         </RInputGroup>
       </div>
 
       <div class="col-lg-4 mb-3">
-        <RInputGroup :prepend="useTranslations('shared.lastName')">
+        <RInputGroup :prepend="$t('shared.lastName')">
           <RFormInput v-model="search.lastName" />
         </RInputGroup>
       </div>
 
       <div class="col-lg-4 mb-3">
-        <RInputGroup :prepend="useTranslations('shared.mobile')">
+        <RInputGroup :prepend="$t('shared.mobile')">
           <RFormInput v-model="search.mobile" :name="$t('shared.mobile')" />
         </RInputGroup>
       </div>
 
       <div class="col-lg-4 mb-3">
-        <RInputGroup :prepend="useTranslations('shared.email')">
-          <RFormInput v-model="search.email" :name="useTranslations('shared.email')" />
+        <RInputGroup :prepend="$t('shared.email')">
+          <RFormInput v-model="search.email" :name="$t('shared.email')" />
         </RInputGroup>
       </div>
 
       <div class="col-lg-4 mb-3">
-        <RInputGroup :prepend="useTranslations('shared.nationalId')">
-          <NumericInput no-separator v-model="search.nationalId" :name="useTranslations('shared.nationalId')" />
+        <RInputGroup :prepend="$t('shared.nationalId')">
+          <NumericInput no-separator v-model="search.nationalId" :name="$t('shared.nationalId')" />
         </RInputGroup>
       </div>
     </div>
 
     <div class="d-flex">
       <RButton :disabled="progressing" @click="hide">
-        {{ useTranslations('shared.close') }}
+        {{ $t('shared.close') }}
       </RButton>
 
       <RButton :disabled="progressing" class="ms-auto" @click="reset">
-        {{ useTranslations('shared.removeFilter') }}
+        {{ $t('shared.removeFilter') }}
       </RButton>
 
       <RButton variant="success" :disabled="progressing" class="ms-2" @click="searching(search)">
@@ -192,7 +192,7 @@ function removeUsers(): void {
           :spin="progressing"
           class="me-1 align-middle"
         />
-        {{ useTranslations('shared.search') }}
+        {{ $t('shared.search') }}
       </RButton>
     </div>
 
@@ -205,7 +205,7 @@ function removeUsers(): void {
 
       <template #actions="{ item }">
         <RButton class="px-3" size="sm" variant="success" @click="selectItem(item)">
-          {{ useTranslations('shared.select') }}
+          {{ $t('shared.select') }}
         </RButton>
       </template>
     </RTable>
