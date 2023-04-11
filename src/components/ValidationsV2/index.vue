@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { reactive, computed } from 'vue'
 import { RFormInput, RButton } from '@routaa/ui-kit'
-import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import Address from './address.vue'
 import $t from '@/composable/useTranslations'
-import $validate from '@/composable/useValidation'
+import { $v, $vMsg } from '../../utils/validator'
+import ErrorsDisplay from '../ErrorsDisplay/index.vue'
 
 const model = reactive({
   firstName: '',
@@ -19,28 +19,24 @@ const model = reactive({
   }
 })
 
-const mustBool = (value: any) => {
-  return false
-}
-
 const rules = computed(() => {
   return {
-    firstName: { required: $validate('required', required, $t('shared.firstName')), mustBool },
-    lastName: { required: $validate('required', required, $t('shared.lastName')) },
-    password: { required: $validate('required', required, $t('shared.pageNotFound')) },
+    firstName: { required: $vMsg('required', required, $t('shared.firstName')) },
+    lastName: { required: $vMsg('required', required, $t('shared.lastName')) },
+    password: { required: $vMsg('required', required, $t('shared.pageNotFound')) },
     address: {
-      zipCode: { required: $validate('required', required, $t('shared.name')) },
+      zipCode: { required: $vMsg('required', required, $t('shared.name')) },
       streetInfo: {
-        province: { required: $validate('required', required, $t('shared.name')) }
+        province: { required: $vMsg('required', required, $t('shared.name')) }
       }
     }
   }
 })
 
-const $v = useVuelidate(rules, model, { $lazy: true, $autoDirty: true })
+const v = $v(rules, model)
 
 const submit = async () => {
-  const proceed = await $v.value.$validate()
+  const proceed = await v.value.$validate()
 
   if (proceed) console.log('proceed true')
   else console.log('proceed true')
@@ -48,9 +44,7 @@ const submit = async () => {
 </script>
 
 <template>
-  <div v-for="item in $v.$errors" :key="item.$uid">
-    {{ item.$message }}
-  </div>
+  <ErrorsDisplay :errors="v.$errors" class="mb-3" />
 
   <div>
     <div class="form-group">
