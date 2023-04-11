@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue'
-import FBreadcrumb from './Breadcrumb.vue'
-import FCreateFolder from './CreateFolder.vue'
-import FFiles from './Files.vue'
-import FFooter from './Footer.vue'
-import FRename from './Rename.vue'
-import FToolbar from './Toolbar.vue'
+import Breadcrumb from './Breadcrumb.vue'
+import CreateFolder from './CreateFolder.vue'
+import Files from './Files.vue'
+import Footer from './Footer.vue'
+import Rename from './Rename.vue'
+import Toolbar from './Toolbar.vue'
 import Uploader from './Uploader.vue'
 import useErrors from '../../composable/useErrors'
 import useGlobalProps from '../../composable/useGlobalProps'
-import useTranslations from '../../composable/useTranslations'
+import $t from '../../composable/useTranslations'
 import { isObject } from '../../utils/object'
 
 const model = ref('')
@@ -111,7 +111,7 @@ async function paste() {
   } else if (clipboard.item.folder && !props.isMember) {
     if (clipboard.action === 'cut') {
       if (clipboard.item.path && path.value.startsWith(clipboard.item.path))
-        throw new Error(useTranslations('fileManager.cantMoveFolderToItself'))
+        throw new Error($t('fileManager.cantMoveFolderToItself'))
       else {
         progressing.value = true
         promise = props.api.moveFolder(props.docType, clipboard.item.path, path.value)
@@ -258,7 +258,7 @@ function emitClose() {
 </script>
 
 <template>
-  <FToolbar
+  <Toolbar
     :progressing="progressing"
     :isMember="props.isMember"
     @openCreateFolder="openCreateFolderDialog"
@@ -266,9 +266,9 @@ function emitClose() {
     @refresh="refresh"
   />
 
-  <FBreadcrumb :items="breadcrumbItems" @click="getFolder" />
+  <Breadcrumb :items="breadcrumbItems" @click="getFolder" />
 
-  <FFiles
+  <Files
     :items="folderItems"
     :class="{ 'rounded-bottom': !picker }"
     :progressing="progressing"
@@ -286,9 +286,9 @@ function emitClose() {
     @rename="openRenameDialog"
   />
 
-  <FFooter v-if="picker" class="rounded-bottom" :selected="selected" @confirm="emitPick" @cancel="emitClose" />
+  <Footer v-if="picker" class="rounded-bottom" :selected="selected" @confirm="emitPick" @cancel="emitClose" />
 
-  <FCreateFolder v-if="createFolderOpen && !props.isMember" @confirm="createFolder" @cancel="closeCreateFolderDialog" />
+  <CreateFolder v-if="createFolderOpen && !props.isMember" @confirm="createFolder" @cancel="closeCreateFolderDialog" />
 
   <Uploader
     v-if="uploaderOpen"
@@ -299,7 +299,7 @@ function emitClose() {
     @close="closeUploaderDialog"
   />
 
-  <FRename
+  <Rename
     v-if="!!isObject(renameItem)"
     :old-name="renameItem.name ? renameItem.name : ''"
     @confirm="rename"

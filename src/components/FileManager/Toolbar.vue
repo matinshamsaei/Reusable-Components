@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RButton } from '@routaa/ui-kit'
 import { FontAwesomeLayers } from '@fortawesome/vue-fontawesome'
-import useTranslations from '../../composable/useTranslations'
+import $t from '../../composable/useTranslations'
 
 type Props = {
   progressing: boolean
@@ -42,10 +42,10 @@ function emitUpload() {
         </font-awesome-layers>
 
         <span class="me-2" />
-        {{ useTranslations('fileManager.createFolder') }}
+        {{ $t('fileManager.createFolder') }}
       </RButton>
 
-      <RButton size="sm" :disabled="props.progressing" variant="secondary" class="mx-2" @click="emitUpload">
+      <RButton size="sm" :disabled="props.progressing" variant="secondary" class="ms-2" @click="emitUpload">
         <font-awesome-layers class="align-middle" fixed-width>
           <font-awesome-icon icon="cloud" size="lg" class="text-dark" />
 
@@ -53,7 +53,7 @@ function emitUpload() {
         </font-awesome-layers>
 
         <span class="me-2" />
-        {{ useTranslations('fileManager.upload') }}
+        {{ $t('fileManager.upload') }}
       </RButton>
     </div>
 

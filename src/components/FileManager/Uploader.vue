@@ -57,6 +57,6 @@ function emitClose(uploadedDocs: string | object | null) {
     :title="$t('fileManager.upload')"
     @hide="emitClose"
   >
-    <Uploader v-model="model" :upload="uploadApi" @update:model-value="emitClose" :accept="accept" />
+    <Uploader v-model="model" :upload-req="uploadApi" @update:model-value="emitClose" :accept="accept" />
   </RModal>
 </template>

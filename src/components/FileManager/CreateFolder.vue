@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
-import useTranslations from '@/composable/useTranslations'
+import $t from '@/composable/useTranslations'
 
 const name = ref('')
 const show = ref(true)
@@ -13,7 +13,7 @@ interface Emit {
 
 const emit = defineEmits<Emit>()
 
-const okDisabled = computed(() => {
+const isOkDisabled = computed(() => {
   const okDisabledName = name.value || ''
   return okDisabledName.trim().length ? false : true
 })
@@ -35,14 +35,14 @@ function emitCancel() {
     no-fade
     no-close-on-backdrop
     ok-variant="success"
-    :ok-disabled="okDisabled"
-    :title="useTranslations('fileManager.createFolder')"
-    :cancel-title="useTranslations('shared.cancel')"
-    :ok-title="useTranslations('shared.create')"
+    :ok-disabled="isOkDisabled"
+    :title="$t('fileManager.createFolder')"
+    :cancel-title="$t('shared.cancel')"
+    :ok-title="$t('shared.create')"
     @hide="emitCancel"
     @ok="emitConfirm"
   >
-    <RInputGroup :prepend="useTranslations('fileManager.folderName')">
+    <RInputGroup :prepend="$t('fileManager.folderName')">
       <RFormInput v-model="name" dir="auto" />
     </RInputGroup>
   </RModal>

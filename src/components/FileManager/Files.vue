@@ -3,7 +3,7 @@ import { RTable, RListGroupItem, RListGroup } from '@routaa/ui-kit'
 import CLoading from '../CLoading/index.vue'
 import { computed, reactive, ref, useAttrs, watch } from 'vue'
 import { isObject } from '../../utils/object'
-import useTranslations from '@/composable/useTranslations'
+import $t from '@/composable/useTranslations'
 
 const attrs = useAttrs()
 
@@ -52,11 +52,11 @@ const props = withDefaults(defineProps<Props>(), {
 const fields = ref([
   {
     key: 'name',
-    label: useTranslations('fileManager.fileName')
+    label: $t('fileManager.fileName')
   },
   {
     key: 'type',
-    label: useTranslations('fileManager.type')
+    label: $t('fileManager.type')
   }
 ])
 
@@ -224,33 +224,8 @@ function openCtxMenu(e: CtxMenuType) {
   ctxMenu.y = e.layerY
 }
 
-function emitCopy() {
-  emit('copy', ctxMenu.item)
-  removeCtxMenuItem()
-}
-
-function emitOpen() {
-  emit('open', ctxMenu.item)
-  removeCtxMenuItem()
-}
-
-function emitCut() {
-  emit('cut', ctxMenu.item)
-  removeCtxMenuItem()
-}
-
-function emitRename() {
-  emit('rename', ctxMenu.item)
-  removeCtxMenuItem()
-}
-
-function emitRemove() {
-  emit('remove', ctxMenu.item)
-  removeCtxMenuItem()
-}
-
-function emitPaste() {
-  emit('paste')
+function emits(type: any) {
+  emit(type, ctxMenu.item)
   removeCtxMenuItem()
 }
 </script>
@@ -264,13 +239,13 @@ function emitPaste() {
         stacked
         bordered
         show-empty
-        class="mb-0"
+        table-class="mb-0"
         :items="files"
         :striped="false"
         :fields="fields"
         :busy="progressing"
         :tbody-tr-class="getRowClass"
-        :empty-text="useTranslations('shared.noRecords')"
+        :empty-text="$t('shared.noRecords')"
         @row-selected="rowSelected"
         @row-contextmenu="rowContextMenu"
       >
@@ -286,46 +261,46 @@ function emitPaste() {
           <span class="small" v-else>{{ data.item.type }}</span>
         </template>
 
-        <div slot="table-busy" class="text-center text-danger my-5" :dir="useTranslations('direction')">
+        <div slot="table-busy" class="text-center text-danger my-5" :dir="$t('direction')">
           <CLoading class="align-middle" />
 
-          <strong class="mx-3">{{ useTranslations('fileManager.loading') }} ...</strong>
+          <strong class="mx-3">{{ $t('fileManager.loading') }} ...</strong>
         </div>
       </RTable>
     </div>
 
-    <RListGroup v-if="ctxMenu.open" class="ctx-menu shadow-sm" :style="ctxMenuPosStyle">
+    <RListGroup v-if="ctxMenu.open" class="ctx-menu shadow-sm ps-0" :style="ctxMenuPosStyle">
       <RListGroupItem
         v-if="ctxMenu.item"
         button
         class="py-2 px-1 list-group-item-action cursor-pointer"
-        @click="emitOpen"
+        @click="emits('open')"
       >
         <font-awesome-icon icon="eye" fixed-width class="text-muted align-middle mx-1" />
 
-        {{ useTranslations('forms.open') }}
+        {{ $t('forms.open') }}
       </RListGroupItem>
 
       <RListGroupItem
         v-if="ctxMenu.item && !props.isMember"
         button
         class="py-2 px-1 list-group-item-action cursor-pointer"
-        @click="emitCopy"
+        @click="emits('copy')"
       >
         <font-awesome-icon icon="copy" fixed-width class="text-muted align-middle mx-1" />
 
-        {{ useTranslations('fileManager.copy') }}
+        {{ $t('fileManager.copy') }}
       </RListGroupItem>
 
       <RListGroupItem
         v-if="ctxMenu.item && !props.isMember"
         button
         class="py-2 px-1 list-group-item-action cursor-pointer"
-        @click="emitCut"
+        @click="emits('cut')"
       >
         <font-awesome-icon icon="scissors" fixed-width class="text-muted align-middle mx-1" />
 
-        {{ useTranslations('fileManager.cut') }}
+        {{ $t('fileManager.cut') }}
       </RListGroupItem>
 
       <RListGroupItem
@@ -334,7 +309,7 @@ function emitPaste() {
         class="py-2 px-1 list-group-item-action cursor-pointer"
         :disabled="!isObject(clipboard?.item)"
         :class="{ 'bg-light': !isObject(clipboard?.item) }"
-        @click="emitPaste"
+        @click="emits('paste')"
       >
         <font-awesome-icon
           icon="paste"
@@ -343,29 +318,29 @@ function emitPaste() {
           :class="{ 'text-muted': isObject(clipboard?.item), 'text-moremuted': !isObject(clipboard?.item) }"
         />
 
-        {{ useTranslations('fileManager.paste') }}
+        {{ $t('fileManager.paste') }}
       </RListGroupItem>
 
       <RListGroupItem
         class="py-2 px-1 list-group-item-action cursor-pointer"
         button
-        @click="emitRename"
+        @click="emits('rename')"
         v-if="ctxMenu.item"
       >
         <font-awesome-icon icon="italic" fixed-width class="text-muted align-middle mx-1" />
 
-        {{ useTranslations('fileManager.rename') }}
+        {{ $t('fileManager.rename') }}
       </RListGroupItem>
 
       <RListGroupItem
         class="py-2 px-1 list-group-item-action cursor-pointer"
         button
-        @click="emitRemove"
+        @click="emits('remove')"
         v-if="ctxMenu.item"
       >
         <font-awesome-icon icon="trash" fixed-width class="text-muted align-middle mx-1" />
 
-        {{ useTranslations('fileManager.remove') }}
+        {{ $t('fileManager.remove') }}
       </RListGroupItem>
     </RListGroup>
   </div>
