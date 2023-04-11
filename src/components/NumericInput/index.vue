@@ -6,7 +6,7 @@ import { convertNumbers2English } from '../../lib/utils'
 type Numberish = number | string | null | undefined
 
 type Props = {
-  modelValue?: string | number | null
+  modelValue: string | number
   placeholder?: string
   decimal?: boolean
   decimalPlaces?: number
@@ -39,7 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   debounce: 0
 })
 
-const model = ref<string | null>(getDisplayNumber(props.modelValue))
+const model = ref<string>(getDisplayNumber(props.modelValue))
 
 watch(
   () => model.value,
@@ -79,14 +79,14 @@ function regex() {
   return simple
 }
 
-function getDisplayNumber(number: Numberish): string | null {
-  if (number === null) return null
+function getDisplayNumber(number: Numberish): string {
+  if (number === null) return ''
   number = String(number)
   number = number && number.replace(/,/g, '')
-  if (!number) return null
+  if (!number) return ''
   number = convertNumbers2English(number)
   const matched = typeof number === 'string' && number.match(regex())
-  if (!matched) return null
+  if (!matched) return ''
   number = matched[0]
   number = convertLocalString(number)
   return number
@@ -105,7 +105,7 @@ function symbolEntered(val: string | null, oldVal: string | null) {
 }
 
 function convertLocalString(val: number | string) {
-  if (!val || val === null) return null
+  if (!val || val === null) return ''
   val = +val
   if (props.noSeparator) return val.toString()
   return val.toLocaleString('en-GB', { maximumFractionDigits: props.decimalPlaces })
