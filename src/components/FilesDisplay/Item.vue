@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { computed, reactive } from 'vue'
-import Thumbnail from '../Thumbnail/index.vue'
-import useGlobalProps from '@/composable/useGlobalProps'
 import { RLink, RButton } from '@routaa/ui-kit'
+import Thumbnail from '../Thumbnail/index.vue'
+import useGlobalProps from '@/composables/useGlobalProps'
 
 type Props = {
   model: string

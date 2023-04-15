@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { reactive, computed } from 'vue'
-import { RFormInput, RButton } from '@routaa/ui-kit'
 import { required } from '@vuelidate/validators'
+import { RFormInput, RButton } from '@routaa/ui-kit'
+import $t from '@/composables/useTranslations'
+import { $v, $vMsg } from '@/utils/validator'
 import Address from './address.vue'
-import $t from '@/composable/useTranslations'
-import { $v, $vMsg } from '../../utils/validator'
 import ErrorsDisplay from '../ErrorsDisplay/index.vue'
 
 const model = reactive({

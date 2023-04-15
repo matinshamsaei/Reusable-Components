@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import $t from '@/composable/useTranslations'
-import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
 import { ref, computed } from 'vue'
+import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
+import $t from '@/composables/useTranslations'
 
 type Props = {
   oldName?: string
@@ -10,7 +10,6 @@ const props = defineProps<Props>()
 
 const show = ref(true)
 const name = ref(props.oldName || '')
-
 
 interface Emit {
   (e: 'confirm', value: any): void

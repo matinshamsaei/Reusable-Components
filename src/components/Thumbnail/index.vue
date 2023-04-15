@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { computed, useAttrs } from 'vue'
-import type { HTMLAttributes, StyleValue, ImgHTMLAttributes } from 'vue'
+import { computed, useAttrs, type HTMLAttributes, type StyleValue, type ImgHTMLAttributes } from 'vue'
 import { RLink, RImg } from '@routaa/ui-kit'
-import useGlobalProps from '../../composable/useGlobalProps'
+import useGlobalProps from '@/composables/useGlobalProps'
 
 const globalProps = useGlobalProps()
 

@@ -7,13 +7,12 @@ import Footer from './Footer.vue'
 import Rename from './Rename.vue'
 import Toolbar from './Toolbar.vue'
 import Uploader from './Uploader.vue'
-import useErrors from '../../composable/useErrors'
-import useGlobalProps from '../../composable/useGlobalProps'
-import $t from '../../composable/useTranslations'
+import $t from '@/composables/useTranslations'
+import useErrors from '@/composables/useErrors'
+import useGlobalProps from '@/composables/useGlobalProps'
 import { isObject } from '../../utils/object'
 
 const model = ref('')
-
 const globalProps = useGlobalProps()
 
 type ApiTypes = {

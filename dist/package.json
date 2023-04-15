@@ -8,7 +8,31 @@
     "types": "./main.d.ts",
     "dependencies": {
         "bootstrap": "^5.2.3",
-        "vue-router": "^4.1.6"
+        "@fortawesome/fontawesome-svg-core": "^6.3.0",
+        "@fortawesome/free-brands-svg-icons": "^6.3.0",
+        "@fortawesome/free-regular-svg-icons": "^6.3.0",
+        "@fortawesome/free-solid-svg-icons": "^6.3.0",
+        "@fortawesome/vue-fontawesome": "^3.0.3",
+        "@popperjs/core": "^2.11.6",
+        "@routaa/ui-kit": "^1.2.1",
+        "@tinymce/tinymce-vue": "^4.0.7",
+        "@types/moment-jalaali": "^0.7.5",
+        "@types/moment-locales-webpack-plugin": "^1.2.3",
+        "@types/vue-cropperjs": "^4.1.2",
+        "@vuelidate/core": "^2.0.2",
+        "@vuelidate/validators": "^2.0.2",
+        "@vueuse/core": "^9.12.0",
+        "downloadjs": "^1.4.7",
+        "moment-jalaali": "^0.9.6",
+        "moment-locales-webpack-plugin": "^1.2.0",
+        "moment-timezone": "^0.5.40",
+        "tinymce": "^5.8.0",
+        "vue-cropperjs": "^5.0.0",
+        "vue-i18n": "^9.2.2",
+        "vue-router": "^4.1.6",
+        "vue3-colorpicker": "^2.1.2",
+        "vue3-persian-datetime-picker": "^1.2.2",
+        "vuedraggable": "^4.1.0"
     },
     "publishConfig": {
         "registry": "http://192.168.7.215:8081/repository/npm-br"

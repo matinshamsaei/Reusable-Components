@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, type HTMLAttributes } from 'vue'
-import type { IObject } from '../../utils/object'
-import useErrors from '../../composable/useErrors'
-import useTranslations from '../../composable/useTranslations'
+import type { IObject } from '@/utils/object'
+import useErrors from '@/composables/useErrors'
+import $t from '@/composables/useTranslations'
+
 import {
   RBadge,
   RModal,
@@ -354,7 +355,7 @@ const submit = () => {
 
     <template #modal-footer>
       <RButton variant="success" size="sm" class="px-4" :disabled="!modalSelectedItems?.length" @click="submit">
-        {{ useTranslations('shared.save') }}
+        {{ $t('shared.save') }}
       </RButton>
     </template>
   </RModal>

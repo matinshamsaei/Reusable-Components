@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import useGlobalProps from '../../composable/useGlobalProps'
-import momentJalaali from 'moment-jalaali'
 import { computed } from 'vue'
-import useTranslations from '@/composable/useTranslations'
+import momentJalaali from 'moment-jalaali'
+import useGlobalProps from '@/composables/useGlobalProps'
+import $t from '@/composables/useTranslations'
 
 const globalProps = useGlobalProps()
 
@@ -68,7 +68,7 @@ const dateV = computed(() => {
 
 const getDayName = computed(() => {
   if (props.modelValue) {
-    return useTranslations(`shared.week.${moment.value?.format('dddd')}`)
+    return $t(`shared.week.${moment.value?.format('dddd')}`)
   } else {
     return null
   }
@@ -95,11 +95,11 @@ const humanizedTime = computed(() => {
     return moment.value?.calendar()
   } else {
     return moment.value?.calendar(null, {
-      sameDay: useTranslations('shared.today'),
-      nextDay: useTranslations('shared.tomorrow'),
+      sameDay: $t('shared.today'),
+      nextDay: $t('shared.tomorrow'),
       nextWeek: 'dddd',
-      lastDay: useTranslations('shared.yesterday'),
-      lastWeek: useTranslations('shared.lastWeekDay'),
+      lastDay: $t('shared.yesterday'),
+      lastWeek: $t('shared.lastWeekDay'),
       sameElse: dateFormatV.value
     })
   }
@@ -177,7 +177,7 @@ const humanizedTime = computed(() => {
             :class="props.iconClass"
           />
 
-          <span v-else> {{ useTranslations('shared.clock') }} </span>
+          <span v-else> {{ $t('shared.clock') }} </span>
 
           <span v-if="props.seconds" id="time-vs">
             {{ timeVS }}

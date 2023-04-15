@@ -2,10 +2,10 @@
 import { onMounted, nextTick, ref, computed, type HTMLAttributes } from 'vue'
 import { RFormTextarea, RInputGroup, RFormInput } from '@routaa/ui-kit'
 import { required } from '@vuelidate/validators'
-import useGlobalProps from '../../composable/useGlobalProps'
 import AutoComplete from '../AutoComplete/index.vue'
 import { $vMsg, $v } from '@/utils/validator'
-import $t from '@/composable/useTranslations'
+import $t from '@/composables/useTranslations'
+import useGlobalProps from '@/composables/useGlobalProps'
 import type { IObject } from '@/utils/object'
 
 const globalProps = useGlobalProps()

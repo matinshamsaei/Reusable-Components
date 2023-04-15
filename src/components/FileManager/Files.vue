@@ -2,8 +2,8 @@
 import { RTable, RListGroupItem, RListGroup } from '@routaa/ui-kit'
 import CLoading from '../CLoading/index.vue'
 import { computed, reactive, ref, useAttrs, watch } from 'vue'
-import { isObject } from '../../utils/object'
-import $t from '@/composable/useTranslations'
+import { isObject } from '@/utils/object'
+import $t from '@/composables/useTranslations'
 
 const attrs = useAttrs()
 

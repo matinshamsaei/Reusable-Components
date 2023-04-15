@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, useAttrs } from 'vue'
-import type { IObject } from '../../utils/object'
+import type { IObject } from '@/utils/object'
 import download from 'downloadjs'
 
 type Props = {
