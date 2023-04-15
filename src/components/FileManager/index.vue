@@ -245,8 +245,7 @@ const emit = defineEmits<Emit>()
 
 function emitPick() {
   let schema = globalProps.$config.ssl ? 'https://' : 'http://'
-  const url = `${schema}${globalProps.$config.files.thumbServer}/${globalProps.$config.files.prefixUrl}${selected.value.url}`
-
+  const url = `${schema}${globalProps.$config.files.thumbServer}/${globalProps.$config.prefixUrl}${selected.value.url}`
   emit('pick', url)
   emitClose()
 }
