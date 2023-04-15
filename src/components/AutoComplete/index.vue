@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch, type HTMLAttributes } from 'vue'
-import type { IObject } from '../../utils/object'
+import type { IObject } from '@/utils/object'
 import $t from '@/composables/useTranslations'
 import {
   RBadge,

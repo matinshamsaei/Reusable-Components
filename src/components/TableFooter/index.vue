@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RFormSelect, RPagination } from '@routaa/ui-kit'
 import { computed, ref } from 'vue'
+import { RFormSelect, RPagination } from '@routaa/ui-kit'
 
 type Props = {
   total: number | string

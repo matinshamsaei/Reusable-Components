@@ -2,7 +2,6 @@
 import { ref, computed, useAttrs } from 'vue'
 import { RInputGroup, RInputGroupAppend, RInputGroupText, RDropdown, RFormInput } from '@routaa/ui-kit'
 import { ColorPicker } from 'vue3-colorpicker'
-import 'vue3-colorpicker/style.css'
 
 type Props = {
   modelValue: string

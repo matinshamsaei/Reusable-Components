@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch, nextTick, type HTMLAttributes } from 'vue'
 import { RFormInput } from '@routaa/ui-kit'
-import { convertNumbers2English } from '../../lib/utils'
+import { convertNumbers2English } from '@/lib/utils'
 
 type Numberish = number | string | null | undefined
 

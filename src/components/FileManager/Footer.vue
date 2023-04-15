@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RButton } from '@routaa/ui-kit'
-import { isObject } from '../../utils/object'
-import $t from '@/composable/$t'
+import { isObject } from '@/utils/object'
+import $t from '@/composables/useTranslations'
 
 type Props = {
   selected: boolean | object | string | null

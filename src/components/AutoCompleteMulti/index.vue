@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, type HTMLAttributes } from 'vue'
-import type { IObject } from '../../utils/object'
+import type { IObject } from '@/utils/object'
 import useErrors from '@/composables/useErrors'
 import $t from '@/composables/useTranslations'
+
 import {
   RBadge,
   RModal,

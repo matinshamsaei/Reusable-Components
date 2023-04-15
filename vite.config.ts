@@ -27,11 +27,27 @@ export default defineConfig({
     minify: true,
     lib: {
       entry: resolve(__dirname, 'src/RoutaaSharedComponents.ts'),
-      name: 'routaa-ui-kit',
+      name: 'routaa-shared-kit',
       fileName: (format) => `routaa-shared-components.${format}.js`
     },
     rollupOptions: {
-      external: ['vue', 'vue-router', '@vueuse/core', '@routaa/ui-kit', 'vue-i18n'],
+      external: [
+        'vue',
+        'vue-router',
+        '@vueuse/core',
+        '@routaa/ui-kit',
+        'vue-i18n',
+        'vuedraggable',
+        'vue3-persian-datetime-picker',
+        'moment-jalaali',
+        'vue3-colorpicker',
+        'downloadjs',
+        '@vuelidate',
+        '@tinymce',
+        'tinymce',
+        'bootstrap',
+        '/tinymce'
+      ],
       output: {
         exports: 'named',
         assetFileNames: `routaa-shared-components.[ext]`,
@@ -40,7 +56,16 @@ export default defineConfig({
           bootstrap: 'Bootstrap',
           'vue-i18n': 'vue-i18n',
           'vue-router': 'vue-router',
-          '@vueuse/core': 'vueuse'
+          'tinymce/tinymce': 'tinymce/tinymce',
+          downloadjs: 'downloadjs',
+          '@vuelidate/core': '@vuelidate/core',
+          '@vuelidate/validators': '@vuelidate/validators',
+          vuedraggable: 'vuedraggable',
+          '@tinymce/tinymce-vue': '@tinymce/tinymce-vue',
+          'moment-jalaali': 'moment-jalaali',
+          '@routaa/ui-kit': '@routaa/ui-kit',
+          'vue3-colorpicker': 'vue3-colorpicker',
+          'vue3-persian-datetime-picker': 'vue3-persian-datetime-picker',
         }
       },
       treeshake: {

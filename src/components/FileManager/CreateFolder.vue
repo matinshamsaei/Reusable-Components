@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
-import $t from '@/composable/$t'
+import $t from '@/composables/useTranslations'
 
 const name = ref('')
 const show = ref(true)

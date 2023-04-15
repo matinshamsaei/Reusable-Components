@@ -1,51 +1,9 @@
-<template>
-  <div>
-    <RInputGroup
-      :size="size"
-      :prepend="prepend"
-      class="date-time-picker flex-nowrap"
-      :class="{ 'none-prepend': !props.prepend }"
-    >
-      <DatePicker
-        v-model="model"
-        :auto-submit="props.autoSubmit"
-        :editable="props.editable"
-        :input-class="props.inputClass"
-        :custom-input="customInput"
-        :input-format="props.inputFormat"
-        :display-format="showDateAndTime"
-        :view="props.view"
-        :type="props.type"
-        :format="props.format"
-        :disabled="props.disabled"
-        :disable="props.disable"
-        :clearable="props.clearable"
-        :multiple="props.multiple"
-        :simple="props.simple"
-        :placeholder="`${props.placeholder}`"
-        :label="props.label"
-        :compact-time="props.compactTime"
-      />
-
-      <input
-        v-if="customInput"
-        type="text"
-        :placeholder="`${props.placeholder}`"
-        :label="props.label"
-        class="custom-input form-control"
-        :class="{ 'custom-input': customInput }"
-      />
-    </RInputGroup>
-  </div>
-</template>
-
 <script setup lang="ts">
+import { computed } from 'vue'
 import DatePicker from 'vue3-persian-datetime-picker' // https://talkhabi.github.io/vue-persian-datetime-picker/guide
 import { RInputGroup } from '@routaa/ui-kit'
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import $t from '@/composables/useTranslations';
 
-const { t } = useI18n()
 
 type Props = {
   modelValue: string | string[]
@@ -106,10 +64,52 @@ const model = computed({
 })
 
 const showDateAndTime = computed(() => {
-  return props.displayFormat ? props.displayFormat : `dddd jDD jMMMM jYYYY ${t('shared.clock')} HH:mm`
+  return props.displayFormat ? props.displayFormat : `dddd jDD jMMMM jYYYY ${$t('shared.clock')} HH:mm`
 })
 
 const customInput = computed(() => {
   return props.customInput ? `.custom-input` : ``
 })
 </script>
+
+<template>
+  <div>
+    <RInputGroup
+      :size="size"
+      :prepend="prepend"
+      class="date-time-picker flex-nowrap"
+      :class="{ 'none-prepend': !props.prepend }"
+    >
+      <DatePicker
+        v-model="model"
+        :auto-submit="props.autoSubmit"
+        :editable="props.editable"
+        :input-class="props.inputClass"
+        :custom-input="customInput"
+        :input-format="props.inputFormat"
+        :display-format="showDateAndTime"
+        :view="props.view"
+        :type="props.type"
+        :format="props.format"
+        :disabled="props.disabled"
+        :disable="props.disable"
+        :clearable="props.clearable"
+        :multiple="props.multiple"
+        :simple="props.simple"
+        :placeholder="`${props.placeholder}`"
+        :label="props.label"
+        :compact-time="props.compactTime"
+      />
+
+      <input
+        v-if="customInput"
+        type="text"
+        :placeholder="`${props.placeholder}`"
+        :label="props.label"
+        class="custom-input form-control"
+        :class="{ 'custom-input': customInput }"
+      />
+    </RInputGroup>
+  </div>
+</template>
+

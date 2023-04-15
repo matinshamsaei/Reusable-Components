@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { RModal } from '@routaa/ui-kit'
+import $t from '@/composables/useTranslations'
 import Uploader from '../Uploader/index.vue'
-import $t from '@/composable/$t'
 
 const model = ref('')
 

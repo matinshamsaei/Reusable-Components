@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import $t from '@/composable/$t'
-import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
 import { ref, computed } from 'vue'
+import { RModal, RInputGroup, RFormInput } from '@routaa/ui-kit'
+import $t from '@/composableS/useTranslations'
 
 type Props = {
   oldName?: string
