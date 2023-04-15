@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { onMounted, nextTick, ref, computed, type HTMLAttributes } from 'vue'
 import { RFormTextarea, RInputGroup, RFormInput } from '@routaa/ui-kit'
+import { required } from '@vuelidate/validators'
 import useGlobalProps from '../../composable/useGlobalProps'
 import AutoComplete from '../AutoComplete/index.vue'
+import { $vMsg, $v } from '@/utils/validator'
+import $t from '@/composable/useTranslations'
+import type { IObject } from '@/utils/object'
 
 const globalProps = useGlobalProps()
 
@@ -281,7 +285,27 @@ function generateUnitInfo() {
   model.value.unitInfo = [plaque.value, unit.value].filter(Boolean).join(',')
 }
 
-defineExpose({ generateUnitInfo })
+const rules: IObject = computed(() => {
+  return {
+    provinceId: { required: $vMsg('required', required, $t('shared.province')) }
+  }
+})
+
+if (!!model.value.provinceId || !!hasCounty)
+  rules.value.countyId = { required: $vMsg('required', required, $t('shared.county')) }
+
+if (!!model.value.countyId || !!hasCity)
+  rules.value.cityId = { required: $vMsg('required', required, $t('shared.city')) }
+
+if (!!model.value.cityId || !!hasSuburb)
+  rules.value.suburbId = { required: $vMsg('required', required, $t('shared.city')) }
+
+if (!!model.value.suburbId || !!hasNeighborhood)
+  rules.value.neighborhoodId = { required: $vMsg('required', required, $t('shared.neighborhood')) }
+
+const validator = await $v(rules, model.value)
+
+defineExpose({ generateUnitInfo, validator: validator.value })
 </script>
 
 <template>
