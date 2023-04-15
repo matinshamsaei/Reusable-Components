@@ -38,3 +38,31 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### Color Picker Imports
+
+```sh
+import 'vue3-colorpicker/style.css'
+```
+### Tiny Mce Imports
+
+```sh
+import 'tinymce/tinymce'
+import 'tinymce/themes/silver/theme'
+import 'tinymce/plugins/paste'
+import 'tinymce/plugins/link'
+import 'tinymce/plugins/directionality'
+import 'tinymce/plugins/lists'
+import 'tinymce/plugins/autoresize'
+import 'tinymce/plugins/advlist'
+import 'tinymce/plugins/code'
+import 'tinymce/plugins/image'
+import 'tinymce/plugins/media'
+import 'tinymce/plugins/hr'
+import 'tinymce/plugins/fullscreen'
+import 'tinymce/plugins/table'
+import 'tinymce/plugins/wordcount'
+import 'tinymce/plugins/searchreplace'
+import 'tinymce/icons/default'
+```
+

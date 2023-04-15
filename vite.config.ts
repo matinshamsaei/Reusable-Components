@@ -27,7 +27,7 @@ export default defineConfig({
     minify: true,
     lib: {
       entry: resolve(__dirname, 'src/RoutaaSharedComponents.ts'),
-      name: 'routaa-shared-kit',
+      name: 'routaa-shared-components',
       fileName: (format) => `routaa-shared-components.${format}.js`
     },
     rollupOptions: {
