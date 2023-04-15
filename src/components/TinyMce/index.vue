@@ -2,7 +2,8 @@
 import { ref, reactive, computed } from 'vue'
 import Editor from '@tinymce/tinymce-vue'
 import { RModal } from '@routaa/ui-kit'
-import useTranslations from '@/composable/useTranslations'
+import FileManager from '@/components/FileManager/index.vue'
+import $t from '@/composable/useTranslations'
 import useGlobalProps from '@/composable/useGlobalProps'
 import 'tinymce/tinymce'
 import 'tinymce/themes/silver/theme'
@@ -32,7 +33,7 @@ type Props = {
   maxHeight?: number | string
   resize?: boolean
   elementpath?: boolean
-  // docsApi: object
+  docsApi: object
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -135,6 +136,7 @@ let content_css = [`/tinymce/content/default/content.css?v=${new Date().getTime(
 if (props.cssUrl) content_css.push(`${props.cssUrl}?v=${new Date().getTime()}`)
 
 // const vm = this
+const isVisible = ref(false)
 
 const fileManager = reactive({
   open: false,
@@ -144,9 +146,9 @@ const fileManager = reactive({
 })
 
 const tinymceConfig = reactive({
-  // extended_valid_elements: '*[*]',
+  extended_valid_elements: '*[*]',
   skin_url: '/tinymce/ui/oxide',
-  // directionality: useTranslations('direction'),
+  directionality: $t('direction'),
   language_url: `/tinymce/langs/${language}.js`,
   language,
   content_css,
@@ -169,79 +171,79 @@ const tinymceConfig = reactive({
     'wordcount',
     'searchreplace'
   ],
-  // menubar: simple ? '' : 'edit view insert format tools table',
+  menubar: simple ? '' : 'edit view insert format tools table',
   toolbar,
   min_height: props.height,
   max_height: props.maxHeight,
   autoresize_bottom_margin: 30,
   resize: props.resize,
   branding: false,
-  elementpath: props.elementpath
-  // table_default_attributes: { class: 'table' },
-  // table_default_styles: {},
-  // table_class_list: [
-  //   { title: 'None', value: 'table' },
-  //   { title: 'Striped Rows', value: 'table table-striped' },
-  //   { title: 'Bordered', value: 'table table-bordered' },
-  //   { title: 'Bordered Striped Rows', value: 'table table-bordered table-striped' },
-  //   { title: 'Borderless', value: 'table table-borderless' },
-  //   { title: 'Hoverable', value: 'table table-hover' },
-  //   { title: 'Small', value: 'table table-sm' },
-  //   { title: 'Small Striped Rows', value: 'table table-sm table-striped' },
-  //   { title: 'Small Bordered', value: 'table table-sm table-bordered' },
-  //   { title: 'Small Bordered Striped Rows', value: 'table table-sm table-bordered table-striped' },
-  //   { title: 'Small Borderless', value: 'table table-sm table-borderless' },
-  //   { title: 'Small Hoverable', value: 'table table-sm table-hover' }
-  // ],
-  // table_row_class_list: [
-  //   { title: 'None', value: '' },
-  //   { title: 'Primary', value: 'table-primary' },
-  //   { title: 'Success', value: 'table-success' },
-  //   { title: 'Danger', value: 'table-danger' },
-  //   { title: 'Info', value: 'table-info' },
-  //   { title: 'Warning', value: 'table-warning' },
-  //   { title: 'Active', value: 'table-active' },
-  //   { title: 'Secondary', value: 'table-secondary' },
-  //   { title: 'Light', value: 'table-light' },
-  //   { title: 'Dark', value: 'table-dark' }
-  // ],
-  // table_cell_class_list: [
-  //   { title: 'None', value: '' },
-  //   { title: 'Primary', value: 'table-primary' },
-  //   { title: 'Success', value: 'table-success' },
-  //   { title: 'Danger', value: 'table-danger' },
-  //   { title: 'Info', value: 'table-info' },
-  //   { title: 'Warning', value: 'table-warning' },
-  //   { title: 'Active', value: 'table-active' },
-  //   { title: 'Secondary', value: 'table-secondary' },
-  //   { title: 'Light', value: 'table-light' },
-  //   { title: 'Dark', value: 'table-dark' }
-  // ]
-  // file_picker_callback(callback: any, value: any, meta: any) {
-  //   fileManager.callback = callback
-  //   fileManager.value = value
-  //   fileManager.docType = meta.filetype.toUpperCase() // image | file | media
+  elementpath: props.elementpath,
+  table_default_attributes: { class: 'table' },
+  table_default_styles: {},
+  table_class_list: [
+    { title: 'None', value: 'table' },
+    { title: 'Striped Rows', value: 'table table-striped' },
+    { title: 'Bordered', value: 'table table-bordered' },
+    { title: 'Bordered Striped Rows', value: 'table table-bordered table-striped' },
+    { title: 'Borderless', value: 'table table-borderless' },
+    { title: 'Hoverable', value: 'table table-hover' },
+    { title: 'Small', value: 'table table-sm' },
+    { title: 'Small Striped Rows', value: 'table table-sm table-striped' },
+    { title: 'Small Bordered', value: 'table table-sm table-bordered' },
+    { title: 'Small Bordered Striped Rows', value: 'table table-sm table-bordered table-striped' },
+    { title: 'Small Borderless', value: 'table table-sm table-borderless' },
+    { title: 'Small Hoverable', value: 'table table-sm table-hover' }
+  ],
+  table_row_class_list: [
+    { title: 'None', value: '' },
+    { title: 'Primary', value: 'table-primary' },
+    { title: 'Success', value: 'table-success' },
+    { title: 'Danger', value: 'table-danger' },
+    { title: 'Info', value: 'table-info' },
+    { title: 'Warning', value: 'table-warning' },
+    { title: 'Active', value: 'table-active' },
+    { title: 'Secondary', value: 'table-secondary' },
+    { title: 'Light', value: 'table-light' },
+    { title: 'Dark', value: 'table-dark' }
+  ],
+  table_cell_class_list: [
+    { title: 'None', value: '' },
+    { title: 'Primary', value: 'table-primary' },
+    { title: 'Success', value: 'table-success' },
+    { title: 'Danger', value: 'table-danger' },
+    { title: 'Info', value: 'table-info' },
+    { title: 'Warning', value: 'table-warning' },
+    { title: 'Active', value: 'table-active' },
+    { title: 'Secondary', value: 'table-secondary' },
+    { title: 'Light', value: 'table-light' },
+    { title: 'Dark', value: 'table-dark' }
+  ],
+  file_picker_callback(callback: any, value: any, meta: any) {
+    fileManager.callback = callback
+    fileManager.value = value
+    fileManager.docType = meta.filetype.toUpperCase() // image | file | media
 
-  //   openFileManager()
-  // }
+    openFileManager()
+  }
 })
 
 function openFileManager() {
   fileManager.open = true
-  fmodal.value.show()
+  isVisible.value = true
 }
 /*
   End Tinymce Config
 */
 
-// function closeFileManager() {
-//   fileManager.open = false
-//   fmodal.value.hide()
-// }
+function closeFileManager() {
+  fileManager.open = false
+  isVisible.value = false
+}
 
-// function pick(fileUrl: any, fileMeta: any) {
-//   if(fileManager.callback) fileManager.callback(fileUrl, fileMeta)
-// }
+function pick(fileUrl: any) {
+  if (fileManager.callback) fileManager.callback(fileUrl)
+}
 </script>
 
 <template>
@@ -249,8 +251,8 @@ function openFileManager() {
 
   <editor :disabled="disabled" :initial-value="model" v-model="model" @input="emitInput" :init="tinymceConfig" />
 
-  <!-- <RModal
-    ref="fmodal"
+  <RModal
+    v-model="isVisible"
     size="xl"
     body-class="p-0"
     centered
@@ -260,8 +262,8 @@ function openFileManager() {
     no-close-on-backdrop
     lazy
     @hide="closeFileManager"
-    :title="useTranslations('fileManager.mediaGallery')"
+    :title="$t('fileManager.mediaGallery')"
   >
     <file-manager picker :doc-type="fileManager.docType" @pick="pick" @close="closeFileManager" :api="props.docsApi" />
-  </RModal> -->
+  </RModal>
 </template>
