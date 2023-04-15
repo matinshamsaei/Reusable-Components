@@ -6,7 +6,7 @@ import { convertNumbers2English } from '@/lib/utils'
 type Numberish = number | string | null | undefined
 
 type Props = {
-  modelValue: string | number
+  modelValue: string | number | null
   placeholder?: string
   decimal?: boolean
   decimalPlaces?: number
