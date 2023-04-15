@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RButton } from '@routaa/ui-kit'
 import { FontAwesomeLayers } from '@fortawesome/vue-fontawesome'
-import $t from '../../composable/$t'
+import $t from '@/composables/useTranslations'
 
 type Props = {
   progressing: boolean

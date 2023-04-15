@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import $t from '@/composable/useTranslations'
+import $t from '@/composables/useTranslations'
 
 type Props = {
   title?: string

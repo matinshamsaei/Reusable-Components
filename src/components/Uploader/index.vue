@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { computed, ref, reactive, onMounted, watch, type HTMLAttributes } from 'vue'
 import { RButton, RAlert } from '@routaa/ui-kit'
-import $t from '../../composable/useTranslations'
-import useErrors from '../../composable/useErrors'
-import FileDisplay from '../../components/FilesDisplay/index.vue'
+import useErrors from '@/composables/useErrors'
+import $t from '@/composables/useTranslations'
+import { scaleImage } from '@/utils/image'
+import { isEmpty } from '@/utils/object'
 import ImageEditor from './ImageEditor.vue'
-import { scaleImage } from '../../utils/image'
-import { isEmpty } from '../../utils/object'
+import FileDisplay from '@/components/FilesDisplay/index.vue'
 
 type Props = {
   modelValue: string | object

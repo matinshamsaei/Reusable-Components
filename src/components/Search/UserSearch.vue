@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
+import { RInputGroup, RFormInput, RInputGroupAppend, RButton, RTable } from '@routaa/ui-kit'
+import $t from '@/composables/useTranslations'
 import type { IObject } from '@/utils/object'
 import { mobileNormalizer } from '@/utils/shared'
-import $t from '@/composable/useTranslations'
-import { RInputGroup, RFormInput, RInputGroupAppend, RButton, RTable } from '@routaa/ui-kit'
 import CModal from '@/components/CModal/index.vue'
 import NumericInput from '@/components/NumericInput/index.vue'
 

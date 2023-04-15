@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { RButton, RCollapse, vRToggle } from '@routaa/ui-kit'
-import PageTitle from '@/components/PageTitle/index.vue'
 import { computed } from 'vue'
-import $t from '@/composable/useTranslations'
+import { RButton, RCollapse, vRToggle } from '@routaa/ui-kit'
+import $t from '@/composables/useTranslations'
+import PageTitle from '@/components/PageTitle/index.vue'
 
 type Props = {
   search?: boolean

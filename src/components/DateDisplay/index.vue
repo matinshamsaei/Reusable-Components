@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import useGlobalProps from '../../composable/useGlobalProps'
-import momentJalaali from 'moment-jalaali'
 import { computed } from 'vue'
-import $t from '@/composable/useTranslations'
+import momentJalaali from 'moment-jalaali'
+import useGlobalProps from '@/composables/useGlobalProps'
+import $t from '@/composables/useTranslations'
 
 const globalProps = useGlobalProps()
 

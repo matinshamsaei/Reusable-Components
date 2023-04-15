@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-import { computed } from 'vue'
-import $t from '@/composable/useTranslations'
+import { computed, type HTMLAttributes } from 'vue'
 import { RButton } from '@routaa/ui-kit'
+import $t from '@/composables/useTranslations'
 import CExcel from '../CExcel/index.vue'
 import Download from '../Icons/Download.vue'
 

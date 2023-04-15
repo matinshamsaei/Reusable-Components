@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import $t from '@/composable/useTranslations'
+import $t from '@/composables/useTranslations'
 import { RImg, RButton } from '@routaa/ui-kit'
 
 type Props = {
