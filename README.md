@@ -1,4 +1,4 @@
-# routaa-shared-components
+# Routaa Shared Components
 
 This library based on the world's most popular frameworks - bootstrap v5, vue v3, vite v4, tinymce v5, i18n v9 And typescript.
 This Application Use For Routaa Vue 3 Project.
@@ -6,8 +6,9 @@ with more than 30 component, several directives.
 
 ## Quick start
 
-Clone the repo:`http://192.168.7.152/matin/routaa/modules/front/routaa-shared-components.git`
-Install with [![npm] (https://www.npmjs.com/)] `npm install @routaa/routaa-shared-components@v1.0.0`
+Clone the repo: `http://192.168.7.152/matin/routaa/modules/front/routaa-shared-components.git`
+
+Install with [npm](https://www.npmjs.com/) `npm install @routaa/routaa-shared-components@v1.0.0`
 
 ### Compile and Hot-Reload for Development
 
@@ -24,6 +25,13 @@ npm run build
 ### Use Project
 
 For Use Project You Can Import The Component.
+
+For Example : 
+
+```sh
+import {ActionButtons} from '@routaa/routaa-shared-components'
+import {AutoComplete} from '@routaa/routaa-shared-components'
+```
 
 ### Color Picker Imports
 
