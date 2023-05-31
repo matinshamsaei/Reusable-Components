@@ -6,8 +6,8 @@ with more than 30 component, several directives.
 
 ## Quick start
 
-- [Clone the repo] `http://192.168.7.152/matin/routaa/modules/front/routaa-shared-components.git`
-- Install with [npm] (https://www.npmjs.com/) `npm install @routaa/routaa-shared-components@v1.0.0`
+Clone the repo:`http://192.168.7.152/matin/routaa/modules/front/routaa-shared-components.git`
+Install with [![npm] (https://www.npmjs.com/)] `npm install @routaa/routaa-shared-components@v1.0.0`
 
 ### Compile and Hot-Reload for Development
 
@@ -30,6 +30,7 @@ For Use Project You Can Import The Component.
 ```sh
 import 'vue3-colorpicker/style.css'
 ```
+
 ### Tiny Mce Imports
 
 ```sh
@@ -51,4 +52,3 @@ import 'tinymce/plugins/wordcount'
 import 'tinymce/plugins/searchreplace'
 import 'tinymce/icons/default'
 ```
-
