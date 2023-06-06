@@ -68,3 +68,6 @@ import 'tinymce/plugins/wordcount'
 import 'tinymce/plugins/searchreplace'
 import 'tinymce/icons/default'
 ```
+### Author
+[Routaa Team](routaa.com)
+
