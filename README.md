@@ -1,27 +1,16 @@
-# routaa-shared-components
+# Routaa Shared Components
 
-This template should help get you started developing with Vue 3 in Vite.
+This library based on the world's most popular frameworks and libraries - bootstrap v5, vue v3, vite v4, tinymce v5, i18n v9 And typescript
+and uses for routaa projects based on vue 3,
+with more than 30 component and several directives.
 
-## Recommended IDE Setup
+## Quick start
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Clone the repo: `http://192.168.7.152/matin/routaa/modules/front/routaa-shared-components.git`
 
-## Type Support for `.vue` Imports in TS
+Install with [npm](https://www.npmjs.com/) `npm install @routaa/routaa-shared-components@v1.0.0`
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+### Project Setup
 
 ```sh
 npm install
@@ -30,7 +19,7 @@ npm install
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+npm run serve
 ```
 
 ### Type-Check, Compile and Minify for Production
@@ -39,11 +28,25 @@ npm run dev
 npm run build
 ```
 
+### Use Project
+
+For use project you can import a component like this:
+
+For Example : 
+
+```sh
+import {ActionButtons} from '@routaa/routaa-shared-components'
+import {AutoComplete} from '@routaa/routaa-shared-components'
+```
+
+## Required imports
+In your **style.scss**, you’ll import ColorPicker’s source Css files.
 ### Color Picker Imports
 
 ```sh
 import 'vue3-colorpicker/style.css'
 ```
+And in your **main.js**, you’ll import Tinymce’s source theme and plugins files.
 ### Tiny Mce Imports
 
 ```sh
@@ -65,4 +68,6 @@ import 'tinymce/plugins/wordcount'
 import 'tinymce/plugins/searchreplace'
 import 'tinymce/icons/default'
 ```
+### Author
+[Routaa Team](routaa.com)
 
